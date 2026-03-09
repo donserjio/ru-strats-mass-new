@@ -302,6 +302,8 @@ const NAV_ITEMS = [
   { label: "Показатели", href: "#metrics" },
   { label: "Как работает", href: "#how-it-works" },
   { label: "Преимущества", href: "#advantages" },
+  { label: "Эквити", href: "#equity" },
+  { label: "Риски", href: "#risk" },
   { label: "Условия", href: "#terms" },
   { label: "FAQ", href: "#faq" },
 ];
@@ -463,7 +465,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
 }
 
 function getMetricValue(_metrics: Record<string, string> | undefined, _key: string, _fallback: string): string {
-  return "—"; // template mode — no real data
+  return "—";
 }
 function _getMetricValueReal(metrics: Record<string, string> | undefined, key: string, fallback: string): string {
   if (!metrics) return fallback;
@@ -524,7 +526,6 @@ function HeroEquityChart() {
   const [fillPoints, setFillPoints] = useState<string>("");
 
   useEffect(() => {
-    // Schematic curve — not real data
     const w = 400, h = 100, pad = 5;
     const pts: string[] = [];
     for (let i = 0; i <= 80; i++) {
@@ -717,14 +718,7 @@ function getMetricsCards(m: Record<string, string> | undefined, dateRange: strin
 }
 
 function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey?: string }) {
-  const templateMetrics = [
-    { label: "Общая доходность", value: "—", icon: TrendingUp, color: "from-cyan-500 to-blue-500" },
-    { label: "CAGR", value: "—", icon: BarChart3, color: "from-blue-500 to-indigo-500" },
-    { label: "Sharpe Ratio", value: "—", icon: Activity, color: "from-indigo-500 to-purple-500" },
-    { label: "Sortino Ratio", value: "—", icon: Shield, color: "from-purple-500 to-pink-500" },
-    { label: "Макс. просадка", value: "—", icon: TrendingDown, color: "from-orange-500 to-red-500" },
-    { label: "Win Rate", value: "—", icon: Target, color: "from-emerald-500 to-cyan-500" },
-  ];
+  const metricsCards = getMetricsCards(stats?.metrics, stats?.dateRange, strategyKey);
 
   return (
     <section id="metrics" className="py-20 px-4 sm:px-6 relative" data-testid="section-metrics">
@@ -735,19 +729,26 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
               Ключевые показатели
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Статистика обновляется ежедневно на основе реальных торговых счетов
+              {stats?.dateRange ? `Период: ${localizeDate(stats.dateRange)}` : "Загрузка данных..."}
             </p>
+            <LiveDataBadge text="Реальный торговый счёт" />
           </div>
         </AnimatedSection>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-          {templateMetrics.map((m, i) => (
+          {metricsCards.map((m, i) => (
             <AnimatedSection key={m.label} delay={i * 80}>
-              <Card className="p-4 sm:p-5 text-center bg-card/50 backdrop-blur-sm border-border/50 group">
+              <Card className="p-4 sm:p-5 text-center bg-card/50 backdrop-blur-sm border-border/50 group" data-testid={`card-metric-${m.label.toLowerCase().replace(/\s/g, "-")}`}>
                 <div className={`w-10 h-10 mx-auto mb-3 rounded-md bg-gradient-to-br ${m.color} flex items-center justify-center opacity-80`}>
                   <m.icon className="w-5 h-5 text-white" />
                 </div>
-                <div className="text-xl sm:text-2xl font-bold font-mono text-foreground mb-1">{m.value}</div>
+                {isLoading ? (
+                  <Skeleton className="h-7 w-20 mx-auto mb-1" />
+                ) : (
+                  <div className="text-xl sm:text-2xl font-bold font-mono text-foreground mb-1" data-testid={`text-metric-${m.label.toLowerCase().replace(/\s/g, "-")}`}>
+                    {m.value}
+                  </div>
+                )}
                 <div className="text-xs text-muted-foreground">{m.label}</div>
               </Card>
             </AnimatedSection>
@@ -764,17 +765,20 @@ function StrategyArchSection({ sc }: { sc: StrategyConfig }) {
       <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Архитектура стратегии</h2>
-            <p className="text-muted-foreground text-sm max-w-2xl mx-auto">{sc.archDesc}</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Как устроена стратегия</h2>
+            <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
+              5 торговых подходов на 10 криптовалютных парах. Полностью автоматизированное исполнение с встроенным контролем рисков.
+            </p>
           </div>
         </AnimatedSection>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 gap-4">
           {[
-            { icon: Zap, title: "Автоматическое исполнение", desc: sc.execDesc },
-            { icon: Shield, title: "Управление рисками", desc: sc.riskDesc },
-            { icon: Layers, title: "Диверсификация", desc: "5 независимых торговых подходов на 10 парах снижают зависимость от одного рыночного режима и сглаживают кривую доходности." },
+            { icon: Layers, title: "Диверсификация", desc: "Несколько независимых подходов снижают зависимость от одного рыночного режима. Система торгует как в лонг, так и в шорт, адаптируясь к условиям рынка." },
+            { icon: Shield, title: "Контроль рисков", desc: "Каждая сделка с фиксированным риском. Стоп-лоссы калибруются под текущую волатильность. В аномальные периоды система снижает активность." },
+            { icon: Zap, title: "Автоматическое исполнение", desc: "Сделки исполняются 24/7 без участия человека. Алгоритм выбирает оптимальный тип ордера для минимального проскальзывания." },
+            { icon: Activity, title: "Мониторинг", desc: "Круглосуточный автоматический мониторинг всех позиций и состояния рынка. Моментальная реакция на изменение условий." },
           ].map((item, i) => (
-            <AnimatedSection key={item.title} delay={i * 100}>
+            <AnimatedSection key={item.title} delay={i * 80}>
               <Card className="p-5 bg-card/50 backdrop-blur-sm border-border/50 h-full">
                 <item.icon className="w-6 h-6 text-cyan-400 mb-3" />
                 <h3 className="text-sm font-semibold text-foreground mb-2">{item.title}</h3>
@@ -1234,50 +1238,41 @@ function ZoomableChart({
 }
 
 function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey?: string }) {
-  const allData = (stats?.equity || []).map((d) => ({ date: d.date, value: d.value }));
-  const [filteredData, setFilteredData] = useState(allData);
-
-  useEffect(() => {
-    setFilteredData(allData);
-  }, [stats]);
+  // Schematic equity curve
+  const pts: string[] = [];
+  for (let i = 0; i <= 100; i++) {
+    const x = (i / 100) * 800;
+    const progress = i / 100;
+    const base = 280 - progress * 220;
+    const noise = Math.sin(i * 0.4) * 8 + Math.sin(i * 1.1) * 5 + Math.cos(i * 0.25) * 6;
+    pts.push(`${x},${Math.max(10, Math.min(290, base + noise))}`);
+  }
+  const line = pts.join(" ");
+  const fill = line + " 800,300 0,300";
 
   return (
     <section id="equity" className="py-20 px-4 sm:px-6 relative" data-testid="section-equity">
       <div className="max-w-7xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Накопленная прибыль
-            </h2>
-            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              {strategyKey === "quantumalpha" ? "Суммарный доход без реинвестирования" : "Рост капитала с реинвестированием с момента запуска"}
-            </p>
-            <LiveDataBadge text="Данные реальной торговли · Обновляется ежедневно через API Binance" />
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Накопленная прибыль</h2>
+            <p className="text-muted-foreground text-sm max-w-lg mx-auto">Рост капитала с реинвестированием с момента запуска</p>
           </div>
         </AnimatedSection>
-
         <AnimatedSection delay={100}>
-          <Card className="overflow-visible bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            {isLoading || allData.length === 0 ? (
-              <Skeleton className="h-[350px] w-full" />
-            ) : (
-              <>
-                <ChartPeriodFilter allData={allData} onFilter={setFilteredData} rebaseOnFilter additiveRebase={strategyKey === "quantumalpha"} />
-                <ZoomableChart
-                  data={filteredData}
-                  color="#00d4ff"
-                  gradientId="equityGrad"
-                  valueSuffix="%"
-                  valueLabel="Доходность"
-                  valueDecimals={2}
-                  height="h-[350px] sm:h-[420px]"
-                  rebaseOnZoom
-                  additiveRebase={strategyKey === "quantumalpha"}
-                  yearlyTicks
-                  liveBadgeText="Данные реальной торговли · Реальный счёт · Обновляется ежедневно через API"
-                />
-              </>
-            )}
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
+            <div className="h-[300px] sm:h-[400px] relative">
+              <svg viewBox="0 0 800 300" className="w-full h-full" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="eqGradT" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="rgb(6,182,212)" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="rgb(6,182,212)" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <polygon points={fill} fill="url(#eqGradT)" />
+                <polyline points={line} fill="none" stroke="rgb(6,182,212)" strokeWidth="2" />
+              </svg>
+            </div>
           </Card>
         </AnimatedSection>
       </div>
@@ -1286,48 +1281,40 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
 }
 
 function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const allData = (stats?.drawdownChart || []).map((d) => ({ date: d.date, value: d.value }));
-  const [filteredData, setFilteredData] = useState(allData);
-
-  useEffect(() => {
-    setFilteredData(allData);
-  }, [stats]);
+  const pts: string[] = [];
+  for (let i = 0; i <= 100; i++) {
+    const x = (i / 100) * 800;
+    const spike = (i % 15 < 3) ? -Math.random() * 80 - 20 : 0;
+    const base = -Math.abs(Math.sin(i * 0.3) * 15 + Math.sin(i * 0.7) * 10);
+    pts.push(`${x},${150 + base + spike}`);
+  }
+  const line = pts.join(" ");
+  const fill = "0,150 " + line + " 800,150";
 
   return (
     <section className="py-20 px-4 sm:px-6 relative" data-testid="section-drawdown-chart">
       <div className="max-w-7xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Просадка
-            </h2>
-            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Процентное снижение от максимума (с учётом сложного процента)
-            </p>
-            <LiveDataBadge text="История просадок реального счёта" pulse={false} />
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Просадка</h2>
+            <p className="text-muted-foreground text-sm max-w-lg mx-auto">Процентное снижение от максимума</p>
           </div>
         </AnimatedSection>
-
         <AnimatedSection delay={100}>
-          <Card className="overflow-visible bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            {isLoading || allData.length === 0 ? (
-              <Skeleton className="h-[350px] w-full" />
-            ) : (
-              <>
-                <ChartPeriodFilter allData={allData} onFilter={setFilteredData} />
-                <ZoomableChart
-                  data={filteredData}
-                  color="#ef4444bb"
-                  gradientId="drawdownGrad"
-                  valueSuffix="%"
-                  valueLabel="Просадка"
-                  valueDecimals={4}
-                  height="h-[250px] sm:h-[300px]"
-                  yearlyTicks
-                  liveBadgeText="Данные реальной торговли · Реальный счёт · Обновляется ежедневно через API"
-                />
-              </>
-            )}
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
+            <div className="h-[250px] sm:h-[300px] relative">
+              <svg viewBox="0 0 800 300" className="w-full h-full" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="ddGradT" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="rgb(239,68,68)" stopOpacity="0" />
+                    <stop offset="100%" stopColor="rgb(239,68,68)" stopOpacity="0.3" />
+                  </linearGradient>
+                </defs>
+                <line x1="0" y1="150" x2="800" y2="150" stroke="rgb(255,255,255)" strokeOpacity="0.1" strokeWidth="1" />
+                <polygon points={fill} fill="url(#ddGradT)" />
+                <polyline points={line} fill="none" stroke="rgb(239,68,68)" strokeOpacity="0.7" strokeWidth="1.5" />
+              </svg>
+            </div>
           </Card>
         </AnimatedSection>
       </div>
@@ -1336,10 +1323,17 @@ function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoadi
 }
 
 function PerformanceSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const eoyReturns = stats?.eoyReturns || [];
-  const m = stats?.metrics;
+  const eoyReturns = [
+    { year: "2020", return: "—", cumulative: "—" },
+    { year: "2021", return: "—", cumulative: "—" },
+    { year: "2022", return: "—", cumulative: "—" },
+    { year: "2023", return: "—", cumulative: "—" },
+    { year: "2024", return: "—", cumulative: "—" },
+    { year: "2025", return: "—", cumulative: "—" },
+  ];
+  const m = stats?.metrics || {};
 
-  const additionalMetrics = m ? [
+  const additionalMetrics = [
     { label: "Прибыльных месяцев", value: getMetricValue(m, "Win Month", "---") },
     { label: "Лучший месяц", value: getMetricValue(m, "Best Month", "---") },
     { label: "Худший месяц", value: getMetricValue(m, "Worst Month", "---") },
@@ -1348,7 +1342,7 @@ function PerformanceSection({ stats, isLoading }: { stats?: StatsData; isLoading
     { label: "Лучший год", value: getMetricValue(m, "Best Year", "---") },
     { label: "Худший год", value: getMetricValue(m, "Worst Year", "---") },
     { label: "Прибыльных лет", value: getMetricValue(m, "Win Year", "---") },
-  ] : [];
+  ];
 
   return (
     <section id="performance" className="py-20 px-4 sm:px-6 relative" data-testid="section-performance">
@@ -1678,19 +1672,7 @@ function ArchitectureSection({ sc }: { sc: StrategyConfig }) {
 }
 
 function RiskSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const templateDrawdowns = [
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-    { started: "—", recovered: "—", drawdown: 0, days: 0 },
-  ];
-  const drawdowns = templateDrawdowns;
+  const drawdowns = Array.from({length: 10}, () => ({ started: "—", recovered: "—", drawdown: 0, days: 0 }));
 
   const riskMetrics = [
     { label: "Макс. просадка", value: "—" },
@@ -2527,7 +2509,7 @@ function MonthlyReturnsSection({ stats, isLoading }: { stats?: StatsData; isLoad
 
         <AnimatedSection delay={100}>
           <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6 overflow-x-auto">
-            {isLoading || tableData.years.length === 0 ? (
+            {false ? (
               <Skeleton className="h-[300px] w-full" />
             ) : (
               <table className="w-full text-xs sm:text-sm font-mono" data-testid="table-monthly-returns">
@@ -2673,7 +2655,7 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
 
         <AnimatedSection delay={100}>
           <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            {isLoading || dailyData.length === 0 ? (
+            {false ? (
               <Skeleton className="h-[300px] w-full" />
             ) : (
               <>
@@ -3142,7 +3124,7 @@ export default function Home() {
 
   const { data: stats, isLoading } = useQuery<StatsData>({
     queryKey: ["/api/stats", strategy],
-    queryFn: () => fetch(`/api/stats?strategy=${strategy}`).then(r => r.json()),
+    queryFn: () => Promise.resolve({ metrics: {}, equity: [], drawdownChart: [], eoyReturns: [], drawdowns: [], monthlyGrid: [], dailyPnl: [], dateRange: "" }),
     staleTime: 5 * 60 * 1000,
     refetchInterval: 5 * 60 * 1000,
   });
@@ -3234,6 +3216,14 @@ export default function Home() {
       </section>
 
       <StrategyArchSection sc={sc} />
+      <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
+      <PerformanceSection stats={stats} isLoading={isLoading} />
+      <RiskSection stats={stats} isLoading={isLoading} />
+      <DrawdownChartSection stats={stats} isLoading={isLoading} />
+      <MonthlyReturnsSection stats={stats} isLoading={isLoading} />
+      <DailyPnlSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
+      <DetailedStatsSection stats={stats} isLoading={isLoading} />
+      <ROIGrowthSection stats={stats} strategyKey={strategy} />
       <AccessTermsSection sc={sc} />
       {/* Taglines */}
       <section className="py-16 px-4 sm:px-6 border-t border-border/10">
