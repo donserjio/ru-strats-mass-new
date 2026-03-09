@@ -28,6 +28,7 @@ import type { DateRange } from "react-day-picker";
 import { SiBinance, SiOkx, SiKucoin, SiWhatsapp } from "react-icons/si";
 import {
   TrendingUp,
+  TrendingDown,
   Shield,
   Zap,
   BarChart3,
@@ -92,15 +93,15 @@ interface StrategyConfig {
 const STRATEGIES: Record<StrategyKey, StrategyConfig> = {
   basket50: {
     key: "basket50",
-    label: "Basket 50",
+    label: "Algo Strategy",
     count: 50,
-    approachShort: "Моментум и возврат к среднему значению",
-    approachFull: "эффекта моментума и возврата к среднему значению",
-    desc: "Корзина нескольких систематических стратегий, основанных на эффекте моментума и возврате к среднему значению. Комбинация двух подходов повышает эффективность портфеля и обеспечивает доход в различные фазы рынка. Стратегия ориентирована на краткосрочные движения рынка и показала исключительно высокие результаты на фоне частых локальных рыночных коррекций.",
-    archDesc: "Стратегия ориентирована на торговлю локальных трендов, всплесков волатильности и возврата к среднему значению по высоколиквидным инструментам. Каждая сделка открывается с фиксированным риском — убыточные позиции не усредняются, прибыльные могут наращиваться через пирамидинг. Система одинаково эффективна как в лонг, так и в шорт, при этом каждая сделка открывается только в одну сторону. Сильные движения рынка — не риск, а чаще всего основной источник дохода.",
-    riskDesc: "Надёжная система, основные компоненты которой остаются неизменными более 12 лет, с историей реальной торговли на крипторынке свыше 6 лет. Фиксированный риск на сделку со стоп-лоссами и тейк-профитами, откалиброванными под волатильность рынка. Отсутствие сделок в периоды выраженной волатильности — намеренный аспект стратегии: значительные размеры стоп-лосса (SL) делают вход в рынок менее выгодным при сохранении целевых соотношений риск/прибыль.",
-    execDesc: "Вход в рынок осуществляется рыночными или лимитными ордерами в зависимости от условий рынка. Для крупных объёмов доступен высокоскоростной алгоритм TWAP. Каждый компонент каждой системы тщательно протестирован на FORTS, Forex, сырьевых товарах и крипторынке на протяжении более десяти лет. Моделирование методом Монте-Карло применяется как вспомогательный инструмент проверки. Вся торговля полностью автоматизирована с круглосуточным мониторингом автоматическими системами и сотрудниками фонда.",
-    strategyType: "Моментум и возврат к среднему значению, систематическая",
+    approachShort: "Систематический алгоритмический подход",
+    approachFull: "комбинации количественных торговых систем",
+    desc: "Алгоритмическая стратегия, торгующая 10 криптовалютных пар с использованием 5 торговых подходов. Комбинация нескольких количественных систем обеспечивает стабильную доходность в различных фазах рынка. Стратегия ориентирована на краткосрочные движения и эффективно работает как на растущем, так и на падающем рынке.",
+    archDesc: "Алгоритм использует 5 независимых торговых подходов на 10 криптовалютных парах. Диверсификация по стратегиям снижает зависимость от одного рыночного режима. Система торгует как в лонг, так и в шорт, адаптируясь к текущим условиям рынка.",
+    riskDesc: "Каждая сделка открывается с заранее определённым риском. Стоп-лоссы и тейк-профиты калибруются автоматически с учётом текущей волатильности. В периоды аномальной волатильности система снижает активность для защиты капитала.",
+    execDesc: "Исполнение сделок полностью автоматизировано. Алгоритм выбирает оптимальный тип ордера в зависимости от рыночных условий. Круглосуточный мониторинг обеспечивает стабильную работу без участия трейдера.",
+    strategyType: "Количественная, систематическая",
     holdingPeriod: "< 3 дней",
     capacity: "$200M",
   },
@@ -298,16 +299,15 @@ function ParticleCanvas() {
 }
 
 const NAV_ITEMS = [
-  { label: "Стратегия", href: "#strategy" },
-  { label: "Эквити", href: "#equity" },
-  { label: "Результаты", href: "#performance" },
-  { label: "Риски", href: "#risk" },
-  { label: "ROI", href: "#roi" },
+  { label: "Показатели", href: "#metrics" },
+  { label: "Как работает", href: "#how-it-works" },
+  { label: "Преимущества", href: "#advantages" },
   { label: "Условия", href: "#terms" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 const STRATEGY_OPTIONS: { key: StrategyKey; label: string }[] = [
-  { key: "basket50", label: "Basket 50" },
+  { key: "basket50", label: "Algo Strategy" },
 ];
 
 function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrategyChange: (k: StrategyKey) => void }) {
@@ -378,7 +378,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
             <Button
               size="sm"
               className="ml-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs"
-              onClick={() => window.open("https://t.me/sd_assist_office", "_blank")}
+              onClick={() => window.open("https://t.me/", "_blank")}
               data-testid="button-nav-contact"
             >
               <Send className="w-3 h-3 mr-1.5" />
@@ -441,7 +441,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
             <div className="flex gap-2 mt-1">
               <Button
                 className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm"
-                onClick={() => { setMobileOpen(false); window.open("https://t.me/sd_assist_office", "_blank"); }}
+                onClick={() => { setMobileOpen(false); window.open("https://t.me/", "_blank"); }}
                 data-testid="button-mobile-contact"
               >
                 <Send className="w-4 h-4 mr-2" />
@@ -462,7 +462,10 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
   );
 }
 
-function getMetricValue(metrics: Record<string, string> | undefined, key: string, fallback: string): string {
+function getMetricValue(_metrics: Record<string, string> | undefined, _key: string, _fallback: string): string {
+  return "—"; // template mode — no real data
+}
+function _getMetricValueReal(metrics: Record<string, string> | undefined, key: string, fallback: string): string {
   if (!metrics) return fallback;
   return metrics[key] || fallback;
 }
@@ -521,36 +524,25 @@ function HeroEquityChart() {
   const [fillPoints, setFillPoints] = useState<string>("");
 
   useEffect(() => {
-    fetch("/api/stats?strategy=basket50")
-      .then(r => r.json())
-      .then(data => {
-        const eq = data.equity || data.equityCurve;
-        if (!eq || eq.length === 0) return;
-        // Sample ~200 points max for performance
-        const step = Math.max(1, Math.floor(eq.length / 200));
-        const sampled = eq.filter((_: unknown, i: number) => i % step === 0 || i === eq.length - 1);
-        const values = sampled.map((p: { value: number }) => p.value);
-        const minV = Math.min(...values);
-        const maxV = Math.max(...values);
-        const range = maxV - minV || 1;
-        const w = 400;
-        const h = 100;
-        const pad = 5;
-        const pts = sampled.map((p: { value: number }, i: number) => {
-          const x = (i / (sampled.length - 1)) * w;
-          const y = pad + (1 - (p.value - minV) / range) * (h - 2 * pad);
-          return `${x},${y}`;
-        });
-        setPoints(pts.join(" "));
-        setFillPoints(pts.join(" ") + ` ${w},${h} 0,${h}`);
-      })
-      .catch(() => {});
+    // Schematic curve — not real data
+    const w = 400, h = 100, pad = 5;
+    const pts: string[] = [];
+    for (let i = 0; i <= 80; i++) {
+      const x = (i / 80) * w;
+      const progress = i / 80;
+      const base = pad + (1 - (progress * 0.7 + 0.1)) * (h - 2 * pad);
+      const noise = Math.sin(i * 0.5) * 4 + Math.sin(i * 1.3) * 2 + Math.cos(i * 0.3) * 3;
+      const y = Math.max(pad, Math.min(h - pad, base + noise));
+      pts.push(`${x},${y}`);
+    }
+    setPoints(pts.join(" "));
+    setFillPoints(pts.join(" ") + ` ${w},${h} 0,${h}`);
   }, []);
 
   if (!points) return null;
 
   return (
-    <div className="h-32 sm:h-40 relative overflow-hidden rounded-lg">
+    <div className="h-24 sm:h-32 relative overflow-hidden rounded-lg">
       <svg viewBox="0 0 400 100" className="w-full h-full" preserveAspectRatio="none">
         <defs>
           <linearGradient id="heroGrad" x1="0" y1="0" x2="0" y2="1">
@@ -574,33 +566,33 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
   const maxDD = getMetricValue(m, "Max Drawdown", "---");
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" data-testid="section-hero">
+    <section className="relative min-h-screen flex items-start overflow-hidden" data-testid="section-hero">
       <ParticleCanvas />
       <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-600/8 rounded-full blur-[100px]" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Two-column hero layout */}
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center min-h-[70vh] pt-20">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center pt-16 sm:pt-20">
           {/* LEFT: Text + CTA */}
           <div className="text-left">
             <AnimatedSection>
               <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 text-xs font-mono tracking-[0.2em] border border-cyan-500/30 text-cyan-400/80 rounded-full bg-cyan-500/5 uppercase">
                 <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                Квантовые стратегии
+                Автоматический трейдинг
               </div>
             </AnimatedSection>
 
             <AnimatedSection delay={100}>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold text-foreground mb-4 leading-[1.15]">
-                Инвестируйте<br />в алгоритм,<br />
-                <span className="text-muted-foreground/60">а не в угадывание рынка</span>
+                Алгоритм торгует.<br />
+                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Вы зарабатываете.</span>
               </h1>
             </AnimatedSection>
 
             <AnimatedSection delay={200}>
               <p className="text-sm sm:text-base text-muted-foreground/70 mb-6 max-w-md leading-relaxed">
-                Автоматическая система управляет позициями и контролирует риск 24/7. Средства остаются на вашей бирже — API-подключение без передачи капитала.
+                Алгоритм торгует 10 криптовалютных пар 24/7. Подключение через официальный копитрейдинг бирж — средства всегда на вашем счёте, без передачи капитала третьим лицам.
               </p>
             </AnimatedSection>
 
@@ -609,7 +601,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold px-8"
-                  onClick={() => window.open("https://t.me/sd_assist_office", "_blank")}
+                  onClick={() => window.open("https://t.me/", "_blank")}
                 >
                   Подключиться
                 </Button>
@@ -630,17 +622,17 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
             <AnimatedSection delay={400}>
               <div className="rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm p-4 sm:p-5">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-muted-foreground font-medium">Basket 50 · Equity Curve</span>
+                  <span className="text-sm text-muted-foreground font-medium">Algo Strategy · Equity Curve</span>
                   <span className="text-lg sm:text-xl font-bold text-cyan-400 font-mono">
-                    +{getMetricValue(m, "Cumulative Return", getMetricValue(m, "Total Return", "---"))}
+                    Equity Curve
                   </span>
                 </div>
                 <HeroEquityChart />
                 <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-border/20">
                   {[
-                    { label: "CAGR", value: getMetricValue(m, "CAGR", "---") },
-                    { label: "SHARPE", value: sharpe },
-                    { label: "TRACK RECORD", value: "6 лет" },
+                    { label: "CAGR", value: "—" },
+                    { label: "SHARPE", value: "—" },
+                    { label: "TRACK RECORD", value: "—" },
                   ].map((item) => (
                     <div key={item.label} className="text-center">
                       <div className="text-lg sm:text-xl font-bold text-foreground font-mono">{item.value}</div>
@@ -654,15 +646,13 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
         </div>
 
         {/* Bottom: exchanges bar */}
-        <AnimatedSection delay={600}>
-          <div className="flex items-center gap-4 sm:gap-8 mt-8 pb-8">
-            <span className="text-[10px] text-muted-foreground/40 tracking-[0.2em] uppercase whitespace-nowrap">Работаем через:</span>
-            <div className="flex items-center gap-5 sm:gap-8">
-              <a href="https://www.binance.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/binance.svg" alt="Binance" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
-              <a href="https://www.okx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/okx.svg" alt="OKX" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
-              <a href="https://www.bybit.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bybit.svg" alt="Bybit" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
-              <a href="https://www.bitget.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bitget.svg" alt="Bitget" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
-            </div>
+        <AnimatedSection delay={550}>
+          <div className="flex items-center justify-center gap-5 sm:gap-8 mt-10 pb-4">
+            <a href="https://www.binance.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/binance.svg" alt="Binance" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
+            <a href="https://www.okx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/okx.svg" alt="OKX" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
+            <a href="https://www.bybit.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bybit.svg" alt="Bybit" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
+            <a href="https://www.bitget.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bitget.svg" alt="Bitget" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
+            <a href="https://www.bingx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bingx.svg" alt="BingX" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
           </div>
         </AnimatedSection>
       </div>
@@ -727,7 +717,14 @@ function getMetricsCards(m: Record<string, string> | undefined, dateRange: strin
 }
 
 function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey?: string }) {
-  const metricsCards = getMetricsCards(stats?.metrics, stats?.dateRange, strategyKey);
+  const templateMetrics = [
+    { label: "Общая доходность", value: "—", icon: TrendingUp, color: "from-cyan-500 to-blue-500" },
+    { label: "CAGR", value: "—", icon: BarChart3, color: "from-blue-500 to-indigo-500" },
+    { label: "Sharpe Ratio", value: "—", icon: Activity, color: "from-indigo-500 to-purple-500" },
+    { label: "Sortino Ratio", value: "—", icon: Shield, color: "from-purple-500 to-pink-500" },
+    { label: "Макс. просадка", value: "—", icon: TrendingDown, color: "from-orange-500 to-red-500" },
+    { label: "Win Rate", value: "—", icon: Target, color: "from-emerald-500 to-cyan-500" },
+  ];
 
   return (
     <section id="metrics" className="py-20 px-4 sm:px-6 relative" data-testid="section-metrics">
@@ -738,29 +735,50 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
               Ключевые показатели
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              {stats?.dateRange ? `Период: ${localizeDate(stats.dateRange)}` : "Загрузка данных..."}
+              Статистика обновляется ежедневно на основе реальных торговых счетов
             </p>
-            <LiveDataBadge text="Реальный торговый счёт" />
           </div>
         </AnimatedSection>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-          {metricsCards.map((m, i) => (
+          {templateMetrics.map((m, i) => (
             <AnimatedSection key={m.label} delay={i * 80}>
-              <Card className="p-4 sm:p-5 text-center bg-card/50 backdrop-blur-sm border-border/50 group" data-testid={`card-metric-${m.label.toLowerCase().replace(/\s/g, "-")}`}>
-                <div
-                  className={`w-10 h-10 mx-auto mb-3 rounded-md bg-gradient-to-br ${m.color} flex items-center justify-center opacity-80`}
-                >
+              <Card className="p-4 sm:p-5 text-center bg-card/50 backdrop-blur-sm border-border/50 group">
+                <div className={`w-10 h-10 mx-auto mb-3 rounded-md bg-gradient-to-br ${m.color} flex items-center justify-center opacity-80`}>
                   <m.icon className="w-5 h-5 text-white" />
                 </div>
-                {isLoading ? (
-                  <Skeleton className="h-7 w-20 mx-auto mb-1" />
-                ) : (
-                  <div className="text-xl sm:text-2xl font-bold font-mono text-foreground mb-1" data-testid={`text-metric-${m.label.toLowerCase().replace(/\s/g, "-")}`}>
-                    {m.value}
-                  </div>
-                )}
+                <div className="text-xl sm:text-2xl font-bold font-mono text-foreground mb-1">{m.value}</div>
                 <div className="text-xs text-muted-foreground">{m.label}</div>
+              </Card>
+            </AnimatedSection>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StrategyArchSection({ sc }: { sc: StrategyConfig }) {
+  return (
+    <section className="py-20 px-4 sm:px-6 relative">
+      <div className="max-w-5xl mx-auto">
+        <AnimatedSection>
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Архитектура стратегии</h2>
+            <p className="text-muted-foreground text-sm max-w-2xl mx-auto">{sc.archDesc}</p>
+          </div>
+        </AnimatedSection>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { icon: Zap, title: "Автоматическое исполнение", desc: sc.execDesc },
+            { icon: Shield, title: "Управление рисками", desc: sc.riskDesc },
+            { icon: Layers, title: "Диверсификация", desc: "5 независимых торговых подходов на 10 парах снижают зависимость от одного рыночного режима и сглаживают кривую доходности." },
+          ].map((item, i) => (
+            <AnimatedSection key={item.title} delay={i * 100}>
+              <Card className="p-5 bg-card/50 backdrop-blur-sm border-border/50 h-full">
+                <item.icon className="w-6 h-6 text-cyan-400 mb-3" />
+                <h3 className="text-sm font-semibold text-foreground mb-2">{item.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
               </Card>
             </AnimatedSection>
           ))}
@@ -782,7 +800,7 @@ function StrategySection({ sc }: { sc: StrategyConfig }) {
             <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
               {sc.key === "quantumalpha"
                 ? <>Алгоритм — полностью автоматизированная систематическая торговая система, построенная на трёх источниках доходности: ставка финансирования, статистический арбитраж и захват направленного импульса. Без постоянного направленного уклона. 20–30 сделок в месяц.</>
-                : <>{sc.label} — систематический портфель на основе {sc.approachFull}.<br />Управляющая компания управляет торговлей через API на субаккаунте клиента. Средства клиента всегда остаются на его счёте.</>
+                : <>{sc.label} — систематический портфель на основе {sc.approachFull}.<br />Все подключения идут через официальный копитрейдинг бирж. Средства клиента всегда остаются на его счёте.</>
 
               }
             </p>
@@ -799,13 +817,13 @@ function StrategySection({ sc }: { sc: StrategyConfig }) {
               <div className="space-y-4">
                 {(sc.key === "quantumalpha" ? [
                   { label: "Тип стратегии", value: "Количественная, систематическая, следование за трендом" },
-                  { label: "Класс активов", value: "BTC, ETH (спот) и BTC, ETH, SOL (бессрочные)" },
+                  { label: "Класс активов", value: "10 торговых пар, 5 торговых подходов" },
                   { label: "Срок удержания", value: sc.holdingPeriod },
                   { label: "Стиль торговли", value: "Long/Short, без фиксированного уклона" },
                   { label: "Частота сделок", value: "20–30 сделок в месяц" },
                 ] : [
                   { label: "Тип стратегии", value: sc.strategyType },
-                  { label: "Класс активов", value: "BTC и ETH бессрочные фьючерсы" },
+                  { label: "Класс активов", value: "10 торговых пар, 5 торговых подходов" },
                   { label: "Срок удержания", value: sc.holdingPeriod },
                   { label: "Стиль торговли", value: "Long/Short, без фиксированного уклона" },
                   { label: "Портфель", value: "Систематический, диверсифицированный по таймфреймам" },
@@ -845,8 +863,8 @@ function StrategySection({ sc }: { sc: StrategyConfig }) {
                   { val: "24/7", desc: "Автоматизировано" },
                 ] : [
                   { val: "12+", desc: "Лет исследований" },
-                  { val: sc.key === "basket70tf" ? "3" : "2", desc: "Типов подходов" },
-                  { val: "2", desc: "Торговых пар" },
+                  { val: "5", desc: "Типов подходов" },
+                  { val: "10", desc: "Торговых пар" },
                   { val: "24/7", desc: "Автоматизировано" },
                 ]).map((s) => (
                   <div
@@ -1460,9 +1478,9 @@ function buildSystemDesign(sc: StrategyConfig) {
       items: [
         "Не HFT, машинное обучение не используется — преимущество основано на хорошо изученном эффекте моментума",
         "Систематический портфель, диверсифицированный по нескольким таймфреймам",
-        "Основные компоненты системы не менялись более 12 лет",
-        "История реальной торговли на крипторынке свыше 6 лет",
-        "Регулярное тестирование и стресс-симуляции методом Монте-Карло",
+        "Компоненты системы регулярно тестируются и оптимизируются",
+        "Многолетняя история реальной торговли на крипторынке",
+        "Регулярное стресс-тестирование и симуляции",
       ],
     },
     {
@@ -1472,7 +1490,7 @@ function buildSystemDesign(sc: StrategyConfig) {
         "Рыночные или лимитные ордера в зависимости от условий рынка",
         "Высокоскоростной алгоритм TWAP для входа большого объёма",
         "Исполнение через API на субаккаунте клиента на бирже",
-        "Протестировано на FORTS, Forex, сырьевых товарах и крипторынке",
+        "Протестировано на множестве рынков и классов активов",
         "Полная автоматизация — без дискреционного вмешательства",
       ],
     },
@@ -1660,19 +1678,30 @@ function ArchitectureSection({ sc }: { sc: StrategyConfig }) {
 }
 
 function RiskSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const drawdowns = (stats?.drawdowns || []).slice(0, 10);
-  const m = stats?.metrics;
+  const templateDrawdowns = [
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+    { started: "—", recovered: "—", drawdown: 0, days: 0 },
+  ];
+  const drawdowns = templateDrawdowns;
 
-  const riskMetrics = m ? [
-    { label: "Макс. просадка", value: getMetricValue(m, "Max Drawdown", "---") },
-    { label: "Макс. срок просадки (дней)", value: getMetricValue(m, "Longest DD Days", "---") },
-    { label: "Ср. просадка", value: getMetricValue(m, "Avg. Drawdown", "---") },
-    { label: "Ср. срок просадки", value: getMetricValue(m, "Avg. Drawdown Days", "---") },
-    { label: "Дневной VaR", value: getMetricValue(m, "Daily Value-at-Risk", "---") },
-    { label: "CVaR", value: getMetricValue(m, "Expected Shortfall (cVaR)", "---") },
-    { label: "Коэффициент Кальмара", value: getMetricValue(m, "Calmar", "---") },
-    { label: "Фактор восстановления", value: getMetricValue(m, "Recovery Factor", "---") },
-  ] : [];
+  const riskMetrics = [
+    { label: "Макс. просадка", value: "—" },
+    { label: "Макс. срок просадки (дней)", value: "—" },
+    { label: "Ср. просадка", value: "—" },
+    { label: "Ср. срок просадки", value: "—" },
+    { label: "Дневной VaR", value: "—" },
+    { label: "CVaR", value: "—" },
+    { label: "Коэффициент Кальмара", value: "—" },
+    { label: "Фактор восстановления", value: "—" },
+  ];
 
   return (
     <section id="risk" className="py-20 px-4 sm:px-6 relative" data-testid="section-risk">
@@ -1744,11 +1773,11 @@ function RiskSection({ stats, isLoading }: { stats?: StatsData; isLoading: boole
                           <td className="px-3 py-2.5 font-mono text-xs text-muted-foreground">
                             {row.recovered}
                           </td>
-                          <td className="px-3 py-2.5 text-right font-mono text-xs text-red-400">
-                            {row.drawdown.toFixed(2)}%
+                          <td className="px-3 py-2.5 text-right font-mono text-xs text-muted-foreground">
+                            —
                           </td>
-                          <td className="px-3 py-2.5 text-right font-mono text-xs text-foreground">
-                            {row.days}
+                          <td className="px-3 py-2.5 text-right font-mono text-xs text-muted-foreground">
+                            —
                           </td>
                         </tr>
                       ))}
@@ -1765,16 +1794,16 @@ function RiskSection({ stats, isLoading }: { stats?: StatsData; isLoading: boole
 }
 
 const ACCESS_TERMS_BASE = [
-  { icon: DollarSign, label: "Минимальная аллокация", value: "~$300,000" },
-  { icon: FileText, label: "Комиссия за управление", value: "2% годовых" },
-  { icon: BarChart3, label: "Комиссия за результат", value: "25–30%" },
-  { icon: TrendingUp, label: "High Water Mark", value: "Применяется" },
+  { icon: DollarSign, label: "Минимальная аллокация", value: "$500" },
+  { icon: FileText, label: "Комиссия за управление", value: "0%" },
+  { icon: BarChart3, label: "Комиссия за результат", value: "30%" },
+  { icon: TrendingUp, label: "принцип «высшей отметки»", value: "Применяется" },
   { icon: Lock, label: "Срок блокировки", value: "Отсутствует" },
   { icon: Clock, label: "Распределение комиссий", value: "Раз в квартал" },
-  { icon: Layers, label: "Форма инвестиций", value: "Управляемый субаккаунт (SMA)" },
-  { icon: Activity, label: "Торговые активы", value: "BTC и ETH бессрочные фьючерсы" },
-  { icon: Wallet, label: "Обеспечение", value: "USDT / BTC / ETH (любой токен для Portfolio Margin)" },
-  { icon: ExternalLink, label: "Биржи", value: "OKX, Binance, Bybit, Bitget, Kraken, по запросу" },
+  { icon: Layers, label: "Формат подключения", value: "Копитрейдинг через биржу" },
+  { icon: Activity, label: "Торговые активы", value: "10 торговых пар, 5 торговых подходов" },
+  { icon: Wallet, label: "Обеспечение", value: "USDT / BTC / ETH (любой токен для расширенный маржинальный режим)" },
+  { icon: ExternalLink, label: "Биржи", value: "Binance, OKX, Bybit, Bitget, BingX" },
 ];
 
 interface MultiplierData {
@@ -1795,11 +1824,11 @@ function QAROICalculator({ stats }: { stats?: StatsData }) {
   const fallbackMaxDD = Math.abs(parseFloat(m?.["Max Drawdown"] || "0"));
 
   const CAPITALS = [
-    { label: "$1M", value: 1_000_000 },
-    { label: "$2M", value: 2_000_000 },
-    { label: "$5M", value: 5_000_000 },
-    { label: "$10M", value: 10_000_000 },
-    { label: "$50M", value: 50_000_000 },
+    { label: "$500", value: 500 },
+    { label: "$2,500", value: 2_500 },
+    { label: "$5,000", value: 5_000 },
+    { label: "$50,000", value: 50_000 },
+    { label: "$100,000", value: 100_000 },
   ];
 
   const [capitalIdx, setCapitalIdx] = useState(0);
@@ -1973,11 +2002,11 @@ function ROIGrowthSection({ stats, strategyKey }: { stats?: StatsData; strategyK
     return <QAROICalculator stats={stats} />;
   }
   const CAPITALS = [
-    { label: "$300K", value: 300_000 },
-    { label: "$500K", value: 500_000 },
-    { label: "$1M", value: 1_000_000 },
-    { label: "$2M", value: 2_000_000 },
-    { label: "$5M", value: 5_000_000 },
+    { label: "$500", value: 500 },
+    { label: "$2,500", value: 2_500 },
+    { label: "$5,000", value: 5_000 },
+    { label: "$50,000", value: 50_000 },
+    { label: "$100,000", value: 100_000 },
   ];
 
   const [capitalIdx, setCapitalIdx] = useState(0);
@@ -2359,10 +2388,7 @@ const BASKET_EXCHANGES = [
   { name: "OKX", icon: SiOkx, url: "https://www.okx.com" },
   { name: "Bybit", icon: null, url: "https://www.bybit.com" },
   { name: "Bitget", icon: null, url: "https://www.bitget.com" },
-  { name: "Kraken", icon: null, url: "https://www.kraken.com" },
-  { name: "KuCoin", icon: SiKucoin, url: "https://www.kucoin.com" },
-
-  { name: "Phemex", icon: null, url: "https://www.phemex.com" },
+  { name: "BingX", icon: null, url: "https://www.bingx.com" },
 ];
 
 const QA_EXCHANGES = [
@@ -2403,17 +2429,17 @@ function ExchangeLogos({ strategyKey }: { strategyKey: string }) {
 
 function AccessTermsSection({ sc }: { sc: StrategyConfig }) {
   const terms = sc.key === "quantumalpha" ? [
-    { icon: DollarSign, label: "Минимальная инвестиция", value: "USD 500,000 (для риска 1x)" },
-    { icon: TrendingUp, label: "High Water Mark", value: "Применяется" },
-    { icon: BarChart3, label: "Структура комиссий", value: "25–30% Performance Fee" },
+    { icon: DollarSign, label: "Минимальная аллокация", value: "USD 500" },
+    { icon: TrendingUp, label: "принцип «высшей отметки»", value: "Применяется" },
+    { icon: BarChart3, label: "Структура комиссий", value: "30% Performance Fee" },
     { icon: Lock, label: "Срок блокировки", value: "14 дней" },
     { icon: Clock, label: "Распределение комиссии за результат", value: "Раз в квартал" },
-    { icon: Layers, label: "Форма инвестиций", value: "Управляемый субаккаунт (MSA)" },
-    { icon: Wallet, label: "Залоговые токены", value: "USDT / BTC / ETH (или любой токен для Portfolio Margin)" },
-    { icon: Target, label: "Ёмкость стратегии", value: sc.capacity },
+    { icon: Layers, label: "Формат подключения", value: "Копитрейдинг через биржу" },
+    { icon: Wallet, label: "Залоговые токены", value: "USDT / BTC / ETH (или любой токен для расширенный маржинальный режим)" },
+    { icon: Target, label: "Ёмкость", value: sc.capacity },
   ] : [
     ...ACCESS_TERMS_BASE.filter(t => t.label !== "Биржи"),
-    { icon: Target, label: "Ёмкость стратегии", value: sc.capacity },
+    { icon: Target, label: "Ёмкость", value: sc.capacity },
   ];
   return (
     <section id="terms" className="py-20 px-4 sm:px-6 relative" data-testid="section-terms">
@@ -2424,7 +2450,7 @@ function AccessTermsSection({ sc }: { sc: StrategyConfig }) {
               {sc.key === "quantumalpha" ? "Условия подключения" : "Условия подключения"}
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Управление стратегией через API на субаккаунте клиента
+              Подключение через биржевой копитрейдинг — просто и безопасно
             </p>
           </div>
         </AnimatedSection>
@@ -2836,11 +2862,11 @@ function buildFaqItems(sc: StrategyConfig) {
       },
       {
         q: "Какие активы торгует алгоритм?",
-        a: "Алгоритм торгует BTC, ETH (спот) и BTC, ETH, SOL (бессрочные фьючерсы). Залог может размещаться в USDT, BTC, ETH или любом токене для счетов Portfolio Margin.",
+        a: "Алгоритм торгует 10 криптовалютных пар по капитализации. Залог может размещаться в USDT, BTC, ETH или любом токене для счетов расширенный маржинальный режим.",
       },
       {
         q: "Какие биржи поддерживаются?",
-        a: "Binance, Bybit и OKX. Залог может быть в USDT, BTC, ETH или любом токене для счетов Portfolio Margin.",
+        a: "Binance, Bybit и OKX. Залог может быть в USDT, BTC, ETH или любом токене для счетов расширенный маржинальный режим.",
       },
       {
         q: "Какова типичная частота сделок и срок удержания?",
@@ -2848,7 +2874,7 @@ function buildFaqItems(sc: StrategyConfig) {
       },
       {
         q: "Какие токены принимаются как обеспечение?",
-        a: "USDT, BTC и ETH — основные варианты залога. Счета Portfolio Margin могут использовать любой поддерживаемый токен в качестве залога.",
+        a: "USDT, BTC и ETH — основные варианты залога. Счета расширенный маржинальный режим могут использовать любой поддерживаемый токен в качестве залога.",
       },
       {
         q: "Как алгоритм управляет рисками и просадками?",
@@ -2875,23 +2901,23 @@ function buildFaqItems(sc: StrategyConfig) {
     },
     {
       q: "Как начать работу?",
-      a: "Свяжитесь с нами через Telegram для начала онбординга. Вам потребуется создать выделенный субаккаунт на бирже, сгенерировать API-ключ с правами только на торговлю и предоставить его нам. Процесс настройки прост и обычно занимает менее часа.",
+      a: "Свяжитесь с нами через Telegram для начала онбординга. Подключение идёт через официальный копитрейдинг биржи — вы подписываетесь на стратегию в несколько кликов. Процесс настройки прост и занимает менее 10 минут.",
     },
     {
       q: "Каков минимальный размер аллокации?",
-      a: "Минимальная аллокация — $300,000 USD. Мы поддерживаем все основные криптовалютные биржи.",
+      a: "Минимальная аллокация — $500. Мы поддерживаем все основные криптовалютные биржи.",
     },
     {
       q: "Какие комиссии применяются?",
-      a: "Комиссия за управление составляет 2% годовых, плюс комиссия за результат 25–30% с High Water Mark. Комиссии рассчитываются и распределяются ежеквартально. Срок блокировки средств отсутствует.",
+      a: "Комиссия за управление составляет 0%, плюс комиссия за результат 30% с принцип «высшей отметки». Комиссии рассчитываются и распределяются ежеквартально. Срок блокировки средств отсутствует.",
     },
     {
       q: "Какие биржи поддерживаются?",
-      a: "OKX, Binance, Bybit, Bitget, Kraken и любая другая биржа по запросу. На выбранной бирже требуется выделенный субаккаунт.",
+      a: "Binance, OKX, Bybit, Bitget, BingX. Подключение через официальный копитрейдинг биржи.",
     },
     {
       q: "Какие активы торгуются?",
-      a: "Стратегии торгуют бессрочными фьючерсами на BTC и ETH. Обеспечение может быть в USDT, BTC, ETH или любом токене на счёте Portfolio Margin.",
+      a: "Стратегии торгуют бессрочными фьючерсами на BTC и ETH. Обеспечение может быть в USDT, BTC, ETH или любом токене на счёте расширенный маржинальный режим.",
     },
     {
       q: "Как долго удерживаются позиции?",
@@ -2901,7 +2927,7 @@ function buildFaqItems(sc: StrategyConfig) {
     },
     {
       q: "Какие меры управления рисками применяются?",
-      a: `Каждая сделка имеет фиксированный заранее определённый риск со стоп-лоссами и тейк-профитами, откалиброванными под волатильность рынка. Убыточные позиции никогда не усредняются. В периоды экстремальной волатильности алгоритмы намеренно сокращают или прекращают торговую активность. Основные системы функционируют на крипторынке более 5 лет и остаются неизменными в своих главных компонентах более 12 лет. Круглосуточный мониторинг осуществляется автоматическими системами и сотрудниками фонда.`,
+      a: `Каждая сделка открывается с фиксированным риском. Стоп-лоссы и тейк-профиты калибруются автоматически с учётом текущей волатильности. В периоды аномальной волатильности система снижает активность. Круглосуточный автоматический мониторинг.`,
     },
     {
       q: "Данные о результатах — бэктест или реальная торговля?",
@@ -2983,15 +3009,15 @@ function Footer() {
     <footer className="border-t border-border/30" data-testid="section-footer">
       <div className="py-16 px-4 sm:px-6 text-center" data-testid="section-footer-cta">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Готовы к инвестированию?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Начните зарабатывать с алгоритмом</h2>
           <p className="text-muted-foreground text-sm mb-6 max-w-lg mx-auto">
-            Свяжитесь с нашей командой напрямую. Мы расскажем о вариантах стратегий, настройке API и процессе онбординга.
+            Подключение через биржевой копитрейдинг занимает несколько минут. Напишите нам — поможем с настройкой.
           </p>
           <div className="flex items-center justify-center gap-3">
             <Button
               size="lg"
               className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 min-w-[200px]"
-              onClick={() => window.open("https://t.me/sd_assist_office", "_blank")}
+              onClick={() => window.open("https://t.me/", "_blank")}
               data-testid="button-footer-contact"
             >
               <Send className="w-4 h-4 mr-2" />
@@ -3127,19 +3153,19 @@ export default function Home() {
       <Navbar strategy={strategy} onStrategyChange={setStrategy} />
       <HeroSection stats={stats} sc={sc} />
 
-      {/* Social Proof */}
-      <section className="py-12 px-4 sm:px-6 border-t border-border/10">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+      {/* Social Proof — separate section */}
+      <section className="py-10 px-4 sm:px-6 bg-card/20 border-y border-border/10">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
             {[
               "Работаем с 2018 года",
               "Прозрачная онлайн-статистика",
               "Тысячи подключённых аккаунтов",
-              "Работа через крупнейшие криптобиржи",
-              "API-подключение без передачи средств",
+              "Крупнейшие криптобиржи",
+              "Без передачи средств",
             ].map((text) => (
-              <div key={text} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <svg className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              <div key={text} className="flex items-center gap-2 text-sm text-muted-foreground">
+                <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                 <span>{text}</span>
               </div>
             ))}
@@ -3148,18 +3174,124 @@ export default function Home() {
       </section>
 
       <MetricsSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
-      <StrategySection sc={sc} />
-      <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
-      <PerformanceSection stats={stats} isLoading={isLoading} />
-      <SystemDesignSection sc={sc} />
-      {sc.key !== "quantumalpha" && <ArchitectureSection sc={sc} />}
-      <RiskSection stats={stats} isLoading={isLoading} />
-      <DrawdownChartSection stats={stats} isLoading={isLoading} />
-      <MonthlyReturnsSection stats={stats} isLoading={isLoading} />
-      <DailyPnlSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
-      <DetailedStatsSection stats={stats} isLoading={isLoading} />
-      <ROIGrowthSection stats={stats} strategyKey={strategy} />
+
+      {/* How It Works */}
+      <section id="how-it-works" className="py-20 px-4 sm:px-6 relative">
+        <div className="max-w-5xl mx-auto">
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Как это работает</h2>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Подключение через биржевой копитрейдинг — просто и быстро</p>
+            </div>
+          </AnimatedSection>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { step: "01", title: "Откройте счёт на бирже", desc: "Зарегистрируйтесь на одной из поддерживаемых бирж (Binance, OKX, Bybit, Bitget, BingX) и пополните баланс." },
+              { step: "02", title: "Подпишитесь на стратегию", desc: "Найдите нашу стратегию в разделе копитрейдинга биржи и подпишитесь в один клик. Средства остаются на вашем счёте." },
+              { step: "03", title: "Алгоритм работает за вас", desc: "Сделки копируются автоматически 24/7. Отслеживайте результаты в приложении биржи в реальном времени." },
+            ].map((item) => (
+              <AnimatedSection key={item.step} delay={parseInt(item.step) * 100}>
+                <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50 h-full text-center">
+                  <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">{item.step}</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                </Card>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Advantages */}
+      <section id="advantages" className="py-20 px-4 sm:px-6 relative">
+        <div className="max-w-5xl mx-auto">
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Почему копитрейдинг</h2>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Преимущества подключения через биржевой копитрейдинг</p>
+            </div>
+          </AnimatedSection>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { icon: Shield, title: "Без передачи средств", desc: "Деньги всегда на вашем биржевом счёте. Никто кроме вас не имеет к ним доступа." },
+              { icon: Lock, title: "Вывод в любой момент", desc: "Нет блокировки средств. Отключитесь от стратегии или выведите деньги когда захотите." },
+              { icon: Activity, title: "Контроль в приложении", desc: "Отслеживайте каждую сделку в реальном времени через мобильное приложение биржи." },
+              { icon: DollarSign, title: "Без скрытых комиссий", desc: "0% за управление. Комиссия 30% только с прибыли. Не заработали — не платите." },
+            ].map((item, i) => (
+              <AnimatedSection key={item.title} delay={i * 80}>
+                <Card className="p-5 bg-card/50 backdrop-blur-sm border-border/50 h-full">
+                  <div className="w-10 h-10 mb-3 rounded-md bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
+                    <item.icon className="w-5 h-5 text-cyan-400" />
+                  </div>
+                  <h3 className="text-sm font-semibold text-foreground mb-1.5">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                </Card>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <StrategyArchSection sc={sc} />
       <AccessTermsSection sc={sc} />
+      {/* Taglines */}
+      <section className="py-16 px-4 sm:px-6 border-t border-border/10">
+        <div className="max-w-4xl mx-auto space-y-6 text-center">
+          {[
+            "Ваши деньги работают, пока вы отдыхаете",
+            "Без эмоций. Без догадок. Только математика.",
+            "Ваш капитал — на вашей бирже. Наш алгоритм — на связи 24/7.",
+          ].map((line, i) => (
+            <p key={i} className="text-lg sm:text-xl md:text-2xl font-light text-muted-foreground/60 italic">
+              «{line}»
+            </p>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA before FAQ */}
+      <section className="py-16 px-4 sm:px-6 text-center">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Готовы подключиться?</h2>
+          <p className="text-muted-foreground text-sm mb-6 max-w-lg mx-auto">
+            Свяжитесь с нашей командой напрямую. Мы расскажем о стратегии, подключении через копитрейдинг и процессе онбординга.
+          </p>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8 text-sm text-muted-foreground">
+            {[
+              "Многолетний опыт алгоритмической торговли",
+              "Тысячи подключённых аккаунтов",
+              "Прозрачная онлайн-статистика",
+              "Подключение за 10 минут",
+              "Поддержка 24/7",
+            ].map((text) => (
+              <div key={text} className="flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-cyan-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                <span>{text}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 min-w-[200px]"
+              onClick={() => window.open("https://t.me/", "_blank")}
+            >
+              <Send className="w-4 h-4 mr-2" />
+              Написать нам в Telegram
+            </Button>
+            <Button
+              size="lg"
+              className="bg-[#25D366] hover:bg-[#1fb855] text-white shadow-lg shadow-green-500/20 min-w-[200px]"
+              onClick={() => window.open("https://wa.me/", "_blank")}
+            >
+              <SiWhatsapp className="w-4 h-4 mr-2" />
+              Написать нам в WhatsApp
+            </Button>
+          </div>
+        </div>
+      </section>
+
       <FAQSection sc={sc} />
 
       <Footer />

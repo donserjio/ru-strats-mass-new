@@ -765,7 +765,7 @@ async function generateFactSheetPDF(stats: ParsedStats): Promise<Buffer> {
       margins: { top: 20, bottom: 20, left: 35, right: 35 },
       info: {
         Title: "Basket 50 - Fund Fact Sheet",
-        Author: "IQ Security Fund",
+        Author: "Управляющая компания",
       },
     });
 
@@ -796,7 +796,7 @@ async function generateFactSheetPDF(stats: ParsedStats): Promise<Buffer> {
     doc.fillColor(cyan).fontSize(16).font("Helvetica-Bold")
       .text("BASKET 50", leftM + 12, 28, NL);
     doc.fillColor(dimText).fontSize(8).font("Helvetica")
-      .text("IQ Security Fund — Momentum & Mean Reversion Strategy", leftM + 12, 48, NL);
+      .text("Управляющая компания — Momentum & Mean Reversion Strategy", leftM + 12, 48, NL);
 
     const genDate = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
     doc.fillColor(dimText).fontSize(6.5).font("Helvetica")
@@ -1069,7 +1069,7 @@ async function generateFactSheetPDF(stats: ParsedStats): Promise<Buffer> {
       doc.text(line, leftM + 4 + (disclaimerW - lw) / 2, lineY, NL);
     }
 
-    const copText = `\u00A9 ${new Date().getFullYear()} IQ Security Fund. All rights reserved.`;
+    const copText = `\u00A9 ${new Date().getFullYear()} Управляющая компания. All rights reserved.`;
     const copW = doc.widthOfString(copText);
     doc.text(copText, leftM + (contentW - copW) / 2, pageH - 14, NL);
 
