@@ -159,16 +159,16 @@ function useInView(threshold = 0.15) {
 
 function LiveDataBadge({ text, pulse = true }: { text: string; pulse?: boolean }) {
   return (
-    <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25">
+    <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-emerald-500/25">
       {pulse ? (
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
         </span>
       ) : (
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500/80"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500/80"></span>
       )}
-      <span className="text-xs font-medium text-emerald-400">{text}</span>
+      <span className="text-xs font-medium text-cyan-400">{text}</span>
     </div>
   );
 }
@@ -554,14 +554,14 @@ function HeroEquityChart() {
       <svg viewBox="0 0 400 100" className="w-full h-full" preserveAspectRatio="none">
         <defs>
           <linearGradient id="heroGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgb(16,185,129)" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="rgb(16,185,129)" stopOpacity="0" />
+            <stop offset="0%" stopColor="rgb(6,182,212)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="rgb(6,182,212)" stopOpacity="0" />
           </linearGradient>
         </defs>
         <polygon points={fillPoints} fill="url(#heroGrad)" />
-        <polyline points={points} fill="none" stroke="rgb(16,185,129)" strokeWidth="1.5" />
+        <polyline points={points} fill="none" stroke="rgb(6,182,212)" strokeWidth="1.5" />
       </svg>
-      <div className="absolute bottom-2 right-3 text-xs text-emerald-400/30">equity curve</div>
+      <div className="absolute bottom-2 right-3 text-xs text-cyan-400/30">equity curve</div>
     </div>
   );
 }
@@ -581,25 +581,25 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-600/8 rounded-full blur-[100px]" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Two-column hero layout */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[80vh]">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center min-h-[70vh] pt-20">
           {/* LEFT: Text + CTA */}
           <div className="text-left">
             <AnimatedSection>
-              <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 text-xs font-mono tracking-[0.2em] border border-emerald-500/30 text-emerald-400/80 rounded-full bg-emerald-500/5 uppercase">
-                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+              <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 text-xs font-mono tracking-[0.2em] border border-cyan-500/30 text-cyan-400/80 rounded-full bg-cyan-500/5 uppercase">
+                <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
                 Квантовые стратегии
               </div>
             </AnimatedSection>
 
             <AnimatedSection delay={100}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-foreground mb-6 leading-[1.1]">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold text-foreground mb-4 leading-[1.15]">
                 Инвестируйте<br />в алгоритм,<br />
-                <span className="text-muted-foreground/60">а не в угадывание<br />рынка</span>
+                <span className="text-muted-foreground/60">а не в угадывание рынка</span>
               </h1>
             </AnimatedSection>
 
             <AnimatedSection delay={200}>
-              <p className="text-base sm:text-lg text-muted-foreground/70 mb-8 max-w-md leading-relaxed">
+              <p className="text-sm sm:text-base text-muted-foreground/70 mb-6 max-w-md leading-relaxed">
                 Автоматическая система управляет позициями и контролирует риск 24/7. Средства остаются на вашей бирже — API-подключение без передачи капитала.
               </p>
             </AnimatedSection>
@@ -608,7 +608,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
               <div className="flex flex-wrap gap-3">
                 <Button
                   size="lg"
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold px-8"
                   onClick={() => window.open("https://t.me/sd_assist_office", "_blank")}
                 >
                   Подключиться
@@ -628,15 +628,15 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
           {/* RIGHT: Chart + metrics */}
           <div>
             <AnimatedSection delay={400}>
-              <div className="rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm p-5 sm:p-6">
+              <div className="rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm p-4 sm:p-5">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-sm text-muted-foreground font-medium">Basket 50 · Equity Curve</span>
-                  <span className="text-lg sm:text-xl font-bold text-emerald-400 font-mono">
+                  <span className="text-lg sm:text-xl font-bold text-cyan-400 font-mono">
                     +{getMetricValue(m, "Cumulative Return", getMetricValue(m, "Total Return", "---"))}
                   </span>
                 </div>
                 <HeroEquityChart />
-                <div className="grid grid-cols-3 gap-4 mt-5 pt-5 border-t border-border/20">
+                <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-border/20">
                   {[
                     { label: "CAGR", value: getMetricValue(m, "CAGR", "---") },
                     { label: "SHARPE", value: sharpe },
@@ -658,10 +658,10 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
           <div className="flex items-center gap-4 sm:gap-8 mt-8 pb-8">
             <span className="text-[10px] text-muted-foreground/40 tracking-[0.2em] uppercase whitespace-nowrap">Работаем через:</span>
             <div className="flex items-center gap-5 sm:gap-8">
-              <img src="/exchanges/binance.svg" alt="Binance" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity" />
-              <img src="/exchanges/okx.svg" alt="OKX" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity" />
-              <img src="/exchanges/bybit.svg" alt="Bybit" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity" />
-              <img src="/exchanges/bitget.svg" alt="Bitget" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity" />
+              <a href="https://www.binance.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/binance.svg" alt="Binance" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
+              <a href="https://www.okx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/okx.svg" alt="OKX" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
+              <a href="https://www.bybit.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bybit.svg" alt="Bybit" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
+              <a href="https://www.bitget.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bitget.svg" alt="Bitget" className="h-4 sm:h-5 opacity-40 hover:opacity-70 transition-opacity cursor-pointer" /></a>
             </div>
           </div>
         </AnimatedSection>
@@ -1017,8 +1017,8 @@ function ChartPeriodFilter({
 function ChartLiveBadge({ text }: { text: string }) {
   return (
     <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-border/30">
-      <span className="inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-      <span className="text-[10px] text-emerald-400/90">{text}</span>
+      <span className="inline-flex rounded-full h-1.5 w-1.5 bg-cyan-500"></span>
+      <span className="text-[10px] text-cyan-400/90">{text}</span>
     </div>
   );
 }
@@ -1373,7 +1373,7 @@ function PerformanceSection({ stats, isLoading }: { stats?: StatsData; isLoading
                           <td className="px-4 py-3 font-semibold text-foreground font-mono" data-testid={`text-year-${row.year}`}>
                             {row.year}
                           </td>
-                          <td className={`px-4 py-3 text-right font-mono ${row.returnPct >= 0 ? "text-emerald-400" : "text-red-400"}`} data-testid={`text-return-${row.year}`}>
+                          <td className={`px-4 py-3 text-right font-mono ${row.returnPct >= 0 ? "text-cyan-400" : "text-red-400"}`} data-testid={`text-return-${row.year}`}>
                             {row.returnPct >= 0 ? "+" : ""}{row.returnPct.toFixed(2)}%
                           </td>
                           <td className="px-4 py-3 text-right font-mono text-cyan-400 font-semibold" data-testid={`text-cumulative-${row.year}`}>
@@ -1895,9 +1895,9 @@ function QAROICalculator({ stats }: { stats?: StatsData }) {
                     {fmtMoney(projectedValue)}
                   </div>
                 </div>
-                <div className="bg-emerald-500/5 rounded-md p-4 text-center">
+                <div className="bg-cyan-500/5 rounded-md p-4 text-center">
                   <div className="text-xs text-muted-foreground mb-2">Суммарный доход</div>
-                  <div className="text-xl sm:text-2xl font-bold font-mono text-emerald-400" data-testid="text-total-return">
+                  <div className="text-xl sm:text-2xl font-bold font-mono text-cyan-400" data-testid="text-total-return">
                     +{fmtMoney(totalReturn)}
                   </div>
                 </div>
@@ -1935,7 +1935,7 @@ function QAROICalculator({ stats }: { stats?: StatsData }) {
                         {Array.from({ length: 10 }, (_, i) => i + 1).map((x) => {
                           const md = getMultData(x);
                           return (
-                            <td key={x} className={`py-2 px-3 text-center font-mono text-xs ${x === multiplier ? "text-cyan-400 font-semibold" : "text-emerald-400/80"}`}>
+                            <td key={x} className={`py-2 px-3 text-center font-mono text-xs ${x === multiplier ? "text-cyan-400 font-semibold" : "text-cyan-400/80"}`}>
                               {md.avgYearly.toFixed(1)}%
                             </td>
                           );
@@ -2481,7 +2481,7 @@ function MonthlyReturnsSection({ stats, isLoading }: { stats?: StatsData; isLoad
 
   function cellColor(v: number | null | undefined) {
     if (v == null) return "";
-    if (v > 0) return "text-emerald-400";
+    if (v > 0) return "text-cyan-400";
     if (v < 0) return "text-red-400";
     return "text-muted-foreground";
   }
@@ -3126,6 +3126,27 @@ export default function Home() {
       <LegalDisclaimerModal />
       <Navbar strategy={strategy} onStrategyChange={setStrategy} />
       <HeroSection stats={stats} sc={sc} />
+
+      {/* Social Proof */}
+      <section className="py-12 px-4 sm:px-6 border-t border-border/10">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+            {[
+              "Работаем с 2018 года",
+              "Прозрачная онлайн-статистика",
+              "Тысячи подключённых аккаунтов",
+              "Работа через крупнейшие криптобиржи",
+              "API-подключение без передачи средств",
+            ].map((text) => (
+              <div key={text} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <svg className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                <span>{text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <MetricsSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
       <StrategySection sc={sc} />
       <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
