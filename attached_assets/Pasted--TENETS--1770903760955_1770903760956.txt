@@ -1,0 +1,104 @@
+Создай современный, профессиональный одностраничный сайт для криптовалютного фонда TENETS с следующими требованиями:
+
+## ДИЗАЙН И СТИЛЬ
+- Современный минималистичный дизайн в стиле финтех/крипто
+- Цветовая схема: тёмный фон (#0a0e27 или похожий), акценты синий/голубой (#00d4ff), белый текст
+- Responsive дизайн (мобильная адаптация)
+- Плавные анимации при скролле (fade-in, slide-up)
+- Профессиональные градиенты и glassmorphism эффекты
+
+## СТРУКТУРА САЙТА
+
+### 1. HERO СЕКЦИЯ
+- Заголовок: "TENETS Quantum Alpha"
+- Подзаголовок: "Systematic Multi-Strategy Portfolio for Liquid Digital Assets"
+- Краткое описание: "Fully automated quantitative strategy with 40 independent models across trend-following, statistical arbitrage, and funding systems"
+- CTA кнопки: "View Performance" и "Contact Us"
+- Анимированный фоновый эффект (частицы или сетка)
+
+### 2. KEY METRICS (карточки)
+- Total Return: 174.2%
+- CAGR: 22.64%
+- Sharpe Ratio: 3.5
+- Max Drawdown: -2.16%
+- Volatility: 6.95%
+- Sortino: 7.45
+
+### 3. STRATEGY OVERVIEW
+Две колонки:
+**Left Column:**
+- Strategy Type: Quantitative, systematic, trend-following
+- Asset Class: BTC, ETH (spot) & BTC, ETH, SOL (perps)
+- Holding Period: 1 day avg | 20 days max
+- Trading Style: Long/short, directionally flexible
+- Trade Frequency: 20-30 trades per month
+
+**Right Column:**
+Описание: "The strategy is designed as a portfolio-level system where performance and risk are driven primarily by cross-strategy interaction. 40 independent models operate with capital selectively deployed, reducing correlation and limiting drawdowns during adverse market regimes."
+
+### 4. PERFORMANCE TABLE
+Интерактивная таблица с годовыми результатами (2021-2025):
+Year | JAN | FEB | MAR | APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC | EOY
+2021 | 6.35 | 13.19 | 3.52 | 7.12 | 4.25 | 2.23 | 3.95 | 2.87 | 6.26 | 3.31 | 3.13 | 1.96 | 58.14
+2022 | 1.88 | 2.33 | 3.54 | 1.42 | 3.60 | 5.57 | 2.40 | 2.55 | 1.43 | 3.70 | 0.04 | 0.76 | 29.22
+2023 | 6.53 | 2.71 | 1.79 | 2.87 | 0.62 | 4.08 | 1.30 | 0.89 | -0.36 | 3.99 | 3.62 | 6.46 | 34.50
+2024 | 0.45 | 6.79 | 3.92 | 1.11 | 5.01 | 0.71 | 1.37 | 4.52 | -0.27 | 2.06 | 6.55 | 1.30 | 33.50
+2025 | 3.32 | 2.54 | 1.85 | -0.19 | 3.08 | 0.52 | 2.56 | -0.00 | 1.39 | 2.17 | 0.76 | 0.85 | 18.83
+Цвет ячеек: зелёный для положительных, красный для отрицательных
+
+### 5. SYSTEM DESIGN (3 колонки)
+**Multi-Strategy Portfolio:**
+- ~40 independent models
+- Trend-following, statistical arbitrage, funding systems
+- Only subset active at any time
+
+**Risk Management:**
+- Volatility-based position sizing
+- Dynamic portfolio exposure
+- Spot-futures delta-neutral structures
+- Automated execution controls
+
+**Execution Quality:**
+- Smart-execution logic
+- Maker flow optimization
+- Minimal slippage and fees
+- Full automation, no discretion
+
+### 6. RISK LEVELS
+Таблица с уровнями leverage (0.5x, 1x, 4.5x, 6.75x, 13x):
+Leverage | Total Return | CAGR | Max DD | Avg DD
+0.5x | 116.74% | 16.94% | -1.06% | -0.23%
+1x | 174.2% | 22.64% | -2.16% | -0.54%
+4.5x | 576.4% | 47.22% | -9.66% | -2.84%
+6.75x | 834.95% | 57.19% | -14.23% | -4.38%
+13x | 1553.17% | 76.4% | -26.82% | -8.79%
+
+### 7. INVESTMENT TERMS (карточки)
+- Minimum Investment: $300,000
+- Performance Fee: 25-30%
+- High Water Mark: Yes
+- Lock-up Period: None
+- Fee Distribution: Quarterly
+- Collateral: USDT / BTC / ETH
+- Exchanges: Binance, Bybit, OKX, Hyperliquid
+- Capacity: $500M (at 1x leverage)
+
+### 8. FOOTER
+- Контактная информация
+- Disclaimer: "Past performance is not indicative of future results"
+- Social links placeholders
+
+## ТЕХНИЧЕСКИЕ ТРЕБОВАНИЯ
+- HTML5, CSS3, Vanilla JavaScript (или React если проще)
+- Smooth scroll navigation
+- Interactive charts (можно использовать Chart.js для визуализации performance)
+- Responsive breakpoints: 1200px, 768px, 480px
+- Оптимизация загрузки
+- SEO-friendly meta tags
+
+## ДОПОЛНИТЕЛЬНО
+- Добавь кнопку "Download Tearsheet" (fake download для демо)
+- Интерактивный калькулятор ROI на основе leverage
+- Секция FAQ (опционально)
+
+Используй современные CSS фреймворки (Tailwind CSS) или чистый CSS с переменными. Сделай сайт максимально профессиональным и похожим на сайты крупных hedge funds.

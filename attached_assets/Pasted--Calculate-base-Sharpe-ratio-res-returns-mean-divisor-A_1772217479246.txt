@@ -1,0 +1,133 @@
+# Calculate base Sharpe ratio
+res = returns.mean() / divisor
+
+# Annualize if requested
+if annualize:
+    return res * _np.sqrt(1 if periods is None else periods)
+
+заменить на
+
+# Annualize if requested
+if annualize:
+    divisor = divisor * _np.sqrt(1 if periods is None else periods)
+
+# Calculate base Sharpe ratio
+res = ((1.0 + returns).prod()  (1 / n_years) - 1) / divisor
+
+метод def rolling_sharpe(
+
+строки
+
+# Calculate rolling mean and standard deviation
+res = returns.rolling(rolling_period).mean() / returns.rolling(rolling_period).std()
+
+# Annualize if requested
+if annualize:
+    res = res * _np.sqrt(1 if periods_per_year is None else periods_per_year)
+
+заменить на
+
+divisor = returns.rolling(rolling_period).std(ddof=1)
+
+# Annualize if requested
+if annualize:
+    divisor = divisor * _np.sqrt(1 if rolling_period is None else periods_per_year)
+
+# Calculate rolling mean and standard deviation
+rolling_res = returns.rolling(rolling_period).apply(
+    lambda x: ((1.0 + x).prod()  (1 / (rolling_period / periods_per_year))) - 1, raw=True)
+res = rolling_res / divisor
+
+метод def sortino(
+
+строки
+
+# Calculate downside deviation (only negative returns)
+downside = _np.sqrt((returns[returns < 0]  2).sum() / len(returns))
+
+# Apply autocorrelation penalty if smart mode enabled
+if smart:
+    # penalize sortino with auto correlation
+    downside = downside * autocorr_penalty(returns)
+
+# Calculate base Sortino ratio
+# Handle both Series (DataFrame input) and scalar (Series input) cases
+if isinstance(downside, _pd.Series):
+    res = returns.mean() / downside.replace(0, _np.nan)
+else:
+    if downside == 0:
+        res = _np.nan
+    else:
+        res = returns.mean() / downside
+
+# Annualize if requested
+if annualize:
+    return res * _np.sqrt(1 if periods is None else periods)
+
+заменить на
+
+# Downside Deviation
+downside = _np.where(returns < 0, returns, 0).std()
+# print(downside)
+
+# res = 0
+# if downside:
+if smart:
+    # penalize sortino with auto correlation
+    downside = downside * autocorr_penalty(returns)
+
+if annualize:
+    downside = downside * _np.sqrt(1 if periods is None else periods)
+
+res = ((1.0 + returns).prod()  (1 / n_years) - 1) / downside
+
+метод def rolling_sortino(
+строки
+
+# Calculate rolling Sortino ratio
+res = returns.rolling(rolling_period).mean() / _np.sqrt(downside)
+
+# Annualize if requested
+if annualize:
+    res = res * _np.sqrt(1 if periods_per_year is None else periods_per_year)
+
+заменить на
+
+if annualize:
+    downside = downside * _np.sqrt(1 if periods_per_year is None else periods_per_year)
+
+# res = ((1.0 + returns).rolling(rolling_period).apply(_np.prod, raw=True)  (1 / n_years) - 1) / downside
+rolling_res = returns.rolling(rolling_period).apply(
+    lambda x: ((1.0 + x).prod()  (1 / (rolling_period / periods_per_year))) - 1, raw=True)
+res = rolling_res / downside
+
+метод def cagr(
+строки
+
+if compounded:
+    total = comp(total)
+else:
+    total = _np.sum(total, axis=0)
+
+# Calculate time period in years using trading periods
+# This is consistent with how Sharpe, Sortino, and other metrics
+# handle annualization in quantstats
+years = len(returns) / periods
+
+# Calculate CAGR using geometric mean formula
+res = abs(total + 1.0)  (1.0 / years) - 1
+
+заменить на
+
+if compounded:
+    total = comp(total)
+else:
+    total = (1.0 + total).prod() - 1.0
+
+# Calculate time period in years using trading periods
+# This is consistent with how Sharpe, Sortino, and other metrics
+# handle annualization in quantstats
+years = (returns.index[-1] - returns.index[0]).days / (365.25 if periods == 365 else periods)
+
+# Calculate CAGR using geometric mean formula
+res = (1.0 + total)  (1.0 / years) - 1
