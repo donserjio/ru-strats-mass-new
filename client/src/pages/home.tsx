@@ -22,13 +22,14 @@ import {
   Send,
   CalendarRange,
   CheckCircle,
+  Shield,
+  Wallet,
+  Eye,
+  PercentCircle,
 } from "lucide-react";
 import {
   AreaChart,
   Area,
-  BarChart,
-  Bar,
-  Cell,
   XAxis,
   YAxis,
   Tooltip,
@@ -965,250 +966,19 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
   );
 }
 
-function PerformanceSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const eoyReturns = stats?.eoyReturns ?? [];
-  return (
-    <section className="py-14 px-4 sm:px-6 relative" data-testid="section-performance">
-      <div className="max-w-7xl mx-auto">
-        <AnimatedSection>
-          <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Годовая доходность</h2>
-            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Доходность по годам
-            </p>
-          </div>
-        </AnimatedSection>
-        <AnimatedSection delay={100}>
-          <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            {isLoading ? (
-              <Skeleton className="h-[250px] w-full" />
-            ) : eoyReturns.length === 0 ? (
-              <div className="h-[250px] flex items-center justify-center text-muted-foreground text-sm">Нет данных</div>
-            ) : (
-              <div className="h-[250px] sm:h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={eoyReturns} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
-                    <XAxis
-                      dataKey="year"
-                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-                      tickLine={false}
-                      axisLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <YAxis
-                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-                      tickLine={false}
-                      axisLine={false}
-                      tickFormatter={(v: number) => v.toFixed(0) + "%"}
-                      width={45}
-                    />
-                    <Tooltip
-                      content={({ active, payload }: any) => {
-                        if (!active || !payload?.length) return null;
-                        const d = payload[0].payload;
-                        return (
-                          <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl">
-                            <p className="text-sm font-bold text-foreground mb-1">{d.year}</p>
-                            <div className="flex items-center justify-between gap-4">
-                              <span className="text-xs text-muted-foreground">Доходность</span>
-                              <span className={`text-sm font-bold font-mono ${d.returnPct >= 0 ? "text-cyan-400" : "text-red-400"}`}>
-                                {d.returnPct >= 0 ? "+" : ""}{d.returnPct.toFixed(2)}%
-                              </span>
-                            </div>
-                          </div>
-                        );
-                      }}
-                    />
-                    <Bar dataKey="returnPct" radius={[4, 4, 0, 0]} maxBarSize={50}>
-                      {eoyReturns.map((entry, idx) => (
-                        <Cell key={idx} fill={entry.returnPct >= 0 ? "#06b6d4" : "#f87171"} fillOpacity={0.85} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-          </Card>
-        </AnimatedSection>
-      </div>
-    </section>
-  );
-}
-
-function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const ddRaw = stats?.drawdownChart ?? [];
-  const [filteredDD, setFilteredDD] = useState(ddRaw);
-
-  useEffect(() => {
-    setFilteredDD(ddRaw);
-  }, [ddRaw]);
-
-  return (
-    <section className="py-14 px-4 sm:px-6 relative bg-card/20" data-testid="section-drawdown">
-      <div className="max-w-7xl mx-auto">
-        <AnimatedSection>
-          <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Подводная кривая</h2>
-            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Просадка от максимума
-            </p>
-          </div>
-        </AnimatedSection>
-        <AnimatedSection delay={100}>
-          <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-              <h3 className="text-sm font-semibold text-foreground">Drawdown</h3>
-              {ddRaw.length > 0 && (
-                <ChartPeriodFilter allData={ddRaw} onFilter={setFilteredDD} />
-              )}
-            </div>
-            {isLoading ? (
-              <Skeleton className="h-[250px] w-full" />
-            ) : filteredDD.length === 0 ? (
-              <div className="h-[250px] flex items-center justify-center text-muted-foreground text-sm">Нет данных</div>
-            ) : (
-              <div className="h-[250px] sm:h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={filteredDD} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="ddGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f87171" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#f87171" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
-                    <XAxis
-                      dataKey="date"
-                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-                      tickLine={false}
-                      axisLine={{ stroke: "hsl(var(--border))" }}
-                      tickFormatter={(v: string) => new Date(v).getFullYear().toString()}
-                      interval={Math.max(1, Math.floor(filteredDD.length / 8))}
-                    />
-                    <YAxis
-                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-                      tickLine={false}
-                      axisLine={false}
-                      tickFormatter={(v: number) => v.toFixed(0) + "%"}
-                      width={45}
-                    />
-                    <Tooltip
-                      content={({ active, payload, label }: any) => {
-                        if (!active || !payload?.length) return null;
-                        const val = payload[0].value as number;
-                        const dateStr = new Date(label).toLocaleDateString("ru-RU", { month: "long", day: "numeric", year: "numeric" });
-                        return (
-                          <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl">
-                            <p className="text-sm font-bold text-foreground mb-1">{dateStr}</p>
-                            <div className="flex items-center justify-between gap-4">
-                              <span className="text-xs text-muted-foreground">Просадка</span>
-                              <span className="text-sm font-bold font-mono text-red-400">
-                                {val.toFixed(2)}%
-                              </span>
-                            </div>
-                          </div>
-                        );
-                      }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#f87171"
-                      strokeWidth={1.5}
-                      fill="url(#ddGrad)"
-                      dot={false}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-          </Card>
-        </AnimatedSection>
-      </div>
-    </section>
-  );
-}
-
-const MONTH_LABELS = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
-
-function MonthlyReturnsSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const templateYears = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
-  const patterns: Record<number, (1|-1|0)[]> = {
-    2019: [0,0,0,0,0,0,0,0,0,1,1,-1],
-    2020: [1,-1,1,1,1,-1,1,1,-1,1,1,1],
-    2021: [1,1,-1,1,1,1,-1,1,1,1,-1,1],
-    2022: [-1,-1,1,-1,1,-1,-1,1,-1,1,-1,1],
-    2023: [1,1,1,-1,1,1,1,-1,1,1,1,1],
-    2024: [1,-1,1,1,1,1,-1,1,1,-1,1,1],
-    2025: [1,1,-1,0,0,0,0,0,0,0,0,0],
-  };
-
-  function cellColor(v: 1|-1|0) {
-    if (v === 1) return "text-emerald-400";
-    if (v === -1) return "text-red-400";
-    return "";
-  }
-
-  return (
-    <section className="py-14 px-4 sm:px-6 relative" data-testid="section-monthly-returns">
-      <div className="max-w-7xl mx-auto">
-        <AnimatedSection>
-          <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Ежемесячные результаты</h2>
-            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Помесячная доходность по годам (с реинвестированием)
-            </p>
-            <LiveDataBadge text="Обновляется ежедневно · API Binance" pulse={false} />
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection delay={100}>
-          <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6 overflow-x-auto">
-            <table className="w-full text-xs sm:text-sm font-mono" data-testid="table-monthly-returns">
-              <thead>
-                <tr className="border-b border-border/30">
-                  <th className="py-2 px-2 text-left text-cyan-400 font-semibold">Год</th>
-                  {MONTH_LABELS.map((m) => (
-                    <th key={m} className="py-2 px-1.5 text-center text-cyan-400 font-semibold">{m}</th>
-                  ))}
-                  <th className="py-2 px-2 text-center text-cyan-400 font-semibold border-l border-cyan-500/20 bg-cyan-500/5">Итого</th>
-                </tr>
-              </thead>
-              <tbody>
-                {templateYears.map((y) => (
-                  <tr key={y} className="border-b border-border/10 hover:bg-white/[0.02] transition-colors">
-                    <td className="py-2 px-2 text-cyan-400 font-semibold">{y}</td>
-                    {patterns[y].map((v, i) => (
-                      <td key={i} className={`py-2 px-1.5 text-center rounded-sm ${cellColor(v)}`}>
-                        {v !== 0 ? "—" : ""}
-                      </td>
-                    ))}
-                    <td className="py-2 px-2 text-center font-bold border-l border-cyan-500/20 bg-cyan-500/5 text-cyan-400">
-                      —
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Card>
-        </AnimatedSection>
-      </div>
-    </section>
-  );
-}
-
 function RiskSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const drawdowns = Array.from({length: 10}, () => ({ started: "—", recovered: "—", drawdown: 0, days: 0 }));
+  const m = stats?.metrics;
+  const drawdowns = stats?.drawdowns?.slice(0, 5) ?? [];
 
   const riskMetrics = [
-    { label: "Макс. просадка", value: "—" },
-    { label: "Макс. срок просадки (дней)", value: "—" },
-    { label: "Ср. просадка", value: "—" },
-    { label: "Ср. срок просадки", value: "—" },
-    { label: "Дневной VaR", value: "—" },
-    { label: "CVaR", value: "—" },
-    { label: "Коэффициент Кальмара", value: "—" },
-    { label: "Фактор восстановления", value: "—" },
+    { label: "Макс. просадка", value: getMetricValue(m, "Max Drawdown", "---") },
+    { label: "Макс. срок просадки", value: getMetricValue(m, "Longest DD Days", "---") + (m?.["Longest DD Days"] ? " дней" : "") },
+    { label: "Ср. просадка", value: getMetricValue(m, "Avg. Drawdown", "---") },
+    { label: "Ср. срок просадки", value: getMetricValue(m, "Avg. Drawdown Days", "---") + (m?.["Avg. Drawdown Days"] ? " дней" : "") },
+    { label: "Дневной VaR", value: getMetricValue(m, "Daily Value-at-Risk", "---") },
+    { label: "CVaR", value: getMetricValue(m, "Expected Shortfall (cVaR)", "---") },
+    { label: "Коэффициент Кальмара", value: getMetricValue(m, "Calmar", "---") },
+    { label: "Фактор восстановления", value: getMetricValue(m, "Recovery Factor", "---") },
   ];
 
   return (
@@ -1281,11 +1051,11 @@ function RiskSection({ stats, isLoading }: { stats?: StatsData; isLoading: boole
                           <td className="px-3 py-2.5 font-mono text-xs text-muted-foreground">
                             {row.recovered}
                           </td>
-                          <td className="px-3 py-2.5 text-right font-mono text-xs text-muted-foreground">
-                            —
+                          <td className="px-3 py-2.5 text-right font-mono text-xs text-red-400">
+                            {row.drawdown.toFixed(2)}%
                           </td>
                           <td className="px-3 py-2.5 text-right font-mono text-xs text-muted-foreground">
-                            —
+                            {row.days}
                           </td>
                         </tr>
                       ))}
@@ -1331,20 +1101,14 @@ function AccessTermsSection({ sc }: { sc: StrategyConfig }) {
         </AnimatedSection>
 
         <AnimatedSection delay={100}>
-          <Card className="bg-card/50 backdrop-blur-sm border-border/50 overflow-hidden">
-            <div className="divide-y divide-border/20">
-              {terms.map((term) => (
-                <div key={term.label} className="flex items-center justify-between px-6 py-4 hover:bg-white/[0.02] transition-colors" data-testid={`card-term-${term.label.toLowerCase().replace(/\s/g, "-")}`}>
-                  <span className="text-sm text-muted-foreground">
-                    {term.label}
-                  </span>
-                  <span className="text-sm font-semibold text-foreground font-mono">
-                    {term.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </Card>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {terms.map((term) => (
+              <Card key={term.label} className="p-5 bg-card/50 backdrop-blur-sm border-border/50 h-full" data-testid={`card-term-${term.label.toLowerCase().replace(/\s/g, "-")}`}>
+                <div className="text-xs text-muted-foreground mb-1.5">{term.label}</div>
+                <div className="text-sm font-semibold text-foreground">{term.value}</div>
+              </Card>
+            ))}
+          </div>
         </AnimatedSection>
       </div>
     </section>
@@ -1716,16 +1480,18 @@ export default function Home() {
               <p className="text-muted-foreground text-sm max-w-lg mx-auto">Преимущества подключения через биржевой копитрейдинг</p>
             </div>
           </AnimatedSection>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { title: "Средства всегда у вас", desc: "Деньги остаются на вашем биржевом счёте. Мы получаем только торговый API-доступ без права на вывод. Полный контроль — всегда у вас." },
-              { title: "Вывод в любой момент", desc: "Нет блокировки средств. Отключитесь от стратегии или выведите деньги в любой момент — без штрафов и ожидания." },
-              { title: "Прозрачность в реальном времени", desc: "Каждую сделку и каждый результат вы видите в приложении биржи. Никаких чёрных ящиков — полная прозрачность." },
-              { title: "Честная комиссия", desc: "0% за управление. Комиссия 30% только с прибыли по принципу «высшей отметки». Не заработали — не платите." },
+              { icon: Shield, title: "Без передачи средств", desc: "Деньги всегда на вашем биржевом счёте. Никто кроме вас не имеет к ним доступа." },
+              { icon: Wallet, title: "Вывод в любой момент", desc: "Нет блокировки средств. Отключитесь от стратегии или выведите деньги когда захотите." },
+              { icon: Eye, title: "Полная прозрачность", desc: "Каждую сделку видите в приложении биржи в реальном времени. Никаких чёрных ящиков." },
+              { icon: PercentCircle, title: "Честная комиссия", desc: "0% за управление. 30% только с прибыли по принципу «высшей отметки»." },
             ].map((item, i) => (
               <AnimatedSection key={item.title} delay={i * 80}>
-                <div className="p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full">
-                  <div className="w-2 h-2 rounded-full bg-cyan-400 mb-4" />
+                <div className="p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full text-center">
+                  <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/20 flex items-center justify-center">
+                    <item.icon className="w-6 h-6 text-cyan-400" />
+                  </div>
                   <h3 className="text-base font-semibold text-foreground mb-2">{item.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
