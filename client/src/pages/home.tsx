@@ -591,9 +591,9 @@ function ExchangesBar() {
 
 function SocialProofBar() {
   return (
-    <section className="py-8 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 via-blue-500/5 to-cyan-500/5 border-y border-border/15">
+    <section className="-mt-1 py-10 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/10 via-blue-500/8 to-cyan-500/10 border-y border-cyan-500/15">
       <div className="max-w-5xl mx-auto">
-        <div className="flex flex-wrap justify-center gap-x-10 gap-y-4">
+        <div className="flex flex-wrap justify-center gap-x-12 gap-y-5">
           {[
             "Работаем с 2018 года",
             "Прозрачная онлайн-статистика",
@@ -601,8 +601,8 @@ function SocialProofBar() {
             "Крупнейшие криптобиржи",
             "Без передачи средств",
           ].map((text) => (
-            <div key={text} className="flex items-center gap-2.5 text-base text-foreground/80 font-medium">
-              <CheckCircle className="w-5 h-5 text-cyan-400 shrink-0" />
+            <div key={text} className="flex items-center gap-3 text-lg sm:text-xl text-white font-semibold">
+              <CheckCircle className="w-6 h-6 text-cyan-400 shrink-0" />
               <span>{text}</span>
             </div>
           ))}
