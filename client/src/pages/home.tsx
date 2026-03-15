@@ -1238,17 +1238,19 @@ function ZoomableChart({
 }
 
 function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey?: string }) {
-  // Schematic equity curve
-  const pts: string[] = [];
-  for (let i = 0; i <= 100; i++) {
-    const x = (i / 100) * 800;
-    const progress = i / 100;
-    const base = 280 - progress * 220;
-    const noise = Math.sin(i * 0.4) * 8 + Math.sin(i * 1.1) * 5 + Math.cos(i * 0.25) * 6;
-    pts.push(`${x},${Math.max(10, Math.min(290, base + noise))}`);
-  }
-  const line = pts.join(" ");
-  const fill = line + " 800,300 0,300";
+  const fakeEquity = useMemo(() => {
+    const data = [];
+    let val = 0;
+    const startDate = new Date("2019-10-01");
+    for (let i = 0; i < 200; i++) {
+      const d = new Date(startDate);
+      d.setDate(d.getDate() + i * 10);
+      val += Math.random() * 3 - 0.8 + (i / 200) * 0.5;
+      val = Math.max(val, -5);
+      data.push({ date: d.toISOString().split("T")[0], value: Math.round(val * 100) / 100 });
+    }
+    return data;
+  }, []);
 
   return (
     <section id="equity" className="py-20 px-4 sm:px-6 relative" data-testid="section-equity">
@@ -1261,17 +1263,52 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
         </AnimatedSection>
         <AnimatedSection delay={100}>
           <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            <div className="h-[300px] sm:h-[400px] relative">
-              <svg viewBox="0 0 800 300" className="w-full h-full" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="eqGradT" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="rgb(6,182,212)" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="rgb(6,182,212)" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <polygon points={fill} fill="url(#eqGradT)" />
-                <polyline points={line} fill="none" stroke="rgb(6,182,212)" strokeWidth="2" />
-              </svg>
+            <div className="h-[350px] sm:h-[420px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={fakeEquity} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="eqGradTemplate" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="rgb(6,182,212)" stopOpacity={0.3} />
+                      <stop offset="100%" stopColor="rgb(6,182,212)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={{ stroke: "hsl(var(--border))" }}
+                    tickFormatter={(v: string) => new Date(v).toLocaleDateString("ru-RU", { month: "short", year: "2-digit" })}
+                    interval={Math.floor(fakeEquity.length / 6)}
+                  />
+                  <YAxis
+                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(v: number) => v.toFixed(0) + "%"}
+                    width={50}
+                  />
+                  <Tooltip
+                    content={({ active, payload, label }: any) => {
+                      if (!active || !payload?.length) return null;
+                      const val = payload[0].value as number;
+                      const dateStr = new Date(label).toLocaleDateString("ru-RU", { month: "long", day: "numeric", year: "numeric" });
+                      return (
+                        <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[180px]">
+                          <p className="text-sm font-bold text-foreground mb-1">{dateStr}</p>
+                          <div className="flex items-center justify-between gap-4">
+                            <span className="text-xs text-muted-foreground">Доходность</span>
+                            <span className={`text-sm font-bold font-mono ${val >= 0 ? "text-cyan-400" : "text-red-400"}`}>
+                              {val >= 0 ? "+" : ""}{val.toFixed(2)}%
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    }}
+                  />
+                  <Area type="monotone" dataKey="value" stroke="rgb(6,182,212)" strokeWidth={2} fill="url(#eqGradTemplate)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </Card>
         </AnimatedSection>
@@ -1281,15 +1318,18 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
 }
 
 function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const pts: string[] = [];
-  for (let i = 0; i <= 100; i++) {
-    const x = (i / 100) * 800;
-    const spike = (i % 15 < 3) ? -Math.random() * 80 - 20 : 0;
-    const base = -Math.abs(Math.sin(i * 0.3) * 15 + Math.sin(i * 0.7) * 10);
-    pts.push(`${x},${150 + base + spike}`);
-  }
-  const line = pts.join(" ");
-  const fill = "0,150 " + line + " 800,150";
+  const fakeDD = useMemo(() => {
+    const data = [];
+    const startDate = new Date("2019-10-01");
+    for (let i = 0; i < 200; i++) {
+      const d = new Date(startDate);
+      d.setDate(d.getDate() + i * 10);
+      const spike = (i % 20 < 3) ? -(Math.random() * 8 + 3) : 0;
+      const base = -Math.abs(Math.sin(i * 0.3) * 3 + Math.sin(i * 0.7) * 2);
+      data.push({ date: d.toISOString().split("T")[0], value: Math.round((base + spike) * 100) / 100 });
+    }
+    return data;
+  }, []);
 
   return (
     <section className="py-20 px-4 sm:px-6 relative" data-testid="section-drawdown-chart">
@@ -1302,18 +1342,50 @@ function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoadi
         </AnimatedSection>
         <AnimatedSection delay={100}>
           <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            <div className="h-[250px] sm:h-[300px] relative">
-              <svg viewBox="0 0 800 300" className="w-full h-full" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="ddGradT" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="rgb(239,68,68)" stopOpacity="0" />
-                    <stop offset="100%" stopColor="rgb(239,68,68)" stopOpacity="0.3" />
-                  </linearGradient>
-                </defs>
-                <line x1="0" y1="150" x2="800" y2="150" stroke="rgb(255,255,255)" strokeOpacity="0.1" strokeWidth="1" />
-                <polygon points={fill} fill="url(#ddGradT)" />
-                <polyline points={line} fill="none" stroke="rgb(239,68,68)" strokeOpacity="0.7" strokeWidth="1.5" />
-              </svg>
+            <div className="h-[250px] sm:h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={fakeDD} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="ddGradTemplate" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="rgb(239,68,68)" stopOpacity={0} />
+                      <stop offset="100%" stopColor="rgb(239,68,68)" stopOpacity={0.3} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={{ stroke: "hsl(var(--border))" }}
+                    tickFormatter={(v: string) => new Date(v).toLocaleDateString("ru-RU", { month: "short", year: "2-digit" })}
+                    interval={Math.floor(fakeDD.length / 6)}
+                  />
+                  <YAxis
+                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(v: number) => v.toFixed(0) + "%"}
+                    width={50}
+                  />
+                  <Tooltip
+                    content={({ active, payload, label }: any) => {
+                      if (!active || !payload?.length) return null;
+                      const val = payload[0].value as number;
+                      const dateStr = new Date(label).toLocaleDateString("ru-RU", { month: "long", day: "numeric", year: "numeric" });
+                      return (
+                        <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[180px]">
+                          <p className="text-sm font-bold text-foreground mb-1">{dateStr}</p>
+                          <div className="flex items-center justify-between gap-4">
+                            <span className="text-xs text-muted-foreground">Просадка</span>
+                            <span className="text-sm font-bold font-mono text-red-400">{val.toFixed(2)}%</span>
+                          </div>
+                        </div>
+                      );
+                    }}
+                  />
+                  <Area type="monotone" dataKey="value" stroke="rgb(239,68,68)" strokeWidth={1.5} strokeOpacity={0.7} fill="url(#ddGradTemplate)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </Card>
         </AnimatedSection>
@@ -1324,12 +1396,12 @@ function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoadi
 
 function PerformanceSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
   const eoyReturns = [
-    { year: "2020", return: "—", cumulative: "—" },
-    { year: "2021", return: "—", cumulative: "—" },
-    { year: "2022", return: "—", cumulative: "—" },
-    { year: "2023", return: "—", cumulative: "—" },
-    { year: "2024", return: "—", cumulative: "—" },
-    { year: "2025", return: "—", cumulative: "—" },
+    { year: "2020", returnPct: 0, cumulative: "—" },
+    { year: "2021", returnPct: 0, cumulative: "—" },
+    { year: "2022", returnPct: 0, cumulative: "—" },
+    { year: "2023", returnPct: 0, cumulative: "—" },
+    { year: "2024", returnPct: 0, cumulative: "—" },
+    { year: "2025", returnPct: 0, cumulative: "—" },
   ];
   const m = stats?.metrics || {};
 
@@ -1385,11 +1457,11 @@ function PerformanceSection({ stats, isLoading }: { stats?: StatsData; isLoading
                           <td className="px-4 py-3 font-semibold text-foreground font-mono" data-testid={`text-year-${row.year}`}>
                             {row.year}
                           </td>
-                          <td className={`px-4 py-3 text-right font-mono ${row.returnPct >= 0 ? "text-cyan-400" : "text-red-400"}`} data-testid={`text-return-${row.year}`}>
-                            {row.returnPct >= 0 ? "+" : ""}{row.returnPct.toFixed(2)}%
+                          <td className="px-4 py-3 text-right font-mono text-muted-foreground" data-testid={`text-return-${row.year}`}>
+                            —
                           </td>
-                          <td className="px-4 py-3 text-right font-mono text-cyan-400 font-semibold" data-testid={`text-cumulative-${row.year}`}>
-                            {row.cumulative}
+                          <td className="px-4 py-3 text-right font-mono text-muted-foreground" data-testid={`text-cumulative-${row.year}`}>
+                            —
                           </td>
                         </tr>
                       ))}
@@ -1784,7 +1856,7 @@ const ACCESS_TERMS_BASE = [
   { icon: Clock, label: "Распределение комиссий", value: "Раз в квартал" },
   { icon: Layers, label: "Формат подключения", value: "Копитрейдинг через биржу" },
   { icon: Activity, label: "Торговые активы", value: "10 торговых пар, 5 торговых подходов" },
-  { icon: Wallet, label: "Обеспечение", value: "USDT / BTC / ETH (любой токен для расширенный маржинальный режим)" },
+  { icon: Wallet, label: "Обеспечение", value: "USDT" },
   { icon: ExternalLink, label: "Биржи", value: "Binance, OKX, Bybit, Bitget, BingX" },
 ];
 
@@ -1996,7 +2068,19 @@ function ROIGrowthSection({ stats, strategyKey }: { stats?: StatsData; strategyK
   const [hasInteracted, setHasInteracted] = useState(false);
   const capital = CAPITALS[capitalIdx].value;
 
-  const equityData = stats?.equity ?? [];
+  const equityData = useMemo(() => {
+    const data = [];
+    let val = 0;
+    const start = new Date("2019-10-01");
+    for (let i = 0; i < 200; i++) {
+      const d = new Date(start);
+      d.setDate(d.getDate() + i * 10);
+      val += Math.random() * 3 - 0.8 + (i / 200) * 0.5;
+      val = Math.max(val, -5);
+      data.push({ date: d.toISOString().split("T")[0], value: Math.round(val * 100) / 100 });
+    }
+    return data;
+  }, []);
 
   const firstDate = equityData[0]?.date ?? "";
   const lastDate = equityData[equityData.length - 1]?.date ?? "";
@@ -2417,7 +2501,7 @@ function AccessTermsSection({ sc }: { sc: StrategyConfig }) {
     { icon: Lock, label: "Срок блокировки", value: "14 дней" },
     { icon: Clock, label: "Распределение комиссии за результат", value: "Раз в квартал" },
     { icon: Layers, label: "Формат подключения", value: "Копитрейдинг через биржу" },
-    { icon: Wallet, label: "Залоговые токены", value: "USDT / BTC / ETH (или любой токен для расширенный маржинальный режим)" },
+    { icon: Wallet, label: "Залоговые токены", value: "USDT" },
     { icon: Target, label: "Ёмкость", value: sc.capacity },
   ] : [
     ...ACCESS_TERMS_BASE.filter(t => t.label !== "Биржи"),
@@ -2468,30 +2552,23 @@ function AccessTermsSection({ sc }: { sc: StrategyConfig }) {
 const MONTH_LABELS = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
 
 function MonthlyReturnsSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const grid = stats?.monthlyGrid ?? [];
+  // Template placeholder data with colored dashes
+  const templateYears = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
+  // Pattern: 1=cyan, -1=red, 0=empty (not started yet)
+  const patterns: Record<number, (1|-1|0)[]> = {
+    2019: [0,0,0,0,0,0,0,0,0,1,1,-1],
+    2020: [1,-1,1,1,1,-1,1,1,-1,1,1,1],
+    2021: [1,1,-1,1,1,1,-1,1,1,1,-1,1],
+    2022: [-1,-1,1,-1,1,-1,-1,1,-1,1,-1,1],
+    2023: [1,1,1,-1,1,1,1,-1,1,1,1,1],
+    2024: [1,-1,1,1,1,1,-1,1,1,-1,1,1],
+    2025: [1,1,-1,0,0,0,0,0,0,0,0,0],
+  };
 
-  const tableData = useMemo(() => {
-    if (grid.length === 0) return { years: [] as number[], data: {} as Record<number, Record<number, number | null>>, yearTotals: {} as Record<number, number> };
-    const data: Record<number, Record<number, number | null>> = {};
-    for (const { ym, ret } of grid) {
-      const [y, m] = ym.split("-").map(Number);
-      if (!data[y]) data[y] = {};
-      data[y][m] = ret;
-    }
-    const years = Object.keys(data).map(Number).sort();
-    const yearTotals: Record<number, number> = {};
-    for (const y of years) {
-      const rets = Object.values(data[y]).filter((v): v is number => v !== null);
-      yearTotals[y] = (rets.reduce((acc, r) => acc * (1 + r / 100), 1) - 1) * 100;
-    }
-    return { years, data, yearTotals };
-  }, [grid]);
-
-  function cellColor(v: number | null | undefined) {
-    if (v == null) return "";
-    if (v > 0) return "text-cyan-400";
-    if (v < 0) return "text-red-400";
-    return "text-muted-foreground";
+  function cellColor(v: 1|-1|0) {
+    if (v === 1) return "text-emerald-400";
+    if (v === -1) return "text-red-400";
+    return "";
   }
 
   return (
@@ -2523,19 +2600,16 @@ function MonthlyReturnsSection({ stats, isLoading }: { stats?: StatsData; isLoad
                   </tr>
                 </thead>
                 <tbody>
-                  {tableData.years.map((y) => (
+                  {templateYears.map((y) => (
                     <tr key={y} className="border-b border-border/10 hover:bg-white/[0.02] transition-colors">
                       <td className="py-2 px-2 text-cyan-400 font-semibold">{y}</td>
-                      {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
-                        const v = tableData.data[y]?.[m];
-                        return (
-                          <td key={m} className={`py-2 px-1.5 text-center rounded-sm ${cellColor(v)}`}>
-                            {v != null ? (v >= 0 ? "+" : "") + v.toFixed(2) + "%" : ""}
-                          </td>
-                        );
-                      })}
-                      <td className={`py-2 px-2 text-center font-bold border-l border-cyan-500/20 bg-cyan-500/5 ${cellColor(tableData.yearTotals[y])}`}>
-                        {(tableData.yearTotals[y] >= 0 ? "+" : "") + tableData.yearTotals[y].toFixed(2) + "%"}
+                      {patterns[y].map((v, i) => (
+                        <td key={i} className={`py-2 px-1.5 text-center rounded-sm ${cellColor(v)}`}>
+                          {v !== 0 ? "—" : ""}
+                        </td>
+                      ))}
+                      <td className="py-2 px-2 text-center font-bold border-l border-cyan-500/20 bg-cyan-500/5 text-cyan-400">
+                        —
                       </td>
                     </tr>
                   ))}
@@ -2550,55 +2624,17 @@ function MonthlyReturnsSection({ stats, isLoading }: { stats?: StatsData; isLoad
 }
 
 function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey: StrategyKey }) {
-  const dailyData = stats?.dailyPnl ?? [];
-  const [filteredData, setFilteredData] = useState(dailyData);
-  const [zoomedData, setZoomedData] = useState<typeof dailyData | null>(null);
-  const [refLeft, setRefLeft] = useState<string | null>(null);
-  const [refRight, setRefRight] = useState<string | null>(null);
-
-  useEffect(() => {
-    setFilteredData(dailyData);
-  }, [stats]);
-
-  useEffect(() => {
-    setZoomedData(null);
-  }, [filteredData]);
-
-  const displayData = zoomedData ?? filteredData;
-  const isZoomed = zoomedData !== null;
-
-  const handleMouseDown = (e: any) => {
-    if (e?.activeLabel) setRefLeft(e.activeLabel);
-  };
-  const handleMouseMove = (e: any) => {
-    if (refLeft && e?.activeLabel) setRefRight(e.activeLabel);
-  };
-  const handleMouseUp = () => {
-    if (refLeft && refRight && refLeft !== refRight) {
-      const leftIdx = filteredData.findIndex((d) => d.date === refLeft);
-      const rightIdx = filteredData.findIndex((d) => d.date === refRight);
-      const [from, to] = leftIdx < rightIdx ? [leftIdx, rightIdx] : [rightIdx, leftIdx];
-      if (to - from > 1) {
-        setZoomedData(filteredData.slice(from, to + 1));
-      }
+  const fakePnl = useMemo(() => {
+    const data = [];
+    const startDate = new Date("2024-01-01");
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(startDate);
+      d.setDate(d.getDate() + i);
+      const v = Math.sin(i * 0.3) * 1.5 + Math.sin(i * 0.8) * 0.8 + (Math.random() - 0.42) * 2;
+      data.push({ date: d.toISOString().split("T")[0], value: Math.round(v * 100) / 100 });
     }
-    setRefLeft(null);
-    setRefRight(null);
-  };
-
-  const chartBarData = useMemo(() => {
-    const minBar = displayData.length > 0 ? Math.max(...displayData.map(d => Math.abs(d.value))) * 0.02 : 0.01;
-    return displayData.map((d) => ({
-      ...d,
-      displayValue: Math.abs(d.value) < 0.0001 ? minBar : d.value,
-    }));
-  }, [displayData]);
-
-  const yExtreme = useMemo(() => {
-    if (displayData.length === 0) return 2;
-    const maxAbs = Math.max(...displayData.map((d) => Math.abs(d.value)));
-    return Math.ceil(maxAbs * 1.1 * 10) / 10;
-  }, [displayData]);
+    return data;
+  }, []);
 
   return (
     <section className="py-20 px-4 sm:px-6 relative" data-testid="section-daily-pnl">
@@ -2609,138 +2645,57 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
               Распределение ежедневной доходности стратегии
             </p>
-            <LiveDataBadge text="P&L реального торгового счёта" pulse={false} />
-            <div className="flex items-center justify-center gap-3 mt-4">
-              <TooltipProvider delayDuration={0}>
-                <UITooltip>
-                  <TooltipTrigger asChild>
-                    <a
-                      href={`/api/csv?strategy=${strategyKey}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-testid="link-daily-pnl-csv"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10 transition-all"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      Скачать CSV
-                    </a>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Данные обновляются ежедневно через API с аккаунта Binance</p>
-                  </TooltipContent>
-                </UITooltip>
-                {strategyKey !== "quantumalpha" && (
-                  <UITooltip>
-                    <TooltipTrigger asChild>
-                      <a
-                        href={`/api/quantstats?strategy=${strategyKey}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-testid="link-quantstats-report"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10 transition-all"
-                      >
-                        <FileText className="w-3.5 h-3.5" />
-                        Отчёт QuantStats
-                      </a>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Данные обновляются ежедневно через API с аккаунта Binance</p>
-                    </TooltipContent>
-                  </UITooltip>
-                )}
-              </TooltipProvider>
-            </div>
           </div>
         </AnimatedSection>
 
         <AnimatedSection delay={100}>
           <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            {false ? (
-              <Skeleton className="h-[300px] w-full" />
-            ) : (
-              <>
-                <ChartPeriodFilter allData={dailyData} onFilter={setFilteredData} />
-                {isZoomed && (
-                  <div className="flex justify-end mb-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-xs border-border/50"
-                      onClick={() => setZoomedData(null)}
-                      data-testid="button-daily-pnl-reset-zoom"
-                    >
-                      Сбросить зум
-                    </Button>
-                  </div>
-                )}
-                <div className="h-[250px] sm:h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={chartBarData}
-                      margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
-                      onMouseDown={handleMouseDown}
-                      onMouseMove={handleMouseMove}
-                      onMouseUp={handleMouseUp}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
-                      <XAxis
-                        dataKey="date"
-                        tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-                        tickLine={false}
-                        axisLine={{ stroke: "hsl(var(--border))" }}
-                        tickFormatter={(v: string) => {
-                          const d = new Date(v);
-                          return d.toLocaleDateString("ru-RU", { month: "short", day: "numeric" });
-                        }}
-                        interval={Math.max(1, Math.floor(filteredData.length / 8))}
-                      />
-                      <YAxis
-                        tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(v: number) => v.toFixed(1) + "%"}
-                        width={50}
-                        domain={[-yExtreme, yExtreme]}
-                      />
-                      <Tooltip
-                        cursor={{ fill: "rgba(255,255,255,0.04)" }}
-                        content={({ active, payload, label }: any) => {
-                          if (!active || !payload?.length) return null;
-                          const val = payload[0].value as number;
-                          if (val == null) return null;
-                          const dateStr = new Date(label).toLocaleDateString("ru-RU", { month: "long", day: "numeric", year: "numeric" });
-                          const formatted = `${val >= 0 ? "+" : ""}${val.toFixed(4)}%`;
-                          return (
-                            <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[200px]">
-                              <p className="text-sm font-bold text-foreground mb-2">{dateStr}</p>
-                              <div className="flex items-center justify-between gap-6">
-                                <span className="text-xs text-muted-foreground">Ежедневный P&L</span>
-                                <span className={`text-sm font-bold font-mono ${val >= 0 ? "text-cyan-400" : "text-red-400"}`}>{formatted}</span>
-                              </div>
-                              <ChartLiveBadge text="Данные реальной торговли · Реальный счёт · Обновляется ежедневно через API" />
-                            </div>
-                          );
-                        }}
-                      />
-                      <Bar dataKey="displayValue" radius={[1, 1, 0, 0]} maxBarSize={4}>
-                        {displayData.map((entry, idx) => {
-                          const isZero = Math.abs(entry.value) < 0.0001;
-                          return (
-                            <Cell key={idx} fill={isZero ? "#475569" : entry.value >= 0 ? "#34d399" : "#f87171"} fillOpacity={isZero ? 0.4 : 0.8} />
-                          );
-                        })}
-                      </Bar>
-                      {refLeft && refRight && (
-                        <ReferenceArea x1={refLeft} x2={refRight} strokeOpacity={0.2} stroke="rgba(6,182,212,0.3)" fill="rgba(6,182,212,0.05)" fillOpacity={1} />
-                      )}
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                {!isZoomed && (
-                  <p className="text-[10px] text-muted-foreground/40 text-center mt-1">Нажмите и перетащите на графике для увеличения</p>
-                )}
-              </>
-            )}
+            <div className="h-[250px] sm:h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={fakePnl} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={{ stroke: "hsl(var(--border))" }}
+                    tickFormatter={(v: string) => new Date(v).toLocaleDateString("ru-RU", { month: "short" })}
+                    interval={Math.floor(fakePnl.length / 8)}
+                  />
+                  <YAxis
+                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(v: number) => v.toFixed(1) + "%"}
+                    width={45}
+                  />
+                  <Tooltip
+                    cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                    content={({ active, payload, label }: any) => {
+                      if (!active || !payload?.length) return null;
+                      const val = payload[0].value as number;
+                      const dateStr = new Date(label).toLocaleDateString("ru-RU", { month: "long", day: "numeric", year: "numeric" });
+                      return (
+                        <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[180px]">
+                          <p className="text-sm font-bold text-foreground mb-1">{dateStr}</p>
+                          <div className="flex items-center justify-between gap-4">
+                            <span className="text-xs text-muted-foreground">P&L</span>
+                            <span className={`text-sm font-bold font-mono ${val >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                              {val >= 0 ? "+" : ""}{val.toFixed(2)}%
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    }}
+                  />
+                  <Bar dataKey="value" radius={[1, 1, 0, 0]} maxBarSize={3}>
+                    {fakePnl.map((entry, idx) => (
+                      <Cell key={idx} fill={entry.value >= 0 ? "#34d399" : "#f87171"} fillOpacity={0.8} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </Card>
         </AnimatedSection>
       </div>
@@ -2844,11 +2799,11 @@ function buildFaqItems(sc: StrategyConfig) {
       },
       {
         q: "Какие активы торгует алгоритм?",
-        a: "Алгоритм торгует 10 криптовалютных пар по капитализации. Залог может размещаться в USDT, BTC, ETH или любом токене для счетов расширенный маржинальный режим.",
+        a: "Алгоритм торгует 10 криптовалютных пар по капитализации. Залог размещается в USDT.",
       },
       {
         q: "Какие биржи поддерживаются?",
-        a: "Binance, Bybit и OKX. Залог может быть в USDT, BTC, ETH или любом токене для счетов расширенный маржинальный режим.",
+        a: "Binance, Bybit и OKX. Залог — USDT.",
       },
       {
         q: "Какова типичная частота сделок и срок удержания?",
@@ -2921,7 +2876,7 @@ function buildFaqItems(sc: StrategyConfig) {
 function FAQSection({ sc }: { sc: StrategyConfig }) {
   const FAQ_ITEMS = buildFaqItems(sc);
   return (
-    <section className="py-20 px-4 sm:px-6 relative" data-testid="section-faq">
+    <section id="faq" className="py-20 px-4 sm:px-6 relative" data-testid="section-faq">
       <div className="max-w-3xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-12">
@@ -3156,6 +3111,7 @@ export default function Home() {
       </section>
 
       <MetricsSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
+      <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
 
       {/* How It Works */}
       <section id="how-it-works" className="py-20 px-4 sm:px-6 relative">
@@ -3216,7 +3172,6 @@ export default function Home() {
       </section>
 
       <StrategyArchSection sc={sc} />
-      <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
       <PerformanceSection stats={stats} isLoading={isLoading} />
       <RiskSection stats={stats} isLoading={isLoading} />
       <DrawdownChartSection stats={stats} isLoading={isLoading} />

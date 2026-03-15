@@ -1,0 +1,6 @@
+{
+  "outputDirectory": "dist/public",
+  "buildCommand": "NODE_ENV=production npx vite build",
+  "framework": null,
+  "headers": [{"source": "/(.*)", "headers": [{"key": "Cache-Control", "value": "no-store"}]}]
+}
