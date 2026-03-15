@@ -568,13 +568,31 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
   );
 }
 
+function ExchangeLogo({ name, color, url }: { name: string; color: string; url: string }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-center px-6 sm:px-8 h-14 sm:h-16 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.07] hover:border-cyan-500/20 transition-all group"
+    >
+      <span
+        className="text-lg sm:text-xl font-bold tracking-wide opacity-60 group-hover:opacity-100 transition-opacity"
+        style={{ color }}
+      >
+        {name}
+      </span>
+    </a>
+  );
+}
+
 function ExchangesBar() {
   const exchanges = [
-    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg" },
-    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.svg" },
-    { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.svg" },
-    { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.svg" },
-    { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.svg" },
+    { name: "BINANCE", color: "#F0B90B", url: "https://www.binance.com" },
+    { name: "OKX", color: "#FFFFFF", url: "https://www.okx.com" },
+    { name: "BYBIT", color: "#F7A600", url: "https://www.bybit.com" },
+    { name: "BITGET", color: "#00F0FF", url: "https://www.bitget.com" },
+    { name: "BINGX", color: "#2BA6E0", url: "https://www.bingx.com" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -583,21 +601,9 @@ function ExchangesBar() {
           <p className="text-sm text-muted-foreground mb-8 tracking-widest uppercase font-medium">
             Работаем с крупнейшими криптобиржами
           </p>
-          <div className="flex items-center justify-center gap-6 sm:gap-8 flex-wrap">
+          <div className="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
             {exchanges.map((ex) => (
-              <a
-                key={ex.name}
-                href={ex.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center w-[140px] sm:w-[160px] h-16 sm:h-20 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.07] hover:border-cyan-500/20 transition-all group"
-              >
-                <img
-                  src={ex.logo}
-                  alt={ex.name}
-                  className="h-7 sm:h-9 opacity-50 group-hover:opacity-100 transition-opacity"
-                />
-              </a>
+              <ExchangeLogo key={ex.name} {...ex} />
             ))}
           </div>
         </AnimatedSection>
