@@ -569,19 +569,36 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 }
 
 function ExchangesBar() {
+  const exchanges = [
+    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg" },
+    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.svg" },
+    { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.svg" },
+    { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.svg" },
+    { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.svg" },
+  ];
   return (
-    <section className="py-14 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
+    <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
       <div className="max-w-5xl mx-auto text-center">
         <AnimatedSection>
-          <p className="text-base sm:text-lg text-white/80 mb-8 font-semibold tracking-wide uppercase">
+          <p className="text-sm text-muted-foreground mb-8 tracking-widest uppercase font-medium">
             Работаем с крупнейшими криптобиржами
           </p>
-          <div className="flex items-center justify-center gap-10 sm:gap-16 flex-wrap">
-            <a href="https://www.binance.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/binance.svg" alt="Binance" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
-            <a href="https://www.okx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/okx.svg" alt="OKX" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
-            <a href="https://www.bybit.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bybit.svg" alt="Bybit" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
-            <a href="https://www.bitget.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bitget.svg" alt="Bitget" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
-            <a href="https://www.bingx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bingx.svg" alt="BingX" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
+          <div className="flex items-center justify-center gap-6 sm:gap-8 flex-wrap">
+            {exchanges.map((ex) => (
+              <a
+                key={ex.name}
+                href={ex.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-[140px] sm:w-[160px] h-16 sm:h-20 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.07] hover:border-cyan-500/20 transition-all group"
+              >
+                <img
+                  src={ex.logo}
+                  alt={ex.name}
+                  className="h-7 sm:h-9 opacity-50 group-hover:opacity-100 transition-opacity"
+                />
+              </a>
+            ))}
           </div>
         </AnimatedSection>
       </div>
