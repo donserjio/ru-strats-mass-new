@@ -274,7 +274,7 @@ function ParticleCanvas() {
 }
 
 const NAV_ITEMS = [
-  { label: "Результаты", href: "#equity" },
+  { label: "Результаты", href: "#results" },
   { label: "Показатели", href: "#metrics" },
   { label: "Как работает", href: "#how-it-works" },
   { label: "Условия", href: "#terms" },
@@ -966,103 +966,78 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
   );
 }
 
-function RiskSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
+function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
   const m = stats?.metrics;
-  const drawdowns = stats?.drawdowns?.slice(0, 5) ?? [];
+  const eoyReturns = stats?.eoyReturns ?? [];
 
-  const riskMetrics = [
-    { label: "Макс. просадка", value: getMetricValue(m, "Max Drawdown", "---") },
-    { label: "Макс. срок просадки", value: getMetricValue(m, "Longest DD Days", "---") + (m?.["Longest DD Days"] ? " дней" : "") },
-    { label: "Ср. просадка", value: getMetricValue(m, "Avg. Drawdown", "---") },
-    { label: "Ср. срок просадки", value: getMetricValue(m, "Avg. Drawdown Days", "---") + (m?.["Avg. Drawdown Days"] ? " дней" : "") },
-    { label: "Дневной VaR", value: getMetricValue(m, "Daily Value-at-Risk", "---") },
-    { label: "CVaR", value: getMetricValue(m, "Expected Shortfall (cVaR)", "---") },
-    { label: "Коэффициент Кальмара", value: getMetricValue(m, "Calmar", "---") },
-    { label: "Фактор восстановления", value: getMetricValue(m, "Recovery Factor", "---") },
+  const resultStats = [
+    { label: "Прибыльных месяцев", value: getMetricValue(m, "Win Month", "—") },
+    { label: "Лучший месяц", value: getMetricValue(m, "Best Month", "—") },
+    { label: "Худший месяц", value: getMetricValue(m, "Worst Month", "—") },
+    { label: "Ср. прибыльный месяц", value: getMetricValue(m, "Avg. Up Month", "—") },
+    { label: "Ср. убыточный месяц", value: getMetricValue(m, "Avg. Down Month", "—") },
+    { label: "Лучший год", value: getMetricValue(m, "Best Year", "—") },
+    { label: "Худший год", value: getMetricValue(m, "Worst Year", "—") },
+    { label: "Прибыльных лет", value: getMetricValue(m, "Win Year", "—") },
   ];
 
   return (
-    <section id="risk" className="py-12 px-4 sm:px-6 relative" data-testid="section-risk">
-      <div className="max-w-7xl mx-auto">
+    <section id="results" className="py-12 px-4 sm:px-6 relative bg-card/30 border-y border-border/10" data-testid="section-results">
+      <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Профиль риска
+              Результаты
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Комплексные метрики риска и наихудшие периоды просадок
+              Годовые доходности и ключевая статистика
             </p>
+            <LiveDataBadge text="На основе верифицированных реальных результатов" />
           </div>
         </AnimatedSection>
 
-        <div className="grid lg:grid-cols-2 gap-6 items-stretch">
-          <AnimatedSection delay={100} className="flex">
-            <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 w-full flex flex-col">
+        <div className="grid lg:grid-cols-2 gap-6 items-start">
+          <AnimatedSection delay={100}>
+            <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50">
               <div className="p-4 border-b border-border/30">
-                <h3 className="text-sm font-semibold text-foreground">Метрики риска</h3>
+                <h3 className="text-sm font-semibold text-foreground">Годовые доходности</h3>
               </div>
-              {isLoading ? (
-                <div className="p-4 space-y-3 flex-1">
-                  {[1,2,3,4,5,6].map(i => <Skeleton key={i} className="h-6 w-full" />)}
-                </div>
-              ) : (
-                <div className="p-4 space-y-0 flex-1 flex flex-col justify-evenly">
-                  {riskMetrics.map((item) => (
-                    <div key={item.label} className="flex items-center justify-between py-2.5 border-b border-border/20 last:border-0">
-                      <span className="text-sm text-muted-foreground">{item.label}</span>
-                      <span className={`text-sm font-mono font-medium ${
-                        item.value.startsWith("-") ? "text-red-400" : "text-foreground"
-                      }`} data-testid={`text-risk-${item.label.toLowerCase().replace(/[\s.]/g, "-")}`}>
-                        {item.value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/50">
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground">Год</th>
+                      <th className="text-center px-4 py-3 text-xs font-semibold text-muted-foreground">Доходность</th>
+                      <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-400">Накопленная</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {eoyReturns.map((row) => (
+                      <tr key={row.year} className="border-b border-border/20 last:border-0">
+                        <td className="px-4 py-3 font-semibold text-sm text-foreground">{row.year}</td>
+                        <td className="px-4 py-3 text-center font-mono text-sm text-muted-foreground">—</td>
+                        <td className="px-4 py-3 text-right font-mono text-sm text-muted-foreground">—</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </Card>
           </AnimatedSection>
 
-          <AnimatedSection delay={200} className="flex">
-            <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 w-full">
+          <AnimatedSection delay={200}>
+            <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50">
               <div className="p-4 border-b border-border/30">
-                <h3 className="text-sm font-semibold text-foreground">Наихудшие просадки</h3>
+                <h3 className="text-sm font-semibold text-foreground">Статистика результатов</h3>
               </div>
-              {isLoading ? (
-                <div className="p-4 space-y-3">
-                  {[1,2,3,4,5].map(i => <Skeleton key={i} className="h-8 w-full" />)}
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm" data-testid="table-drawdowns">
-                    <thead>
-                      <tr className="border-b border-border/50">
-                        <th className="text-left px-3 py-3 text-xs font-semibold text-muted-foreground">Начало</th>
-                        <th className="text-left px-3 py-3 text-xs font-semibold text-muted-foreground">Восстановление</th>
-                        <th className="text-right px-3 py-3 text-xs font-semibold text-muted-foreground">Просадка</th>
-                        <th className="text-right px-3 py-3 text-xs font-semibold text-muted-foreground">Дней</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {drawdowns.map((row, i) => (
-                        <tr key={i} className="border-b border-border/20 last:border-0">
-                          <td className="px-3 py-2.5 font-mono text-xs text-muted-foreground">
-                            {row.started}
-                          </td>
-                          <td className="px-3 py-2.5 font-mono text-xs text-muted-foreground">
-                            {row.recovered}
-                          </td>
-                          <td className="px-3 py-2.5 text-right font-mono text-xs text-red-400">
-                            {row.drawdown.toFixed(2)}%
-                          </td>
-                          <td className="px-3 py-2.5 text-right font-mono text-xs text-muted-foreground">
-                            {row.days}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+              <div className="p-4 space-y-0">
+                {resultStats.map((item) => (
+                  <div key={item.label} className="flex items-center justify-between py-3 border-b border-border/20 last:border-0">
+                    <span className="text-sm text-muted-foreground">{item.label}</span>
+                    <span className="text-sm font-mono font-medium text-muted-foreground">—</span>
+                  </div>
+                ))}
+              </div>
             </Card>
           </AnimatedSection>
         </div>
@@ -1443,6 +1418,7 @@ export default function Home() {
 
       <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
       <MetricsSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
+      <ResultsSection stats={stats} isLoading={isLoading} />
 
       <section id="how-it-works" className="py-12 px-4 sm:px-6 relative">
         <div className="max-w-5xl mx-auto">
@@ -1501,7 +1477,6 @@ export default function Home() {
         </div>
       </section>
 
-      <RiskSection stats={stats} isLoading={isLoading} />
       <AccessTermsSection sc={sc} />
 
       <section className="py-12 px-4 sm:px-6 text-center">
