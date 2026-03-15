@@ -869,35 +869,28 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
     setFilteredData(equityRaw);
   }, [equityRaw]);
 
+  const m = stats?.metrics;
+  const chartMetrics = [
+    { label: "CAGR", value: getMetricValue(m, "CAGR", "—") },
+    { label: "SHARPE", value: getMetricValue(m, "Sharpe", "—") },
+    { label: "TRACK RECORD", value: stats?.dateRange ? stats.dateRange.replace(/.*?(\d{4}).*?(\d{4}).*/, "$1–$2") : "—" },
+  ];
+
   return (
     <section id="equity" className="py-12 px-4 sm:px-6 relative" data-testid="section-equity">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <AnimatedSection>
-          <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Результаты стратегии
-            </h2>
-            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Рост капитала и эквити стратегии
-            </p>
-            <LiveDataBadge text="Обновляется ежедневно · API Binance" />
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection delay={100}>
-          <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-              <h3 className="text-sm font-semibold text-foreground">Equity Curve</h3>
-              {equityRaw.length > 0 && (
-                <ChartPeriodFilter allData={equityRaw} onFilter={setFilteredData} rebaseOnFilter additiveRebase />
-              )}
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50 overflow-hidden">
+            <div className="flex items-center justify-between px-6 pt-6 pb-2">
+              <h3 className="text-sm font-semibold text-foreground">Algo Strategy</h3>
+              <span className="text-sm font-semibold text-cyan-400">Equity Curve</span>
             </div>
             {isLoading ? (
-              <Skeleton className="h-[300px] w-full" />
+              <Skeleton className="h-[300px] w-full mx-6" />
             ) : filteredData.length === 0 ? (
               <div className="h-[300px] flex items-center justify-center text-muted-foreground text-sm">Нет данных</div>
             ) : (
-              <div className="h-[300px] sm:h-[400px]">
+              <div className="h-[300px] sm:h-[380px] px-2">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={filteredData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                     <defs>
@@ -941,7 +934,6 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
                                 {val >= 0 ? "+" : ""}{val.toFixed(2)}%
                               </span>
                             </div>
-                            <ChartLiveBadge text="Реальный счёт" />
                           </div>
                         );
                       }}
@@ -959,6 +951,14 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
                 </ResponsiveContainer>
               </div>
             )}
+            <div className="border-t border-border/30 grid grid-cols-3 divide-x divide-border/30">
+              {chartMetrics.map((metric) => (
+                <div key={metric.label} className="py-5 text-center">
+                  <div className="text-lg sm:text-xl font-bold font-mono text-foreground mb-1">{metric.value}</div>
+                  <div className="text-[11px] tracking-widest text-muted-foreground uppercase">{metric.label}</div>
+                </div>
+              ))}
+            </div>
           </Card>
         </AnimatedSection>
       </div>
