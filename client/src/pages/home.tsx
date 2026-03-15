@@ -1674,11 +1674,9 @@ export default function Home() {
       <Navbar strategy={strategy} onStrategyChange={setStrategy} />
       <HeroSection stats={stats} sc={sc} />
 
-      <ExchangesBar />
       <SocialProofBar />
 
       <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
-      <PerformanceSection stats={stats} isLoading={isLoading} />
       <MetricsSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
 
       <section id="how-it-works" className="py-14 px-4 sm:px-6 relative bg-card/20">
@@ -1736,8 +1734,6 @@ export default function Home() {
         </div>
       </section>
 
-      <DrawdownChartSection stats={stats} isLoading={isLoading} />
-      <MonthlyReturnsSection stats={stats} isLoading={isLoading} />
       <RiskSection stats={stats} isLoading={isLoading} />
       <AccessTermsSection sc={sc} />
 
