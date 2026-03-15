@@ -1177,35 +1177,7 @@ function FAQSection({ sc }: { sc: StrategyConfig }) {
 function Footer() {
   return (
     <footer className="border-t border-border/30" data-testid="section-footer">
-      <div className="py-12 px-4 sm:px-6 text-center" data-testid="section-footer-cta">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Начните зарабатывать с алгоритмом</h2>
-          <p className="text-muted-foreground text-sm mb-6 max-w-lg mx-auto">
-            Подключение через биржевой копитрейдинг занимает несколько минут. Напишите нам — поможем с настройкой.
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 min-w-[200px]"
-              onClick={() => window.open("https://t.me/", "_blank")}
-              data-testid="button-footer-contact"
-            >
-              <Send className="w-4 h-4 mr-2" />
-              Написать нам в Telegram
-            </Button>
-            <Button
-              size="lg"
-              className="bg-[#25D366] hover:bg-[#1fb855] text-white shadow-lg shadow-green-500/20 min-w-[200px]"
-              onClick={() => window.open("https://wa.me/", "_blank")}
-              data-testid="button-footer-whatsapp"
-            >
-              <SiWhatsapp className="w-4 h-4 mr-2" />
-              Написать нам в WhatsApp
-            </Button>
-          </div>
-        </div>
-      </div>
-      <div className="px-4 sm:px-6 pb-10 border-t border-border/20">
+      <div className="px-4 sm:px-6 pb-10">
         <div className="max-w-7xl mx-auto pt-8">
           <p className="text-xs text-muted-foreground/60 leading-relaxed max-w-5xl mx-auto text-center">
             <strong>Отказ от ответственности:</strong> Алгоритмическая торговля цифровыми активами сопряжена со значительными рисками и подходит только для квалифицированных клиентов. Цифровые активы высоко волатильны и носят спекулятивный характер. Стратегии могут испытывать существенные просадки в неблагоприятных рыночных условиях. Рынки криптовалют подвержены развивающейся и неопределённой нормативной среде. Существует биржевой риск контрагента, включая возможность отказа биржи или нарушений безопасности. Прошлые результаты не являются показателем будущих результатов. Клиенты должны иметь достаточный баланс, чтобы переносить потерю значительной части или всего вложенного капитала. Данный сервис не подходит для клиентов, которые не могут перенести существенные потери капитала или которым требуется ликвидность в короткие сроки.
