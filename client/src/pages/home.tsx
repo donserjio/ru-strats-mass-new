@@ -674,7 +674,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
   ];
 
   return (
-    <section id="metrics" className="py-14 px-4 sm:px-6 relative" data-testid="section-metrics">
+    <section id="metrics" className="py-12 px-4 sm:px-6 relative bg-card/30 border-y border-border/10" data-testid="section-metrics">
       <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
@@ -869,7 +869,7 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
   }, [equityRaw]);
 
   return (
-    <section id="equity" className="py-14 px-4 sm:px-6 relative bg-card/20" data-testid="section-equity">
+    <section id="equity" className="py-12 px-4 sm:px-6 relative" data-testid="section-equity">
       <div className="max-w-7xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
@@ -1212,7 +1212,7 @@ function RiskSection({ stats, isLoading }: { stats?: StatsData; isLoading: boole
   ];
 
   return (
-    <section id="risk" className="py-14 px-4 sm:px-6 relative bg-card/20" data-testid="section-risk">
+    <section id="risk" className="py-12 px-4 sm:px-6 relative" data-testid="section-risk">
       <div className="max-w-7xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
@@ -1317,7 +1317,7 @@ const ACCESS_TERMS_BASE = [
 function AccessTermsSection({ sc }: { sc: StrategyConfig }) {
   const terms = ACCESS_TERMS_BASE;
   return (
-    <section id="terms" className="py-14 px-4 sm:px-6 relative bg-card/20" data-testid="section-terms">
+    <section id="terms" className="py-12 px-4 sm:px-6 relative bg-card/30 border-y border-border/10" data-testid="section-terms">
       <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
@@ -1399,7 +1399,7 @@ function buildFaqItems(sc: StrategyConfig) {
 function FAQSection({ sc }: { sc: StrategyConfig }) {
   const FAQ_ITEMS = buildFaqItems(sc);
   return (
-    <section id="faq" className="py-14 px-4 sm:px-6 relative" data-testid="section-faq">
+    <section id="faq" className="py-12 px-4 sm:px-6 relative bg-card/30 border-y border-border/10" data-testid="section-faq">
       <div className="max-w-3xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
@@ -1680,7 +1680,7 @@ export default function Home() {
       <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
       <MetricsSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
 
-      <section id="how-it-works" className="py-14 px-4 sm:px-6 relative bg-card/20">
+      <section id="how-it-works" className="py-12 px-4 sm:px-6 relative">
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
             <div className="text-center mb-10">
@@ -1708,7 +1708,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="advantages" className="py-14 px-4 sm:px-6 relative">
+      <section id="advantages" className="py-12 px-4 sm:px-6 relative bg-card/30 border-y border-border/10">
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
             <div className="text-center mb-10">
@@ -1738,7 +1738,7 @@ export default function Home() {
       <RiskSection stats={stats} isLoading={isLoading} />
       <AccessTermsSection sc={sc} />
 
-      <section className="py-14 px-4 sm:px-6 text-center">
+      <section className="py-12 px-4 sm:px-6 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Готовы подключиться?</h2>
           <p className="text-muted-foreground text-sm mb-8 max-w-lg mx-auto">
