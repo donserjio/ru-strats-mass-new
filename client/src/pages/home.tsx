@@ -485,7 +485,7 @@ function HeroEquityChart() {
 
 function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden" data-testid="section-hero">
+    <section className="relative min-h-[calc(100vh-4rem)] flex items-center overflow-hidden -mt-16 pt-16" data-testid="section-hero">
       <ParticleCanvas />
       <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
