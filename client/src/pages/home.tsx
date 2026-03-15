@@ -573,10 +573,10 @@ function ExchangeLogo({ name, color, url }: { name: string; color: string; url: 
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center justify-center px-6 sm:px-8 h-14 sm:h-16 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.07] hover:border-cyan-500/20 transition-all group"
+      className="flex items-center justify-center px-8 sm:px-10 h-16 sm:h-20 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.07] hover:border-cyan-500/20 transition-all group"
     >
       <span
-        className="text-lg sm:text-xl font-bold tracking-wide opacity-60 group-hover:opacity-100 transition-opacity"
+        className="text-xl sm:text-2xl font-bold tracking-wide opacity-60 group-hover:opacity-100 transition-opacity"
         style={{ color }}
       >
         {name}
@@ -597,7 +597,7 @@ function ExchangesBar() {
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
       <div className="max-w-5xl mx-auto text-center">
         <AnimatedSection>
-          <p className="text-sm text-muted-foreground mb-8 tracking-widest uppercase font-medium">
+          <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
             Работаем с крупнейшими криптобиржами
           </p>
           <div className="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
