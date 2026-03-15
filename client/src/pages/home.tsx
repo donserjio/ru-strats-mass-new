@@ -724,6 +724,8 @@ function ChartPeriodFilter({
   const [active, setActive] = useState<string>("all");
   const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [calOpen, setCalOpen] = useState(false);
+  const [leftMonth, setLeftMonth] = useState<Date | undefined>(undefined);
+  const [rightMonth, setRightMonth] = useState<Date | undefined>(undefined);
 
   const allowedDates = useMemo(
     () => new Set(allData.map((d) => d.date)),
@@ -814,17 +816,32 @@ function ChartPeriodFilter({
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 bg-card border-border/50" align="start">
-          <CalendarPicker
-            mode="range"
-            selected={range}
-            onSelect={handleRangeSelect}
-            disabled={isDisabled}
-            numberOfMonths={2}
-            className="calendar-dark-dropdowns"
-            captionLayout="dropdown"
-            fromYear={minDate?.getFullYear()}
-            toYear={maxDate?.getFullYear()}
-          />
+          <div className="flex gap-0 p-3 calendar-dark-dropdowns">
+            <CalendarPicker
+              mode="range"
+              selected={range}
+              onSelect={handleRangeSelect}
+              disabled={isDisabled}
+              numberOfMonths={1}
+              captionLayout="dropdown"
+              fromYear={minDate?.getFullYear()}
+              toYear={maxDate?.getFullYear()}
+              month={leftMonth || minDate}
+              onMonthChange={setLeftMonth}
+            />
+            <CalendarPicker
+              mode="range"
+              selected={range}
+              onSelect={handleRangeSelect}
+              disabled={isDisabled}
+              numberOfMonths={1}
+              captionLayout="dropdown"
+              fromYear={minDate?.getFullYear()}
+              toYear={maxDate?.getFullYear()}
+              month={rightMonth || maxDate}
+              onMonthChange={setRightMonth}
+            />
+          </div>
         </PopoverContent>
       </Popover>
     </div>
