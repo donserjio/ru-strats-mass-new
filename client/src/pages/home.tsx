@@ -520,7 +520,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
               <div className="flex flex-wrap gap-4">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold px-10 py-6 text-base shadow-lg shadow-cyan-500/25 animate-pulse hover:animate-none hover:shadow-cyan-500/40 transition-shadow"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold px-10 py-6 text-base cta-pulse transition-all"
                   onClick={() => window.open("https://t.me/", "_blank")}
                 >
                   Подключиться
@@ -1635,7 +1635,7 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 min-w-[200px] animate-pulse hover:animate-none"
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 min-w-[200px] cta-pulse transition-all"
               onClick={() => window.open("https://t.me/", "_blank")}
             >
               <Send className="w-4 h-4 mr-2" />
