@@ -1674,6 +1674,7 @@ export default function Home() {
       <Navbar strategy={strategy} onStrategyChange={setStrategy} />
       <HeroSection stats={stats} sc={sc} />
 
+      <ExchangesBar />
       <SocialProofBar />
 
       <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
