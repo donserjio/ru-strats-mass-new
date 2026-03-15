@@ -519,7 +519,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
               <div className="flex flex-wrap gap-4">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold px-10 py-6 text-base cta-pulse transition-all"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-12 py-7 text-lg rounded-xl cta-pulse transition-all"
                   onClick={() => window.open("https://t.me/", "_blank")}
                 >
                   Подключиться

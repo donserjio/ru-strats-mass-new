@@ -360,21 +360,24 @@
 /* CTA button glow pulse */
 @keyframes cta-glow {
   0%, 100% {
-    box-shadow: 0 0 8px rgba(6, 182, 212, 0.4), 0 0 20px rgba(6, 182, 212, 0.2);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5), 0 0 25px rgba(6, 182, 212, 0.25);
     transform: scale(1);
+    filter: brightness(1);
   }
   50% {
-    box-shadow: 0 0 16px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3), 0 0 60px rgba(59, 130, 246, 0.15);
-    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.8), 0 0 50px rgba(6, 182, 212, 0.4), 0 0 80px rgba(59, 130, 246, 0.25);
+    transform: scale(1.05);
+    filter: brightness(1.2);
   }
 }
 .cta-pulse {
-  animation: cta-glow 2s ease-in-out infinite;
+  animation: cta-glow 1.5s ease-in-out infinite;
 }
 .cta-pulse:hover {
   animation: none;
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.5), 0 0 40px rgba(6, 182, 212, 0.25);
-  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.6), 0 0 50px rgba(6, 182, 212, 0.3);
+  transform: scale(1.05);
+  filter: brightness(1.15);
 }
 
 /* ROI Calculator range slider styling */
