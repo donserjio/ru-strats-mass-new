@@ -1392,6 +1392,56 @@ export default function Home() {
       <MetricsSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
       <ResultsSection stats={stats} isLoading={isLoading} />
 
+      <section className="py-12 px-4 sm:px-6 relative" data-testid="section-strategy">
+        <div className="max-w-5xl mx-auto">
+          <AnimatedSection>
+            <div className="text-center mb-10">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Как устроена стратегия</h2>
+              <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
+                5 торговых подходов на 10 криптовалютных парах. Полностью автоматизированное исполнение с встроенным контролем рисков.
+              </p>
+            </div>
+          </AnimatedSection>
+          <div className="grid sm:grid-cols-2 gap-px bg-border/20 rounded-2xl overflow-hidden border border-border/30">
+            {[
+              {
+                num: "01",
+                title: "Диверсификация",
+                desc: "Несколько независимых подходов снижают зависимость от одного рыночного режима. Система торгует как в лонг, так и в шорт, адаптируясь к условиям рынка.",
+                accent: "from-cyan-500/30 to-cyan-600/10",
+              },
+              {
+                num: "02",
+                title: "Контроль рисков",
+                desc: "Каждая позиция ограничена по размеру и имеет стоп-лосс. Общий риск портфеля контролируется на уровне корреляций между стратегиями.",
+                accent: "from-blue-500/30 to-blue-600/10",
+              },
+              {
+                num: "03",
+                title: "Автоматизация",
+                desc: "Алгоритм исполняет сделки 24/7 без участия человека. Решения основаны на математических моделях, исключая эмоциональный фактор.",
+                accent: "from-violet-500/30 to-violet-600/10",
+              },
+              {
+                num: "04",
+                title: "Адаптивность",
+                desc: "Стратегии используют моментум, возврат к среднему и кластеризацию волатильности — три подхода, работающих в разных рыночных фазах.",
+                accent: "from-emerald-500/30 to-emerald-600/10",
+              },
+            ].map((item, i) => (
+              <AnimatedSection key={item.num} delay={i * 80}>
+                <div className="p-8 bg-card/60 backdrop-blur-sm h-full relative group hover:bg-card/80 transition-colors">
+                  <div className="absolute top-6 right-6 text-5xl font-black text-border/30 select-none leading-none">{item.num}</div>
+                  <div className={`w-1 h-10 rounded-full bg-gradient-to-b ${item.accent} mb-5`} />
+                  <h3 className="text-lg font-semibold text-foreground mb-3">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed pr-8">{item.desc}</p>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="how-it-works" className="py-12 px-4 sm:px-6 relative">
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
