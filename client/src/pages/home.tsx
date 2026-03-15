@@ -570,18 +570,18 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   return (
-    <section className="py-10 px-4 sm:px-6 bg-card/30 border-y border-border/20">
+    <section className="py-14 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
       <div className="max-w-5xl mx-auto text-center">
         <AnimatedSection>
-          <p className="text-sm sm:text-base text-muted-foreground mb-6 font-medium">
+          <p className="text-base sm:text-lg text-white/80 mb-8 font-semibold tracking-wide uppercase">
             Работаем с крупнейшими криптобиржами
           </p>
-          <div className="flex items-center justify-center gap-8 sm:gap-14 flex-wrap">
-            <a href="https://www.binance.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/binance.svg" alt="Binance" className="h-7 sm:h-9 opacity-50 hover:opacity-90 transition-opacity cursor-pointer" /></a>
-            <a href="https://www.okx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/okx.svg" alt="OKX" className="h-7 sm:h-9 opacity-50 hover:opacity-90 transition-opacity cursor-pointer" /></a>
-            <a href="https://www.bybit.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bybit.svg" alt="Bybit" className="h-7 sm:h-9 opacity-50 hover:opacity-90 transition-opacity cursor-pointer" /></a>
-            <a href="https://www.bitget.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bitget.svg" alt="Bitget" className="h-7 sm:h-9 opacity-50 hover:opacity-90 transition-opacity cursor-pointer" /></a>
-            <a href="https://www.bingx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bingx.svg" alt="BingX" className="h-7 sm:h-9 opacity-50 hover:opacity-90 transition-opacity cursor-pointer" /></a>
+          <div className="flex items-center justify-center gap-10 sm:gap-16 flex-wrap">
+            <a href="https://www.binance.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/binance.svg" alt="Binance" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
+            <a href="https://www.okx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/okx.svg" alt="OKX" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
+            <a href="https://www.bybit.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bybit.svg" alt="Bybit" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
+            <a href="https://www.bitget.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bitget.svg" alt="Bitget" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
+            <a href="https://www.bingx.com" target="_blank" rel="noopener noreferrer"><img src="/exchanges/bingx.svg" alt="BingX" className="h-10 sm:h-14 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer" /></a>
           </div>
         </AnimatedSection>
       </div>
