@@ -14,6 +14,7 @@ function Calendar({
   captionLayout,
   ...props
 }: CalendarProps) {
+  const isDropdown = captionLayout === "dropdown" || captionLayout === "dropdown-buttons";
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -23,8 +24,8 @@ function Calendar({
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
         caption: "flex justify-center pt-1 relative items-center",
-        caption_label: captionLayout === "dropdown" ? "text-sm font-medium hidden" : "text-sm font-medium",
-        caption_dropdowns: "flex gap-1 items-center",
+        caption_label: isDropdown ? "sr-only" : "text-sm font-medium",
+        caption_dropdowns: "flex gap-2 items-center",
         vhidden: "sr-only",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
@@ -53,6 +54,9 @@ function Calendar({
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
         day_hidden: "invisible",
+        dropdown: "appearance-none bg-card border border-border/50 rounded-md px-2 py-1 text-sm font-medium text-foreground cursor-pointer focus:outline-none focus:ring-1 focus:ring-cyan-500/50",
+        dropdown_month: "",
+        dropdown_year: "",
         ...classNames,
       }}
       components={{

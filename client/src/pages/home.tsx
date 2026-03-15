@@ -821,7 +821,7 @@ function ChartPeriodFilter({
             disabled={isDisabled}
             numberOfMonths={2}
             className="calendar-dark-dropdowns"
-            captionLayout="dropdown-buttons"
+            captionLayout="dropdown"
             fromYear={minDate?.getFullYear()}
             toYear={maxDate?.getFullYear()}
           />
