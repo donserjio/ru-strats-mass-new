@@ -1410,20 +1410,20 @@ export default function Home() {
               <p className="text-muted-foreground text-sm max-w-lg mx-auto">Преимущества алгоритмической торговли</p>
             </div>
           </AnimatedSection>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
-              { icon: Shield, title: "Без передачи средств", desc: "Деньги всегда на вашем биржевом счёте. Никто кроме вас не имеет к ним доступа." },
-              { icon: Wallet, title: "Вывод в любой момент", desc: "Нет блокировки средств. Отключитесь от стратегии или выведите деньги когда захотите." },
-              { icon: Eye, title: "Полная прозрачность", desc: "Каждую сделку видите в приложении биржи в реальном времени. Никаких чёрных ящиков." },
-              { icon: PercentCircle, title: "Честная комиссия", desc: "0% за управление. 30% только с прибыли по принципу «высшей отметки»." },
+              { icon: Shield, title: "Без передачи средств", desc: "Деньги всегда на вашем биржевом счёте." },
+              { icon: Wallet, title: "Вывод в любой момент", desc: "Нет блокировки средств." },
+              { icon: Eye, title: "Полная прозрачность", desc: "Каждая сделка видна в приложении биржи." },
+              { icon: PercentCircle, title: "Честная комиссия", desc: "30% только с прибыли." },
             ].map((item, i) => (
               <AnimatedSection key={item.title} delay={i * 80}>
-                <div className="p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full text-center">
-                  <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/20 flex items-center justify-center">
-                    <item.icon className="w-6 h-6 text-cyan-400" />
+                <div className="p-4 sm:p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full text-center">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/20 flex items-center justify-center">
+                    <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400" />
                   </div>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <h3 className="text-sm sm:text-base font-semibold text-foreground mb-1 sm:mb-2">{item.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               </AnimatedSection>
             ))}
