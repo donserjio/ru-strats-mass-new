@@ -580,10 +580,10 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", logo: "/exchanges/bybit.png", cls: "h-12 sm:h-14" },
-    { name: "Binance", logo: "/exchanges/binance.svg", cls: "h-8 sm:h-10" },
+    { name: "Bybit", logo: "/exchanges/bybit.png", cls: "h-16 sm:h-[4.5rem]" },
+    { name: "Binance", logo: "/exchanges/binance.svg", cls: "h-10 sm:h-12" },
     { name: "Bitget", logo: "/exchanges/bitget.png", cls: "h-8 sm:h-10" },
-    { name: "OKX", logo: "/exchanges/okx.png", cls: "h-8 sm:h-10" },
+    { name: "OKX", logo: "/exchanges/okx.png", cls: "h-12 sm:h-14" },
     { name: "BingX", logo: "/exchanges/bingx.png", cls: "h-8 sm:h-10" },
   ];
   return (
