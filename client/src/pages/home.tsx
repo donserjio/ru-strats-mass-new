@@ -580,11 +580,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", logo: "/exchanges/bybit.png" },
-    { name: "Binance", logo: "/exchanges/binance.svg" },
-    { name: "Bitget", logo: "/exchanges/bitget.png" },
-    { name: "OKX", logo: "/exchanges/okx.png" },
-    { name: "BingX", logo: "/exchanges/bingx.png" },
+    { name: "Bybit", logo: "/exchanges/bybit.png", pad: "p-0" },
+    { name: "Binance", logo: "/exchanges/binance.svg", pad: "p-0" },
+    { name: "Bitget", logo: "/exchanges/bitget.png", pad: "p-2 sm:p-3" },
+    { name: "OKX", logo: "/exchanges/okx.png", pad: "p-0.5" },
+    { name: "BingX", logo: "/exchanges/bingx.png", pad: "p-2 sm:p-3" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -602,7 +602,7 @@ function ExchangesBar() {
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className="w-full h-full object-contain brightness-0 invert opacity-60 p-1.5 sm:p-2"
+                  className={`w-full h-full object-contain brightness-0 invert opacity-60 ${ex.pad}`}
                 />
               </div>
             ))}
