@@ -625,7 +625,7 @@ function SocialProofBar() {
   return (
     <section className="-mt-1 py-10 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/10 via-blue-500/8 to-cyan-500/10 border-y border-cyan-500/15">
       <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-2 gap-y-5 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 max-w-2xl mx-auto">
           {[
             "Работаем с 2018 года",
             "Прозрачная онлайн-статистика",
@@ -633,10 +633,10 @@ function SocialProofBar() {
             "Крупнейшие криптобиржи",
             "Без передачи средств",
             "Автоматическая торговля 24/7",
-          ].map((text, i) => (
-            <div key={text} className={`flex items-center gap-3 text-base sm:text-lg text-white font-semibold ${i % 2 === 0 ? 'justify-self-start pl-4' : 'justify-self-start pl-8'}`}>
+          ].map((text) => (
+            <div key={text} className="flex items-center gap-3 text-sm sm:text-base text-white font-semibold pl-4 sm:pl-6">
               <CheckCircle className="w-5 h-5 text-cyan-400 shrink-0" />
-              <span className="whitespace-nowrap">{text}</span>
+              <span>{text}</span>
             </div>
           ))}
         </div>
@@ -798,7 +798,7 @@ function ChartPeriodFilter({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5" data-testid="chart-period-filter">
+    <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto" data-testid="chart-period-filter">
       <button
         onClick={() => applyYearOrAll("all")}
         className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${active === "all" ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground"}`}
