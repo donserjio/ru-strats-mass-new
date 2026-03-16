@@ -1166,7 +1166,7 @@ function FAQSection({ sc }: { sc: StrategyConfig }) {
                 className="border border-border/30 rounded-md px-4 bg-card/30 backdrop-blur-sm"
               >
                 <AccordionTrigger
-                  className="text-sm font-medium text-foreground hover:no-underline py-4"
+                  className="text-sm font-medium text-foreground hover:no-underline py-4 text-left"
                   data-testid={`button-faq-${i}`}
                 >
                   {item.q}
