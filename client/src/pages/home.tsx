@@ -593,11 +593,11 @@ function ExchangesBar() {
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
             Работаем с крупнейшими криптобиржами
           </p>
-          <div className="grid grid-cols-5 gap-3 sm:gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             {exchanges.map((ex) => (
               <div
                 key={ex.name}
-                className="flex items-center justify-center h-14 sm:h-16 px-4 rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden"
+                className="flex items-center justify-center h-16 sm:h-16 w-[calc(33%-8px)] sm:w-[calc(20%-13px)] px-4 rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden"
               >
                 <img
                   src={ex.logo}
