@@ -580,11 +580,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", logo: "/exchanges/bybit.png", scale: "scale-[1.6]" },
-    { name: "Binance", logo: "/exchanges/binance.svg", scale: "scale-[2.2]" },
-    { name: "Bitget", logo: "/exchanges/bitget.png", scale: "scale-100" },
-    { name: "OKX", logo: "/exchanges/okx.png", scale: "scale-[1.4]" },
-    { name: "BingX", logo: "/exchanges/bingx.png", scale: "scale-100" },
+    { name: "Bybit", logo: "/exchanges/bybit.png", scale: "scale-[1.6]", filter: "brightness-0 invert" },
+    { name: "Binance", logo: "/exchanges/binance.svg", scale: "scale-[2.2]", filter: "" },
+    { name: "Bitget", logo: "/exchanges/bitget.png", scale: "scale-100", filter: "" },
+    { name: "OKX", logo: "/exchanges/okx.png", scale: "scale-[1.4]", filter: "brightness-0 invert" },
+    { name: "BingX", logo: "/exchanges/bingx.png", scale: "scale-100", filter: "" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -602,7 +602,7 @@ function ExchangesBar() {
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className={`w-full h-full object-contain opacity-80 p-1.5 ${ex.scale}`}
+                  className={`w-full h-full object-contain opacity-80 p-1.5 ${ex.scale} ${ex.filter}`}
                 />
               </div>
             ))}
