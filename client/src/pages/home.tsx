@@ -1335,7 +1335,7 @@ export default function Home() {
               {
                 num: "01",
                 title: "Диверсификация",
-                desc: "15 независимых торговых систем снижают зависимость от одного рыночного режима. Торговля ведётся на BTC и ETH — как в лонг, так и в шорт, адаптируясь к условиям рынка.",
+                desc: "15 независимых торговых систем снижают зависимость от одного рыночного режима. Торговля ведётся на BTC и ETH — как в лонг, так и в шорт.",
                 accent: "from-cyan-500/30 to-cyan-600/10",
               },
               {
@@ -1347,22 +1347,26 @@ export default function Home() {
               {
                 num: "03",
                 title: "Автоматизация",
-                desc: "Алгоритм исполняет сделки 24/7 без участия человека. Решения основаны на математических моделях, исключая эмоциональный фактор.",
+                desc: "Алгоритм исполняет сделки 24/7 без участия человека. Решения основаны на математических моделях.",
                 accent: "from-violet-500/30 to-violet-600/10",
               },
               {
                 num: "04",
                 title: "Адаптивность",
-                desc: "15 стратегий используют моментум, возврат к среднему и кластеризацию волатильности — подходы, работающие в разных рыночных фазах.",
+                desc: "15 стратегий используют моментум, возврат к среднему и кластеризацию волатильности — подходы для разных рыночных фаз.",
                 accent: "from-emerald-500/30 to-emerald-600/10",
               },
             ].map((item, i) => (
               <AnimatedSection key={item.num} delay={i * 80}>
-                <div className="p-8 bg-card/60 backdrop-blur-sm h-full relative group hover:bg-card/80 transition-colors">
-                  <div className="absolute top-6 right-6 text-5xl font-black text-border/30 select-none leading-none">{item.num}</div>
-                  <div className={`w-1 h-10 rounded-full bg-gradient-to-b ${item.accent} mb-5`} />
-                  <h3 className="text-lg font-semibold text-foreground mb-3">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed pr-8">{item.desc}</p>
+                <div className="p-4 sm:p-6 bg-card/60 backdrop-blur-sm h-full relative group hover:bg-card/80 transition-colors flex gap-3 sm:gap-4">
+                  <div className={`w-1 shrink-0 rounded-full bg-gradient-to-b ${item.accent}`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline justify-between mb-1 sm:mb-2">
+                      <h3 className="text-sm sm:text-base font-semibold text-foreground">{item.title}</h3>
+                      <span className="text-2xl sm:text-3xl font-black text-border/30 select-none leading-none ml-2">{item.num}</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </div>
                 </div>
               </AnimatedSection>
             ))}
