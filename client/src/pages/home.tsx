@@ -999,7 +999,7 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
               Годовые доходности и ключевая статистика
             </p>
-            <LiveDataBadge text="На основе верифицированных реальных результатов" />
+            <LiveDataBadge text="На основе верифицированных реальных результатов по API" />
           </div>
         </AnimatedSection>
 
