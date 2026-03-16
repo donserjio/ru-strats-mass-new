@@ -580,11 +580,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.png", h: "h-5 sm:h-6" },
-    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg", h: "h-5 sm:h-6" },
-    { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.png", h: "h-5 sm:h-6" },
-    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.png", h: "h-4 sm:h-5" },
-    { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.png", h: "h-5 sm:h-6" },
+    { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.png", h: "h-8 sm:h-10" },
+    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg", h: "h-7 sm:h-8" },
+    { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.png", h: "h-6 sm:h-7" },
+    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.png", h: "h-6 sm:h-7" },
+    { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.png", h: "h-6 sm:h-7" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -597,7 +597,7 @@ function ExchangesBar() {
             {exchanges.map((ex) => (
               <div
                 key={ex.name}
-                className="flex items-center justify-center h-12 sm:h-14 w-28 sm:w-36 rounded-xl border border-white/10 bg-white/[0.03]"
+                className="flex items-center justify-center h-14 sm:h-16 w-32 sm:w-40 rounded-xl border border-white/10 bg-white/[0.03]"
               >
                 <img
                   src={ex.logo}
