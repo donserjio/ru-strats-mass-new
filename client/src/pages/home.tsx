@@ -593,16 +593,16 @@ function ExchangesBar() {
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
             Доступно по API:
           </p>
-          <div className="grid grid-cols-5 gap-3 sm:gap-5">
+          <div className="grid grid-cols-5 gap-3 sm:gap-4">
             {exchanges.map((ex) => (
               <div
                 key={ex.name}
-                className="flex items-center justify-center py-5 sm:py-7 px-3 rounded-xl border border-white/10 bg-white/[0.03]"
+                className="flex items-center justify-center h-14 sm:h-16 px-4 rounded-xl border border-white/10 bg-white/[0.03]"
               >
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className="w-full h-auto object-contain brightness-0 invert opacity-60"
+                  className="w-full h-full object-contain brightness-0 invert opacity-60 p-1.5 sm:p-2"
                 />
               </div>
             ))}
