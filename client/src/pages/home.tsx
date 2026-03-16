@@ -402,21 +402,22 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
                 {item.label}
               </button>
             ))}
-            <div className="flex gap-2 mt-1">
+            <div className="grid grid-cols-2 gap-2 mt-1">
               <Button
-                className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm w-full"
                 onClick={() => { setMobileOpen(false); window.open("https://t.me/", "_blank"); }}
                 data-testid="button-mobile-contact"
               >
                 <Send className="w-4 h-4 mr-2" />
-                Написать нам
+                Telegram
               </Button>
               <Button
-                className="bg-[#25D366] hover:bg-[#1fb855] text-white text-sm px-4"
+                className="bg-[#25D366] hover:bg-[#1fb855] text-white text-sm w-full"
                 onClick={() => { setMobileOpen(false); window.open("https://wa.me/", "_blank"); }}
                 data-testid="button-mobile-whatsapp"
               >
-                <SiWhatsapp className="w-4 h-4" />
+                <SiWhatsapp className="w-4 h-4 mr-2" />
+                WhatsApp
               </Button>
             </div>
           </div>
