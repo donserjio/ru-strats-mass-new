@@ -678,10 +678,6 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
       label: "Макс. просадка",
       value: getMetricValue(m, "Max Drawdown", "---"),
     },
-    {
-      label: "Win Rate",
-      value: getMetricValue(m, "Win Days", "---"),
-    },
   ];
 
   return (
@@ -699,7 +695,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
           </div>
         </AnimatedSection>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {metricsCards.map((metric, i) => (
             <AnimatedSection key={metric.label} delay={i * 80}>
               <div className="text-center py-6 px-4 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm" data-testid={`card-metric-${metric.label.toLowerCase().replace(/\s/g, "-")}`}>
