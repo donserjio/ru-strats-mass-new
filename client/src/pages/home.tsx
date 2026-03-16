@@ -578,31 +578,57 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
   );
 }
 
-function ExchangeLogo({ name, color, url }: { name: string; color: string; url: string }) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-center px-8 sm:px-10 h-16 sm:h-20 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.07] hover:border-cyan-500/20 transition-all group"
-    >
-      <span
-        className="text-xl sm:text-2xl font-bold tracking-wide opacity-60 group-hover:opacity-100 transition-opacity"
-        style={{ color }}
-      >
-        {name}
-      </span>
-    </a>
-  );
+function ExchangeIcon({ name, color }: { name: string; color: string }) {
+  if (name === "Binance") {
+    return (
+      <svg viewBox="0 0 32 32" className="w-6 h-6 sm:w-7 sm:h-7" fill={color}>
+        <path d="M16 5L11.36 9.64l1.77 1.77L16 8.54l2.87 2.87 1.77-1.77L16 5zM5 16l1.77-1.77L8.54 16l-1.77 1.77L5 16zm6.36 0L16 11.36 20.64 16 16 20.64 11.36 16zM16 23.46l-2.87-2.87-1.77 1.77L16 27l4.64-4.64-1.77-1.77L16 23.46zM23.46 16l1.77-1.77L27 16l-1.77 1.77L23.46 16z"/>
+      </svg>
+    );
+  }
+  if (name === "OKX") {
+    return (
+      <svg viewBox="0 0 32 32" className="w-6 h-6 sm:w-7 sm:h-7" fill={color}>
+        <rect x="5" y="5" width="8" height="8" rx="1.5"/>
+        <rect x="19" y="5" width="8" height="8" rx="1.5"/>
+        <rect x="12" y="12" width="8" height="8" rx="1.5"/>
+        <rect x="5" y="19" width="8" height="8" rx="1.5"/>
+        <rect x="19" y="19" width="8" height="8" rx="1.5"/>
+      </svg>
+    );
+  }
+  if (name === "Bybit") {
+    return (
+      <svg viewBox="0 0 32 32" className="w-6 h-6 sm:w-7 sm:h-7" fill={color}>
+        <path d="M7 6h6v10H7V6zm0 10h12v10H7V16zm12-10h6v20h-6V6z"/>
+      </svg>
+    );
+  }
+  if (name === "Bitget") {
+    return (
+      <svg viewBox="0 0 32 32" className="w-6 h-6 sm:w-7 sm:h-7" fill={color}>
+        <path d="M6 10l10 6-10 6V10zm10 0l10 6-10 6V10z"/>
+      </svg>
+    );
+  }
+  if (name === "BingX") {
+    return (
+      <svg viewBox="0 0 32 32" className="w-6 h-6 sm:w-7 sm:h-7" fill={color}>
+        <circle cx="16" cy="16" r="10" fillOpacity="0.15" stroke={color} strokeWidth="2"/>
+        <path d="M12 11l8 5-8 5V11z"/>
+      </svg>
+    );
+  }
+  return <span className="text-lg font-bold" style={{ color }}>{name.charAt(0)}</span>;
 }
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "BINANCE", color: "#F0B90B", url: "https://www.binance.com" },
+    { name: "Binance", color: "#F0B90B", url: "https://www.binance.com" },
     { name: "OKX", color: "#FFFFFF", url: "https://www.okx.com" },
-    { name: "BYBIT", color: "#F7A600", url: "https://www.bybit.com" },
-    { name: "BITGET", color: "#00F0FF", url: "https://www.bitget.com" },
-    { name: "BINGX", color: "#2BA6E0", url: "https://www.bingx.com" },
+    { name: "Bybit", color: "#F7A600", url: "https://www.bybit.com" },
+    { name: "Bitget", color: "#00F0FF", url: "https://www.bitget.com" },
+    { name: "BingX", color: "#2BA6E0", url: "https://www.bingx.com" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -611,9 +637,20 @@ function ExchangesBar() {
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
             Работаем с крупнейшими криптобиржами
           </p>
-          <div className="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
+          <div className="flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
             {exchanges.map((ex) => (
-              <ExchangeLogo key={ex.name} {...ex} />
+              <a
+                key={ex.name}
+                href={ex.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2.5 opacity-60 hover:opacity-100 transition-opacity group"
+              >
+                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-white/[0.04] border border-white/10 group-hover:border-cyan-500/30 flex items-center justify-center transition-all">
+                  <ExchangeIcon name={ex.name} color={ex.color} />
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-white/60 group-hover:text-white transition-colors">{ex.name}</span>
+              </a>
             ))}
           </div>
         </AnimatedSection>
