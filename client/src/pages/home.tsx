@@ -591,7 +591,7 @@ function ExchangesBar() {
       <div className="max-w-5xl mx-auto text-center">
         <AnimatedSection>
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
-            Доступно по API:
+            Работаем с крупнейшими криптобиржами
           </p>
           <div className="grid grid-cols-5 gap-3 sm:gap-4">
             {exchanges.map((ex) => (
