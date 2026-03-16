@@ -431,24 +431,46 @@ function getMetricValue(metrics: Record<string, string> | undefined, key: string
   return metrics[key] || fallback;
 }
 
-function HeroEquityChart() {
+function HeroEquityChart({ stats }: { stats?: StatsData }) {
   const [points, setPoints] = useState<string>("");
   const [fillPoints, setFillPoints] = useState<string>("");
 
   useEffect(() => {
-    const w = 400, h = 100, pad = 5;
-    const pts: string[] = [];
-    for (let i = 0; i <= 80; i++) {
-      const x = (i / 80) * w;
-      const progress = i / 80;
-      const base = pad + (1 - (progress * 0.7 + 0.1)) * (h - 2 * pad);
-      const noise = Math.sin(i * 0.5) * 4 + Math.sin(i * 1.3) * 2 + Math.cos(i * 0.3) * 3;
-      const y = Math.max(pad, Math.min(h - pad, base + noise));
-      pts.push(`${x},${y}`);
+    const w = 400, h = 100, pad = 8;
+    const equity = stats?.equity;
+    if (equity && equity.length > 10) {
+      const step = Math.max(1, Math.floor(equity.length / 120));
+      const sampled = equity.filter((_: unknown, i: number) => i % step === 0 || i === equity.length - 1);
+      const values = sampled.map((p: { value: number }) => p.value);
+      const minV = Math.min(...values);
+      const maxV = Math.max(...values);
+      const range = maxV - minV || 1;
+      const pts: string[] = [];
+      for (let i = 0; i < sampled.length; i++) {
+        const x = (i / (sampled.length - 1)) * w;
+        const y = pad + (1 - (values[i] - minV) / range) * (h - 2 * pad);
+        pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+      }
+      setPoints(pts.join(" "));
+      setFillPoints(pts.join(" ") + ` ${w},${h} 0,${h}`);
+    } else {
+      const pts: string[] = [];
+      const returns = [0,1,0.5,2,-1,1.5,3,-2,1,4,-1.5,3,2,-3,5,1,2,-1,4,3,-2,6,1,-1,3,5,-2,4,7,-3,5,2,8,-1,6,3,9,1,-2,7,4,10,2,5,12,-3,8,6,14,3,7,16,-2,9,5,18,4,8,20,-4,12,7,22,5,15,25,-5,18,10,28,8,20,32,-6,22,15,35,12,25,40];
+      let cumulative = 0;
+      const vals: number[] = [];
+      for (const r of returns) { cumulative += r; vals.push(cumulative); }
+      const minV = Math.min(...vals);
+      const maxV = Math.max(...vals);
+      const range = maxV - minV || 1;
+      for (let i = 0; i < vals.length; i++) {
+        const x = (i / (vals.length - 1)) * w;
+        const y = pad + (1 - (vals[i] - minV) / range) * (h - 2 * pad);
+        pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+      }
+      setPoints(pts.join(" "));
+      setFillPoints(pts.join(" ") + ` ${w},${h} 0,${h}`);
     }
-    setPoints(pts.join(" "));
-    setFillPoints(pts.join(" ") + ` ${w},${h} 0,${h}`);
-  }, []);
+  }, [stats?.equity]);
 
   if (!points) return null;
 
@@ -464,7 +486,6 @@ function HeroEquityChart() {
         <polygon points={fillPoints} fill="url(#heroGrad)" />
         <polyline points={points} fill="none" stroke="rgb(6,182,212)" strokeWidth="1.5" />
       </svg>
-      <div className="absolute bottom-2 right-3 text-xs text-cyan-400/30">equity curve</div>
     </div>
   );
 }
@@ -529,10 +550,10 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-sm text-muted-foreground font-medium">{sc.label}</span>
                   <span className="text-lg sm:text-xl font-bold text-cyan-400 font-mono">
-                    Equity Curve
+                    Кривая доходности
                   </span>
                 </div>
-                <HeroEquityChart />
+                <HeroEquityChart stats={stats} />
               </div>
             </AnimatedSection>
             <AnimatedSection delay={500}>
@@ -876,7 +897,7 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
         <AnimatedSection delay={100}>
           <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-              <h3 className="text-sm font-semibold text-foreground">Equity Curve</h3>
+              <h3 className="text-sm font-semibold text-foreground">Кривая доходности</h3>
               {equityRaw.length > 0 && (
                 <ChartPeriodFilter allData={equityRaw} onFilter={setFilteredData} rebaseOnFilter additiveRebase />
               )}
