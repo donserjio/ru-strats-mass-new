@@ -580,10 +580,10 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg" },
-    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.svg" },
     { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.svg" },
+    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg" },
     { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.svg" },
+    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.svg" },
     { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.svg" },
   ];
   return (
@@ -591,18 +591,22 @@ function ExchangesBar() {
       <div className="max-w-5xl mx-auto text-center">
         <AnimatedSection>
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
-            Работаем с крупнейшими криптобиржами
+            Доступно по API:
           </p>
-          <div className="flex items-center justify-center gap-8 sm:gap-12 flex-wrap">
+          <div className="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
             {exchanges.map((ex) => (
               <a
                 key={ex.name}
                 href={ex.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity"
+                className="group flex items-center justify-center h-14 sm:h-16 px-6 sm:px-8 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 transition-all"
               >
-                <img src={ex.logo} alt={ex.name} className="h-7 sm:h-9 w-auto" />
+                <img
+                  src={ex.logo}
+                  alt={ex.name}
+                  className="h-6 sm:h-7 w-auto opacity-60 group-hover:opacity-100 transition-opacity"
+                />
               </a>
             ))}
           </div>
