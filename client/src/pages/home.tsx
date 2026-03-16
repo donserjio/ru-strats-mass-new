@@ -580,11 +580,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", logo: "/exchanges/bybit.png", cls: "h-16 sm:h-[4.5rem]" },
-    { name: "Binance", logo: "/exchanges/binance.svg", cls: "h-10 sm:h-12" },
-    { name: "Bitget", logo: "/exchanges/bitget.png", cls: "h-8 sm:h-10" },
-    { name: "OKX", logo: "/exchanges/okx.png", cls: "h-12 sm:h-14" },
-    { name: "BingX", logo: "/exchanges/bingx.png", cls: "h-8 sm:h-10" },
+    { name: "Bybit", logo: "/exchanges/bybit.png" },
+    { name: "Binance", logo: "/exchanges/binance.svg" },
+    { name: "Bitget", logo: "/exchanges/bitget.png" },
+    { name: "OKX", logo: "/exchanges/okx.png" },
+    { name: "BingX", logo: "/exchanges/bingx.png" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -593,16 +593,16 @@ function ExchangesBar() {
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
             Доступно по API:
           </p>
-          <div className="flex items-center justify-center gap-4 sm:gap-5 flex-wrap">
+          <div className="grid grid-cols-5 gap-3 sm:gap-5">
             {exchanges.map((ex) => (
               <div
                 key={ex.name}
-                className="flex items-center justify-center h-16 sm:h-20 w-36 sm:w-44 rounded-xl border border-white/10 bg-white/[0.03]"
+                className="flex items-center justify-center py-5 sm:py-7 px-3 rounded-xl border border-white/10 bg-white/[0.03]"
               >
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className={`${ex.cls} w-auto max-w-[90%] object-contain brightness-0 invert opacity-60`}
+                  className="w-full h-auto max-h-12 sm:max-h-16 object-contain brightness-0 invert opacity-60 px-2"
                 />
               </div>
             ))}
