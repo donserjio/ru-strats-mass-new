@@ -580,11 +580,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.png" },
-    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg" },
-    { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.png" },
-    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.png" },
-    { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.png" },
+    { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.png", h: "h-5 sm:h-6" },
+    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg", h: "h-5 sm:h-6" },
+    { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.png", h: "h-5 sm:h-6" },
+    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.png", h: "h-4 sm:h-5" },
+    { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.png", h: "h-5 sm:h-6" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -600,12 +600,12 @@ function ExchangesBar() {
                 href={ex.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center h-14 sm:h-16 px-6 sm:px-8 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 transition-all"
+                className="group flex items-center justify-center h-12 sm:h-14 w-28 sm:w-36 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 transition-all"
               >
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className="h-6 sm:h-8 w-auto brightness-0 invert opacity-60 group-hover:opacity-100 transition-opacity"
+                  className={`${ex.h} w-auto max-w-[80%] object-contain brightness-0 invert opacity-60 group-hover:opacity-100 transition-opacity`}
                 />
               </a>
             ))}
