@@ -604,7 +604,7 @@ function SocialProofBar() {
   return (
     <section className="-mt-1 py-10 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/10 via-blue-500/8 to-cyan-500/10 border-y border-cyan-500/15">
       <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-2 gap-x-12 gap-y-5 max-w-3xl mx-auto">
+        <div className="grid grid-cols-2 gap-y-5 max-w-2xl mx-auto">
           {[
             "Работаем с 2018 года",
             "Прозрачная онлайн-статистика",
@@ -612,10 +612,10 @@ function SocialProofBar() {
             "Крупнейшие криптобиржи",
             "Без передачи средств",
             "Автоматическая торговля 24/7",
-          ].map((text) => (
-            <div key={text} className="flex items-center gap-3 text-lg sm:text-xl text-white font-semibold justify-center">
-              <CheckCircle className="w-6 h-6 text-cyan-400 shrink-0" />
-              <span>{text}</span>
+          ].map((text, i) => (
+            <div key={text} className={`flex items-center gap-3 text-base sm:text-lg text-white font-semibold ${i % 2 === 0 ? 'justify-self-start pl-4' : 'justify-self-start pl-8'}`}>
+              <CheckCircle className="w-5 h-5 text-cyan-400 shrink-0" />
+              <span className="whitespace-nowrap">{text}</span>
             </div>
           ))}
         </div>
