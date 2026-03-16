@@ -1383,19 +1383,21 @@ export default function Home() {
               <p className="text-muted-foreground text-sm max-w-lg mx-auto">Алготрейдинг через API биржи — просто и быстро</p>
             </div>
           </AnimatedSection>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-6">
             {[
-              { step: "01", title: "Откройте счёт на бирже", desc: "Зарегистрируйтесь на одной из поддерживаемых бирж (Binance, OKX, Bybit, Bitget, BingX) и пополните баланс. Минимальная аллокация — $500." },
-              { step: "02", title: "Свяжитесь с нами", desc: "Напишите нам в Telegram или WhatsApp — мы поможем с настройкой и подключением к стратегии. Процесс занимает менее 10 минут. Подключение через API-ключ биржи." },
-              { step: "03", title: "Алгоритм работает за вас", desc: "Алгоритм торгует автоматически 24/7. Комиссия — 30% от прибыли по принципу «высшей отметки». Без блокировки средств, расчёт раз в квартал." },
+              { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Минимум — $500." },
+              { step: "02", title: "Свяжитесь с нами", desc: "Telegram / WhatsApp. Подключение через API-ключ за 10 минут." },
+              { step: "03", title: "Алгоритм работает за вас", desc: "Торговля 24/7. Комиссия 30% с прибыли. Без блокировки средств." },
             ].map((item) => (
               <AnimatedSection key={item.step} delay={parseInt(item.step) * 100}>
-                <div className="text-center p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full">
-                  <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">{item.step}</span>
+                <div className="flex sm:flex-col items-center sm:text-center gap-4 sm:gap-0 p-4 sm:p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full">
+                  <div className="w-10 h-10 sm:w-14 sm:h-14 shrink-0 sm:mx-auto sm:mb-5 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                    <span className="text-white font-bold text-sm sm:text-lg">{item.step}</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-3">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <div className="flex-1 sm:flex-none">
+                    <h3 className="text-sm sm:text-lg font-semibold text-foreground mb-1 sm:mb-3">{item.title}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </div>
                 </div>
               </AnimatedSection>
             ))}
