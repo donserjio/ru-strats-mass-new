@@ -1004,8 +1004,10 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
                     {eoyReturns.map((row) => (
                       <tr key={row.year} className="border-b border-border/20 last:border-0">
                         <td className="px-4 py-3 font-semibold text-sm text-foreground">{row.year}</td>
-                        <td className="px-4 py-3 text-center font-mono text-sm text-muted-foreground">—</td>
-                        <td className="px-4 py-3 text-right font-mono text-sm text-muted-foreground">—</td>
+                        <td className={`px-4 py-3 text-center font-mono text-sm ${row.returnPct >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                          {row.returnPct >= 0 ? '+' : ''}{row.returnPct.toFixed(2)}%
+                        </td>
+                        <td className="px-4 py-3 text-right font-mono text-sm text-cyan-400">{row.cumulative}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -1023,7 +1025,7 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
                 {resultStats.map((item) => (
                   <div key={item.label} className="flex items-center justify-between py-3 border-b border-border/20 last:border-0">
                     <span className="text-sm text-muted-foreground">{item.label}</span>
-                    <span className="text-sm font-mono font-medium text-muted-foreground">—</span>
+                    <span className="text-sm font-mono font-medium text-foreground">{item.value}</span>
                   </div>
                 ))}
               </div>
