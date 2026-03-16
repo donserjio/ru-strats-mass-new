@@ -266,7 +266,6 @@ const NAV_ITEMS = [
   { label: "Результаты", href: "#results" },
   { label: "Показатели", href: "#metrics" },
   { label: "Как работает", href: "#how-it-works" },
-  { label: "Условия", href: "#terms" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -1363,9 +1362,9 @@ export default function Home() {
           </AnimatedSection>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { step: "01", title: "Откройте счёт на бирже", desc: "Зарегистрируйтесь на одной из поддерживаемых бирж (Binance, OKX, Bybit, Bitget, BingX) и пополните баланс." },
-              { step: "02", title: "Свяжитесь с нами", desc: "Напишите нам в Telegram или WhatsApp — мы поможем с настройкой и подключением к стратегии. Процесс занимает менее 10 минут." },
-              { step: "03", title: "Алгоритм работает за вас", desc: "Алгоритм торгует автоматически 24/7. Отслеживайте результаты в приложении биржи в реальном времени." },
+              { step: "01", title: "Откройте счёт на бирже", desc: "Зарегистрируйтесь на одной из поддерживаемых бирж (Binance, OKX, Bybit, Bitget, BingX) и пополните баланс. Минимальная аллокация — $500." },
+              { step: "02", title: "Свяжитесь с нами", desc: "Напишите нам в Telegram или WhatsApp — мы поможем с настройкой и подключением к стратегии. Процесс занимает менее 10 минут. Подключение через API-ключ биржи." },
+              { step: "03", title: "Алгоритм работает за вас", desc: "Алгоритм торгует автоматически 24/7. Комиссия — 30% от прибыли по принципу «высшей отметки». Без блокировки средств, расчёт раз в квартал." },
             ].map((item) => (
               <AnimatedSection key={item.step} delay={parseInt(item.step) * 100}>
                 <div className="text-center p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full">
@@ -1410,7 +1409,6 @@ export default function Home() {
         </div>
       </section>
 
-      <AccessTermsSection sc={sc} />
 
       <section className="py-12 px-4 sm:px-6 text-center">
         <div className="max-w-2xl mx-auto">
