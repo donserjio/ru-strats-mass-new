@@ -1409,7 +1409,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
             <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Почему алготрейдинг</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Почему алготрейдинг по API</h2>
               <p className="text-muted-foreground text-sm max-w-lg mx-auto">Преимущества алгоритмической торговли</p>
             </div>
           </AnimatedSection>
