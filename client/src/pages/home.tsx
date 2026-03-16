@@ -520,7 +520,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
             <AnimatedSection delay={200}>
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground/80 mb-8 max-w-lg leading-relaxed">
-                Алгоритмические стратегии торгуют криптовалюту 24/7. Полностью автоматизированный трейдинг — средства всегда на вашем счёте.
+                Алгоритмические стратегии торгуют криптовалюту 24/7. Полностью автоматизированный трейдинг по API — средства всегда на вашем счёте.
               </p>
             </AnimatedSection>
 
