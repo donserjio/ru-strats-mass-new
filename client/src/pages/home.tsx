@@ -48,12 +48,13 @@ interface StatsData {
   dailyPnl: { date: string; value: number }[];
 }
 
-type StrategyKey = "basket50" | "basket70" | "basket70tf" | "quantumalpha";
+type StrategyKey = "basket50" | "basket70tf";
 
 interface StrategyConfig {
   key: string;
+  apiKey: string;
   label: string;
-  count: number;
+  pairs: string[];
   approachShort: string;
   approachFull: string;
   desc: string;
@@ -68,43 +69,31 @@ interface StrategyConfig {
 const STRATEGIES: Record<string, StrategyConfig> = {
   basket50: {
     key: "basket50",
-    label: "Algo Strategy",
-    count: 50,
-    approachShort: "Систематический алгоритмический подход",
-    approachFull: "комбинации количественных торговых систем",
-    desc: "Алгоритмическая стратегия, торгующая 10 криптовалютных пар с использованием 5 торговых подходов. Комбинация нескольких количественных систем обеспечивает стабильную доходность в различных фазах рынка. Стратегия ориентирована на краткосрочные движения и эффективно работает как на растущем, так и на падающем рынке.",
-    archDesc: "Алгоритм использует 5 независимых торговых подходов на 10 криптовалютных парах. Диверсификация по стратегиям снижает зависимость от одного рыночного режима. Система торгует как в лонг, так и в шорт, адаптируясь к текущим условиям рынка.",
-    riskDesc: "Каждая сделка открывается с заранее определённым риском. Стоп-лоссы и тейк-профиты калибруются автоматически с учётом текущей волатильности. В периоды аномальной волатильности система снижает активность для защиты капитала.",
-    execDesc: "Исполнение сделок полностью автоматизировано. Алгоритм выбирает оптимальный тип ордера в зависимости от рыночных условий. Круглосуточный мониторинг обеспечивает стабильную работу без участия трейдера.",
+    apiKey: "basket50",
+    label: "Algo Momentum",
+    pairs: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "BNB/USDT", "XRP/USDT", "DOGE/USDT", "ADA/USDT", "AVAX/USDT", "LINK/USDT", "DOT/USDT"],
+    approachShort: "Мультисистемный количественный подход",
+    approachFull: "комбинации нескольких количественных моделей",
+    desc: "Портфель из нескольких независимых алгоритмических стратегий, работающих на 10 криптовалютных парах. Каждая модель использует собственную логику входа и выхода — от краткосрочного моментума до возврата к среднему. Комбинация разных подходов сглаживает кривую доходности и снижает зависимость от одного рыночного режима.",
+    archDesc: "Система объединяет 5 независимых алгоритмов на 10 инструментах. Торговля ведётся как в лонг, так и в шорт. Диверсификация по стратегиям обеспечивает стабильность в любых рыночных условиях — от трендов до боковиков.",
+    riskDesc: "Каждая позиция открывается с фиксированным риском. Стоп-лоссы и тейк-профиты рассчитываются алгоритмом на основе текущей волатильности. В периоды аномальных движений система автоматически снижает экспозицию.",
+    execDesc: "Полностью автоматизированное исполнение 24/7. Алгоритм выбирает тип ордера в зависимости от ликвидности и спреда. Работа без участия человека исключает эмоциональный фактор.",
     strategyType: "Количественная, систематическая",
-    holdingPeriod: "< 3 дней",
-    capacity: "$200M",
-  },
-  basket70: {
-    key: "basket70",
-    label: "Basket 70",
-    count: 70,
-    approachShort: "Моментум и возврат к среднему значению",
-    approachFull: "эффекта моментума и кластеризации волатильности с возвратом к среднему значению",
-    desc: "Корзина нескольких активных трендовых стратегий, основанных на эффекте моментума и усиленных за счёт кластеризации волатильности, с компонентом возврата к среднему значению для повышения эффективности портфеля.",
-    archDesc: "Basket 70 сочетает активное следование за трендом на основе эффекта моментума и кластеризации волатильности с компонентом возврата к среднему значению.",
-    riskDesc: "Надёжная система, основные компоненты которой остаются неизменными более 12 лет, с историей реальной торговли на крипторынке свыше 6 лет.",
-    execDesc: "Вход в рынок осуществляется рыночными или лимитными ордерами в зависимости от условий рынка.",
-    strategyType: "Моментум и возврат к среднему значению, систематическая",
     holdingPeriod: "< 3 дней",
     capacity: "$200M",
   },
   basket70tf: {
     key: "basket70tf",
-    label: "Basket 70 TF",
-    count: 70,
-    approachShort: "Следование за трендом",
-    approachFull: "следования за трендом на основе эффекта моментума",
-    desc: "Портфель активных торговых систем, ориентированных преимущественно на извлечение прибыли из направленных рыночных движений.",
-    archDesc: "Basket 70 TF включает более высокую долю чистых трендовых систем, удерживающих позиции более длительное время.",
-    riskDesc: "Фиксированный риск на позицию без усреднения убытков.",
-    execDesc: "Вход в рынок осуществляется рыночными или лимитными ордерами.",
-    strategyType: "Моментум, возврат к среднему значению, следование за трендом, систематическая",
+    apiKey: "basket70tf",
+    label: "Algo Trend",
+    pairs: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "BNB/USDT", "XRP/USDT", "DOGE/USDT", "ADA/USDT", "AVAX/USDT", "LINK/USDT", "DOT/USDT"],
+    approachShort: "Следование за трендом с моментум-фильтрами",
+    approachFull: "следования за трендом с использованием моментум-эффекта",
+    desc: "Портфель трендовых алгоритмов, ориентированных на извлечение прибыли из направленных движений рынка. Стратегии удерживают позиции дольше, позволяя захватывать крупные ценовые импульсы. Встроенные фильтры волатильности отсекают ложные сигналы.",
+    archDesc: "Преимущественно трендовые модели с увеличенным периодом удержания позиций. Комбинация моментума и кластеризации волатильности позволяет ловить сильные направленные движения и оставаться в стороне во время боковика.",
+    riskDesc: "Фиксированный риск на каждую сделку без усреднения убытков. Позиции закрываются по стоп-лоссу или трейлинг-стопу, адаптированному к текущей волатильности.",
+    execDesc: "Вход и выход осуществляется рыночными или лимитными ордерами в зависимости от глубины стакана и текущего спреда.",
+    strategyType: "Трендовая, моментум, систематическая",
     holdingPeriod: "< 14 дней",
     capacity: "$350M",
   },
@@ -282,7 +271,8 @@ const NAV_ITEMS = [
 ];
 
 const STRATEGY_OPTIONS: { key: StrategyKey; label: string }[] = [
-  { key: "basket50", label: "Algo Strategy" },
+  { key: "basket50", label: "Algo Momentum" },
+  { key: "basket70tf", label: "Algo Trend" },
 ];
 
 function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrategyChange: (k: StrategyKey) => void }) {
@@ -317,7 +307,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
             className="flex items-center gap-2 shrink-0"
             data-testid="link-logo"
           >
-            <div className="h-7 w-24 border border-dashed border-cyan-500/30 rounded flex items-center justify-center text-muted-foreground/50 text-xs">ЛОГО</div>
+            <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent tracking-tight">Algotrading</span>
           </button>
 
           <div className="hidden md:flex items-center gap-0.5 shrink-0">
@@ -437,10 +427,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
   );
 }
 
-function getMetricValue(_metrics: Record<string, string> | undefined, _key: string, _fallback: string): string {
-  return "—";
-}
-function _getMetricValueReal(metrics: Record<string, string> | undefined, key: string, fallback: string): string {
+function getMetricValue(metrics: Record<string, string> | undefined, key: string, fallback: string): string {
   if (!metrics) return fallback;
   return metrics[key] || fallback;
 }
@@ -512,7 +499,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
             <AnimatedSection delay={200}>
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground/80 mb-8 max-w-lg leading-relaxed">
-                Алгоритм торгует 10 криптовалютных пар 24/7. Подключение через официальный копитрейдинг бирж — средства всегда на вашем счёте.
+                Алгоритмические стратегии торгуют криптовалюту 24/7. Полностью автоматизированный трейдинг — средства всегда на вашем счёте.
               </p>
             </AnimatedSection>
 
@@ -541,7 +528,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
             <AnimatedSection delay={400}>
               <div className="rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-muted-foreground font-medium">Algo Strategy</span>
+                  <span className="text-sm text-muted-foreground font-medium">{sc.label}</span>
                   <span className="text-lg sm:text-xl font-bold text-cyan-400 font-mono">
                     Equity Curve
                   </span>
@@ -552,9 +539,9 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
             <AnimatedSection delay={500}>
               <div className="grid grid-cols-3 divide-x divide-border/20 rounded-xl border border-border/30 bg-card/30 backdrop-blur-sm mt-4">
                 {[
-                  { label: "CAGR", value: "—" },
-                  { label: "SHARPE", value: "—" },
-                  { label: "TRACK RECORD", value: "—" },
+                  { label: "CAGR", value: getMetricValue(stats?.metrics, "CAGR", "—") },
+                  { label: "SHARPE", value: getMetricValue(stats?.metrics, "Sharpe", "—") },
+                  { label: "TRACK RECORD", value: stats?.dateRange ? stats.dateRange.replace(/.*?(\d{4}).*?(\d{4}).*/, "$1–$2") : "—" },
                 ].map((item) => (
                   <div key={item.label} className="text-center py-5">
                     <div className="text-lg sm:text-xl font-bold text-foreground font-mono">{item.value}</div>
@@ -1055,7 +1042,7 @@ const ACCESS_TERMS_BASE = [
   { label: "Принцип «высшей отметки»", value: "Применяется" },
   { label: "Срок блокировки", value: "Отсутствует" },
   { label: "Распределение комиссий", value: "Раз в квартал" },
-  { label: "Формат подключения", value: "Копитрейдинг через биржу" },
+  { label: "Формат подключения", value: "API-ключ через биржу" },
   { label: "Торговые активы", value: "10 торговых пар, 5 подходов" },
   { label: "Обеспечение", value: "USDT" },
   { label: "Биржи", value: "Binance, OKX, Bybit, Bitget, BingX" },
@@ -1072,7 +1059,7 @@ function AccessTermsSection({ sc }: { sc: StrategyConfig }) {
               Условия подключения
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Подключение через биржевой копитрейдинг — просто и безопасно
+              Автоматический алготрейдинг — просто и безопасно
             </p>
           </div>
         </AnimatedSection>
@@ -1108,7 +1095,7 @@ function buildFaqItems(sc: StrategyConfig) {
     },
     {
       q: "Как начать работу?",
-      a: "Свяжитесь с нами через Telegram для начала онбординга. Подключение идёт через официальный копитрейдинг биржи — вы подписываетесь на стратегию в несколько кликов. Процесс настройки прост и занимает менее 10 минут.",
+      a: "Свяжитесь с нами через Telegram для начала онбординга. Мы создадим API-ключ на вашей бирже и подключим вашу учётную запись к алгоритму. Процесс занимает менее 10 минут.",
     },
     {
       q: "Каков минимальный размер аллокации?",
@@ -1120,7 +1107,7 @@ function buildFaqItems(sc: StrategyConfig) {
     },
     {
       q: "Какие биржи поддерживаются?",
-      a: "Binance, OKX, Bybit, Bitget, BingX. Подключение через официальный копитрейдинг биржи.",
+      a: "Binance, OKX, Bybit, Bitget, BingX. Подключение через API-ключ биржи.",
     },
     {
       q: "Какие активы торгуются?",
@@ -1132,7 +1119,7 @@ function buildFaqItems(sc: StrategyConfig) {
     },
     {
       q: "Данные о результатах — бэктест или реальная торговля?",
-      a: "Представленные на сайте данные отражают результаты реальной торговли SMA. Верифицированная история доступна через GenieAI. Прошлые результаты не являются показателем будущих результатов.",
+      a: "Представленные на сайте данные основаны на результатах реальной алгоритмической торговли. Прошлые результаты не являются показателем будущих результатов.",
     },
   ];
 }
@@ -1219,7 +1206,7 @@ function LegalDisclaimerModal() {
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Прошлые результаты</h3>
-            <p>Прошлые результаты не являются показателем будущих результатов. Представленные на сайте данные отражают результаты реальной торговли SMA. Исторические результаты не являются гарантией будущей доходности и не отражают влияние всех возможных рыночных сценариев на результаты стратегии.</p>
+            <p>Прошлые результаты не являются показателем будущих результатов. Представленные на сайте данные отражают результаты реальной алгоритмической торговли. Исторические результаты не являются гарантией будущей доходности и не отражают влияние всех возможных рыночных сценариев на результаты стратегии.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Отсутствие гарантий</h3>
@@ -1264,9 +1251,7 @@ function LegalDisclaimerModal() {
 
 const STRATEGY_SLUG_MAP: Record<string, StrategyKey> = {
   basket50: "basket50",
-  basket70: "basket70",
   basket70tf: "basket70tf",
-  quantumalpha: "quantumalpha",
 };
 
 function getStrategyFromPath(): StrategyKey {
@@ -1277,6 +1262,8 @@ function getStrategyFromPath(): StrategyKey {
 export default function Home() {
   const [, setLocation] = useLocation();
   const [strategy, setStrategyState] = useState<StrategyKey>(getStrategyFromPath);
+  const [stats, setStats] = useState<StatsData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const setStrategy = useCallback((key: StrategyKey) => {
     setStrategyState(key);
@@ -1284,115 +1271,35 @@ export default function Home() {
   }, [setLocation]);
   const sc = STRATEGIES[strategy];
 
-  const stats: StatsData = useMemo(() => ({
-    metrics: {
-      "Total Return": "8094.25%",
-      "CAGR": "94.61%",
-      "Sharpe": "3.09",
-      "Sortino": "5.65",
-      "Calmar": "4.73",
-      "Max Drawdown": "-19.99%",
-      "Volatility (ann.)": "30.66%",
-      "Win Days": "41.0%",
-      "Win Month": "72.5%",
-      "Win Quarter": "88.9%",
-      "Win Year": "8 of 8",
-      "Best Month": "+31.51%",
-      "Worst Month": "-15.05%",
-      "Avg. Up Month": "+9.73%",
-      "Avg. Down Month": "-3.88%",
-      "Best Year": "+98.65%",
-      "Worst Year": "+9.41%",
-      "Omega": "1.69",
-      "Profit Factor": "1.69",
-      "Kelly Criterion": "16.78%",
-      "Skew": "1.27",
-      "Daily Value-at-Risk": "-1.81%",
-      "Expected Shortfall (cVaR)": "-3.36%",
-      "Recovery Factor": "23.60",
-      "Longest DD Days": "108",
-      "Avg. Drawdown": "-4.50%",
-      "Avg. Drawdown Days": "17",
-      "Max Consecutive Wins": "11",
-      "Max Consecutive Losses": "9",
-      "Gain/Pain Ratio": "0.63",
-    },
-    equity: [
-      { date: "2019-08-01", value: 100 }, { date: "2019-10-15", value: 112 },
-      { date: "2019-12-31", value: 143 }, { date: "2020-03-15", value: 125 },
-      { date: "2020-06-30", value: 180 }, { date: "2020-09-15", value: 195 },
-      { date: "2020-12-31", value: 224 }, { date: "2021-03-15", value: 290 },
-      { date: "2021-06-30", value: 380 }, { date: "2021-09-15", value: 440 },
-      { date: "2021-12-31", value: 519 }, { date: "2022-03-15", value: 610 },
-      { date: "2022-06-30", value: 750 }, { date: "2022-09-15", value: 880 },
-      { date: "2022-12-31", value: 1032 }, { date: "2023-03-15", value: 1200 },
-      { date: "2023-06-30", value: 1450 }, { date: "2023-09-15", value: 1580 },
-      { date: "2023-12-31", value: 1725 }, { date: "2024-03-15", value: 2050 },
-      { date: "2024-06-30", value: 2400 }, { date: "2024-09-15", value: 2680 },
-      { date: "2024-12-31", value: 2935 }, { date: "2025-03-15", value: 3500 },
-      { date: "2025-06-30", value: 4200 }, { date: "2025-09-15", value: 4800 },
-      { date: "2025-12-31", value: 5300 }, { date: "2026-03-01", value: 5800 },
-    ],
-    drawdownChart: [
-      { date: "2019-08-01", value: 0 }, { date: "2019-11-10", value: -5.2 },
-      { date: "2020-01-05", value: -1.5 }, { date: "2020-03-15", value: -12.45 },
-      { date: "2020-05-01", value: -2 }, { date: "2020-08-10", value: -6.3 },
-      { date: "2020-11-01", value: -14.27 }, { date: "2020-12-26", value: -19.99 },
-      { date: "2021-02-03", value: -1 }, { date: "2021-03-15", value: -18.64 },
-      { date: "2021-06-01", value: -3 }, { date: "2021-09-10", value: -8.5 },
-      { date: "2022-02-15", value: -5.2 }, { date: "2022-06-01", value: -11.73 },
-      { date: "2022-07-01", value: -2 }, { date: "2022-11-15", value: -7.8 },
-      { date: "2023-04-10", value: -4.3 }, { date: "2023-09-05", value: -6.9 },
-      { date: "2023-12-27", value: -15.09 }, { date: "2024-03-01", value: -1 },
-      { date: "2024-07-20", value: -5.5 }, { date: "2025-02-15", value: -10.91 },
-      { date: "2025-05-10", value: -3.8 }, { date: "2025-12-04", value: -14.7 },
-      { date: "2026-02-01", value: -3 },
-    ],
-    eoyReturns: [
-      { year: 2019, returnPct: 43.05, cumulative: "+50.4%" },
-      { year: 2020, returnPct: 56.86, cumulative: "+149.3%" },
-      { year: 2021, returnPct: 79.95, cumulative: "+419.4%" },
-      { year: 2022, returnPct: 98.65, cumulative: "+1229.0%" },
-      { year: 2023, returnPct: 67.21, cumulative: "+2419.9%" },
-      { year: 2024, returnPct: 70.18, cumulative: "+4794.9%" },
-      { year: 2025, returnPct: 46.37, cumulative: "+7415.7%" },
-      { year: 2026, returnPct: 9.41, cumulative: "+8094.3%" },
-    ],
-    drawdowns: [
-      { started: "2020-12-26", recovered: "2021-02-03", drawdown: -19.99, days: 39 },
-      { started: "2021-03-09", recovered: "2021-05-15", drawdown: -18.64, days: 67 },
-      { started: "2023-12-27", recovered: "2024-02-26", drawdown: -15.09, days: 61 },
-      { started: "2025-12-04", recovered: "2026-01-30", drawdown: -14.70, days: 57 },
-      { started: "2021-05-18", recovered: "2021-06-22", drawdown: -14.58, days: 35 },
-    ],
-    monthlyGrid: [
-      { ym: "2024-01", ret: 5.2 }, { ym: "2024-02", ret: 8.1 }, { ym: "2024-03", ret: -3.2 },
-      { ym: "2024-04", ret: 12.4 }, { ym: "2024-05", ret: -1.5 }, { ym: "2024-06", ret: 7.8 },
-      { ym: "2024-07", ret: 4.3 }, { ym: "2024-08", ret: -5.1 }, { ym: "2024-09", ret: 9.6 },
-      { ym: "2024-10", ret: 6.7 }, { ym: "2024-11", ret: 11.2 }, { ym: "2024-12", ret: 3.9 },
-      { ym: "2025-01", ret: 7.4 }, { ym: "2025-02", ret: -8.3 }, { ym: "2025-03", ret: 14.1 },
-      { ym: "2025-04", ret: 5.6 }, { ym: "2025-05", ret: -2.8 }, { ym: "2025-06", ret: 9.2 },
-      { ym: "2025-07", ret: 3.1 }, { ym: "2025-08", ret: -4.7 }, { ym: "2025-09", ret: 8.5 },
-      { ym: "2025-10", ret: 6.9 }, { ym: "2025-11", ret: -1.2 }, { ym: "2025-12", ret: 10.3 },
-      { ym: "2026-01", ret: 4.8 }, { ym: "2026-02", ret: 3.2 }, { ym: "2026-03", ret: 1.4 },
-    ],
-    dailyPnl: [],
-    dateRange: "1 августа 2019 — 15 марта 2026",
-  }), []);
-  const isLoading = false;
+  useEffect(() => {
+    let cancelled = false;
+    setIsLoading(true);
+    fetch(`/api/stats?strategy=${strategy}`)
+      .then(r => r.json())
+      .then(data => {
+        if (!cancelled) {
+          setStats(data);
+          setIsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [strategy]);
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-16">
       <LegalDisclaimerModal />
       <Navbar strategy={strategy} onStrategyChange={setStrategy} />
-      <HeroSection stats={stats} sc={sc} />
+      <HeroSection stats={stats ?? undefined} sc={sc} />
 
       <ExchangesBar />
       <SocialProofBar />
 
-      <EquityChartSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
-      <MetricsSection stats={stats} isLoading={isLoading} strategyKey={strategy} />
-      <ResultsSection stats={stats} isLoading={isLoading} />
+      <EquityChartSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
+      <MetricsSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
+      <ResultsSection stats={stats ?? undefined} isLoading={isLoading} />
 
       <section className="py-12 px-4 sm:px-6 relative" data-testid="section-strategy">
         <div className="max-w-5xl mx-auto">
@@ -1449,14 +1356,14 @@ export default function Home() {
           <AnimatedSection>
             <div className="text-center mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Как это работает</h2>
-              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Подключение через биржевой копитрейдинг — просто и быстро</p>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Алготрейдинг через API биржи — просто и быстро</p>
             </div>
           </AnimatedSection>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { step: "01", title: "Откройте счёт на бирже", desc: "Зарегистрируйтесь на одной из поддерживаемых бирж (Binance, OKX, Bybit, Bitget, BingX) и пополните баланс." },
               { step: "02", title: "Свяжитесь с нами", desc: "Напишите нам в Telegram или WhatsApp — мы поможем с настройкой и подключением к стратегии. Процесс занимает менее 10 минут." },
-              { step: "03", title: "Алгоритм работает за вас", desc: "Сделки копируются автоматически 24/7. Отслеживайте результаты в приложении биржи в реальном времени." },
+              { step: "03", title: "Алгоритм работает за вас", desc: "Алгоритм торгует автоматически 24/7. Отслеживайте результаты в приложении биржи в реальном времени." },
             ].map((item) => (
               <AnimatedSection key={item.step} delay={parseInt(item.step) * 100}>
                 <div className="text-center p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full">
@@ -1476,8 +1383,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
             <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Почему копитрейдинг</h2>
-              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Преимущества подключения через биржевой копитрейдинг</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Почему алготрейдинг</h2>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Преимущества алгоритмической торговли</p>
             </div>
           </AnimatedSection>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1507,7 +1414,7 @@ export default function Home() {
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Готовы подключиться?</h2>
           <p className="text-muted-foreground text-sm mb-8 max-w-lg mx-auto">
-            Свяжитесь с нашей командой напрямую. Мы расскажем о стратегии, подключении через копитрейдинг и процессе онбординга.
+            Свяжитесь с нашей командой напрямую. Мы расскажем о стратегии, подключении и процессе онбординга.
           </p>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8 text-sm text-muted-foreground">
             {[
