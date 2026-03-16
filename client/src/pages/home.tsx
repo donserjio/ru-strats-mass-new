@@ -580,11 +580,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.svg" },
-    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg" },
-    { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.svg" },
-    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.svg" },
-    { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.svg" },
+    { name: "Bybit", url: "https://www.bybit.com", icon: null },
+    { name: "Binance", url: "https://www.binance.com", icon: "/exchanges/si_binance.svg" },
+    { name: "Bitget", url: "https://www.bitget.com", icon: null },
+    { name: "OKX", url: "https://www.okx.com", icon: "/exchanges/si_okx.svg" },
+    { name: "BingX", url: "https://www.bingx.com", icon: null },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -593,20 +593,21 @@ function ExchangesBar() {
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
             Доступно по API:
           </p>
-          <div className="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
+          <div className="flex items-center justify-center gap-4 sm:gap-5 flex-wrap">
             {exchanges.map((ex) => (
               <a
                 key={ex.name}
                 href={ex.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center h-14 sm:h-16 px-6 sm:px-8 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 transition-all"
+                className="group flex items-center justify-center gap-2.5 h-14 sm:h-16 px-5 sm:px-7 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 transition-all"
               >
-                <img
-                  src={ex.logo}
-                  alt={ex.name}
-                  className="h-6 sm:h-7 w-auto opacity-60 group-hover:opacity-100 transition-opacity"
-                />
+                {ex.icon && (
+                  <img src={ex.icon} alt="" className="h-5 sm:h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity" />
+                )}
+                <span className="text-base sm:text-lg font-bold tracking-wider text-white/70 group-hover:text-white transition-colors"
+                  style={{ fontFamily: "'Inter', 'SF Pro Display', -apple-system, sans-serif" }}
+                >{ex.name.toUpperCase()}</span>
               </a>
             ))}
           </div>
