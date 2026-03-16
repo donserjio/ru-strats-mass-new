@@ -580,11 +580,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", logo: "/exchanges/bybit.png", pad: "p-0" },
-    { name: "Binance", logo: "/exchanges/binance.svg", pad: "p-0" },
-    { name: "Bitget", logo: "/exchanges/bitget.png", pad: "p-2 sm:p-3" },
-    { name: "OKX", logo: "/exchanges/okx.png", pad: "p-0.5" },
-    { name: "BingX", logo: "/exchanges/bingx.png", pad: "p-2 sm:p-3" },
+    { name: "Bybit", logo: "/exchanges/bybit.png", scale: "scale-[1.6]" },
+    { name: "Binance", logo: "/exchanges/binance.svg", scale: "scale-[2.2]" },
+    { name: "Bitget", logo: "/exchanges/bitget.png", scale: "scale-100" },
+    { name: "OKX", logo: "/exchanges/okx.png", scale: "scale-[1.4]" },
+    { name: "BingX", logo: "/exchanges/bingx.png", scale: "scale-100" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -597,12 +597,12 @@ function ExchangesBar() {
             {exchanges.map((ex) => (
               <div
                 key={ex.name}
-                className="flex items-center justify-center h-14 sm:h-16 px-4 rounded-xl border border-white/10 bg-white/[0.03]"
+                className="flex items-center justify-center h-14 sm:h-16 px-4 rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden"
               >
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className={`w-full h-full object-contain brightness-0 invert opacity-60 ${ex.pad}`}
+                  className={`w-full h-full object-contain brightness-0 invert opacity-60 p-1.5 ${ex.scale}`}
                 />
               </div>
             ))}
