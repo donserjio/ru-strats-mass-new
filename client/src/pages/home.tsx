@@ -580,11 +580,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", url: "https://www.bybit.com", logo: "/exchanges/bybit.png" },
-    { name: "Binance", url: "https://www.binance.com", logo: "/exchanges/binance.svg" },
-    { name: "Bitget", url: "https://www.bitget.com", logo: "/exchanges/bitget.png" },
-    { name: "OKX", url: "https://www.okx.com", logo: "/exchanges/okx.png" },
-    { name: "BingX", url: "https://www.bingx.com", logo: "/exchanges/bingx.png" },
+    { name: "Bybit", logo: "/exchanges/bybit.png", cls: "h-12 sm:h-14" },
+    { name: "Binance", logo: "/exchanges/binance.svg", cls: "h-8 sm:h-10" },
+    { name: "Bitget", logo: "/exchanges/bitget.png", cls: "h-8 sm:h-10" },
+    { name: "OKX", logo: "/exchanges/okx.png", cls: "h-8 sm:h-10" },
+    { name: "BingX", logo: "/exchanges/bingx.png", cls: "h-8 sm:h-10" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
@@ -602,7 +602,7 @@ function ExchangesBar() {
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className="h-8 sm:h-10 w-auto max-w-[90%] object-contain brightness-0 invert opacity-60"
+                  className={`${ex.cls} w-auto max-w-[90%] object-contain brightness-0 invert opacity-60`}
                 />
               </div>
             ))}
