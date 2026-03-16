@@ -1441,7 +1441,7 @@ export default function Home() {
           <p className="text-muted-foreground text-sm mb-8 max-w-lg mx-auto">
             Свяжитесь с нашей командой напрямую. Мы расскажем о стратегии, подключении и процессе онбординга.
           </p>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-8 text-sm text-muted-foreground w-fit mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 mb-8 text-sm text-muted-foreground max-w-xs sm:max-w-md mx-auto">
             {[
               "Многолетний опыт",
               "Тысячи аккаунтов",
@@ -1450,7 +1450,7 @@ export default function Home() {
               "Поддержка 24/7",
               "Без передачи средств",
             ].map((text) => (
-              <div key={text} className="flex items-center gap-2">
+              <div key={text} className="flex items-center gap-2 pl-2">
                 <CheckCircle className="w-4 h-4 text-cyan-400 shrink-0" />
                 <span>{text}</span>
               </div>
