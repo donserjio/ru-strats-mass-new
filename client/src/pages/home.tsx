@@ -602,7 +602,7 @@ function ExchangesBar() {
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className={`w-full h-full object-contain brightness-0 invert opacity-60 p-1.5 ${ex.scale}`}
+                  className={`w-full h-full object-contain opacity-80 p-1.5 ${ex.scale}`}
                 />
               </div>
             ))}
