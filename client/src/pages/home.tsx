@@ -595,19 +595,16 @@ function ExchangesBar() {
           </p>
           <div className="flex items-center justify-center gap-4 sm:gap-5 flex-wrap">
             {exchanges.map((ex) => (
-              <a
+              <div
                 key={ex.name}
-                href={ex.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center h-12 sm:h-14 w-28 sm:w-36 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 transition-all"
+                className="flex items-center justify-center h-12 sm:h-14 w-28 sm:w-36 rounded-xl border border-white/10 bg-white/[0.03]"
               >
                 <img
                   src={ex.logo}
                   alt={ex.name}
-                  className={`${ex.h} w-auto max-w-[80%] object-contain brightness-0 invert opacity-60 group-hover:opacity-100 transition-opacity`}
+                  className={`${ex.h} w-auto max-w-[80%] object-contain brightness-0 invert opacity-60`}
                 />
-              </a>
+              </div>
             ))}
           </div>
         </AnimatedSection>
