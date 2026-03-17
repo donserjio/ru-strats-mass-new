@@ -15,6 +15,14 @@ jobs:
         with:
           node-version: '20'
       - run: npm install -g vercel
+      - name: Link project (non-interactive)
+        run: |
+          mkdir -p .vercel
+          cat > .vercel/project.json <<JSON
+          {"orgId":"$VERCEL_ORG_ID","projectId":"$VERCEL_PROJECT_ID"}
+          JSON
+      - name: Pull settings/env
+        run: vercel pull --yes --token=$VERCEL_TOKEN
       - run: npm ci
       - run: vercel build --prod --token=$VERCEL_TOKEN
       - run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
