@@ -885,12 +885,18 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
     }
   };
 
+  const rebaseData = (data: { date: string; value: number }[]) => {
+    if (data.length === 0) return data;
+    const base = data[0].value;
+    return data.map((d) => ({ ...d, value: parseFloat((d.value - base).toFixed(2)) }));
+  };
+
   const handleZoomMouseUp = () => {
     if (isDragging && zoomStart && zoomEnd && zoomStart !== zoomEnd) {
       const start = zoomStart < zoomEnd ? zoomStart : zoomEnd;
       const end = zoomStart < zoomEnd ? zoomEnd : zoomStart;
       const zoomed = equityRaw.filter((d) => d.date >= start && d.date <= end);
-      if (zoomed.length > 1) setFilteredData(zoomed);
+      if (zoomed.length > 1) setFilteredData(rebaseData(zoomed));
     }
     setZoomStart(null);
     setZoomEnd(null);
