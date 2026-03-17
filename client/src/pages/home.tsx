@@ -526,10 +526,10 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
             </AnimatedSection>
 
             <AnimatedSection delay={300}>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-row gap-3">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-8 py-6 text-base rounded-xl cta-pulse transition-all"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-6 py-5 text-base rounded-xl cta-pulse transition-all flex-1 sm:flex-none"
                   onClick={() => window.open("https://t.me/", "_blank")}
                 >
                   Подключиться
@@ -537,7 +537,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-border/50 text-foreground bg-transparent px-8 py-6 text-base"
+                  className="border-border/50 text-foreground bg-transparent px-6 py-5 text-base flex-1 sm:flex-none"
                   onClick={() => document.querySelector("#equity")?.scrollIntoView({ behavior: "smooth" })}
                 >
                   Результаты <ArrowRight className="w-4 h-4 ml-2" />
