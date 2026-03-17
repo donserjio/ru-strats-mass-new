@@ -1285,7 +1285,7 @@ export default function Home() {
   useEffect(() => {
     let cancelled = false;
     setIsLoading(true);
-    fetch(`/api/stats?strategy=${strategy}`)
+    fetch(`https://rustrats-api.umbra.business/api/stats?strategy=${strategy}`)
       .then(r => r.json())
       .then(data => {
         if (!cancelled) {
