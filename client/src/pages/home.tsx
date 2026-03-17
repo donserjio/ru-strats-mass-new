@@ -887,8 +887,8 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
 
   const rebaseData = (data: { date: string; value: number }[]) => {
     if (data.length === 0) return data;
-    const base = data[0].value;
-    return data.map((d) => ({ ...d, value: parseFloat((d.value - base).toFixed(2)) }));
+    const baseMul = 1 + data[0].value / 100;
+    return data.map((d) => ({ ...d, value: parseFloat((((1 + d.value / 100) / baseMul - 1) * 100).toFixed(2)) }));
   };
 
   const handleZoomMouseUp = () => {
@@ -923,7 +923,7 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
             <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
               <h3 className="text-sm font-semibold text-foreground">Кривая доходности</h3>
               {equityRaw.length > 0 && (
-                <ChartPeriodFilter allData={equityRaw} onFilter={setFilteredData} rebaseOnFilter additiveRebase />
+                <ChartPeriodFilter allData={equityRaw} onFilter={setFilteredData} rebaseOnFilter />
               )}
             </div>
             {isLoading ? (
