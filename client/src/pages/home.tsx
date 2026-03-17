@@ -35,6 +35,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  ReferenceArea,
 } from "recharts";
 
 interface StatsData {
@@ -862,10 +863,39 @@ function ChartLiveBadge({ text }: { text: string }) {
 function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey: StrategyKey }) {
   const equityRaw = stats?.equity ?? [];
   const [filteredData, setFilteredData] = useState(equityRaw);
+  const [zoomStart, setZoomStart] = useState<string | null>(null);
+  const [zoomEnd, setZoomEnd] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     setFilteredData(equityRaw);
   }, [equityRaw]);
+
+  const handleZoomMouseDown = (e: any) => {
+    if (e?.activeLabel) {
+      setZoomStart(e.activeLabel);
+      setZoomEnd(null);
+      setIsDragging(true);
+    }
+  };
+
+  const handleZoomMouseMove = (e: any) => {
+    if (isDragging && e?.activeLabel) {
+      setZoomEnd(e.activeLabel);
+    }
+  };
+
+  const handleZoomMouseUp = () => {
+    if (isDragging && zoomStart && zoomEnd && zoomStart !== zoomEnd) {
+      const start = zoomStart < zoomEnd ? zoomStart : zoomEnd;
+      const end = zoomStart < zoomEnd ? zoomEnd : zoomStart;
+      const zoomed = equityRaw.filter((d) => d.date >= start && d.date <= end);
+      if (zoomed.length > 1) setFilteredData(zoomed);
+    }
+    setZoomStart(null);
+    setZoomEnd(null);
+    setIsDragging(false);
+  };
 
   return (
     <section id="equity" className="py-12 px-4 sm:px-6 relative" data-testid="section-equity">
@@ -895,9 +925,26 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
             ) : filteredData.length === 0 ? (
               <div className="h-[300px] flex items-center justify-center text-muted-foreground text-sm">Нет данных</div>
             ) : (
-              <div className="h-[300px] sm:h-[400px]">
+              <div className="h-[300px] sm:h-[400px]" style={{ userSelect: 'none' }}>
+                {filteredData.length < equityRaw.length && (
+                  <div className="flex justify-end mb-2">
+                    <button
+                      onClick={() => setFilteredData(equityRaw)}
+                      className="text-xs text-cyan-400 hover:text-cyan-300 border border-cyan-400/30 rounded px-2 py-0.5"
+                    >
+                      ↺ Сбросить zoom
+                    </button>
+                  </div>
+                )}
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={filteredData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <AreaChart
+                    data={filteredData}
+                    margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
+                    onMouseDown={handleZoomMouseDown}
+                    onMouseMove={handleZoomMouseMove}
+                    onMouseUp={handleZoomMouseUp}
+                    style={{ cursor: isDragging ? 'col-resize' : 'crosshair' }}
+                  >
                     <defs>
                       <linearGradient id="equityGrad" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3} />
@@ -953,6 +1000,15 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
                       dot={false}
                       activeDot={{ r: 4, fill: "#06b6d4", stroke: "#0a0e27", strokeWidth: 2 }}
                     />
+                    {isDragging && zoomStart && zoomEnd && (
+                      <ReferenceArea
+                        x1={zoomStart < zoomEnd ? zoomStart : zoomEnd}
+                        x2={zoomStart < zoomEnd ? zoomEnd : zoomStart}
+                        strokeOpacity={0.3}
+                        fill="#06b6d4"
+                        fillOpacity={0.15}
+                      />
+                    )}
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
