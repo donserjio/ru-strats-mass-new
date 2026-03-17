@@ -2,6 +2,9 @@ name: Deploy to Vercel
 on:
   push:
     branches: [main]
+env:
+  VERCEL_ORG_ID: team_i0zWlSOEf9LL1E4s8lgzUT7k
+  VERCEL_PROJECT_ID: prj_KkIfVa8fiDys7PkpEDAGw5Us8jrl
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -10,20 +13,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - name: Install Vercel CLI
-        run: npm install -g vercel
-      - name: Pull Vercel Settings
-        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: team_i0zWlSOEf9LL1E4s8lgzUT7k
-          VERCEL_PROJECT_ID: prj_KkIfVa8fiDys7PkpEDAGw5Us8jrl
-      - name: Build
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: team_i0zWlSOEf9LL1E4s8lgzUT7k
-          VERCEL_PROJECT_ID: prj_KkIfVa8fiDys7PkpEDAGw5Us8jrl
-      - name: Deploy
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: team_i0zWlSOEf9LL1E4s8lgzUT7k
-          VERCEL_PROJECT_ID: prj_KkIfVa8fiDys7PkpEDAGw5Us8jrl
+      - run: npm install -g vercel
+      - run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
